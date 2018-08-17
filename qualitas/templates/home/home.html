@@ -12,10 +12,23 @@
           <div class="card-content white-text">
             <span class="card-title">PR Commit Exporter</span>
             <p>This tool allows you to select a repository along with a base SHA1 and head SHA1</p>
+            <br>
             <p>It will return all the merged PR commits as a csv file</p>
           </div>
           <div class="card-action">
             <a href="{{ url_for('tools.pull_request_export') }}">Go To Form</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col s12 m6">
+        <div class="card blue-grey darken-1">
+          <div class="card-content white-text">
+            <span class="card-title">CNX Repository Dashboard</span>
+            <p>This dashboard allows you to see the GitHub tags, PyPi versions, and other cool stuff for the CNX projects </p>
+          </div>
+          <div class="card-action">
+            <a href="{{ url_for('dashboards.cnx_repos') }}">Go To Dashboard</a>
           </div>
         </div>
       </div>
