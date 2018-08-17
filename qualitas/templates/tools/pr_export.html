@@ -1,0 +1,75 @@
+{% extends 'layouts/base.html' %}
+{%- from '_helpers.html' import render_field %}
+
+{% block title %}Qualitas | PR Commit Exporter{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+
+  <div class="row">
+    <div class="col s12">
+      <div class="card large">
+        <div class="card-content black-text">
+          <span class="card-title">Release PR Commit Exporter</span>
+          <div class="form-wrapper">
+            <form action="" method="POST" role="form">
+              {{ form.hidden_tag() }}
+
+              <!-- Repo Select Field -->
+              {% call render_field(form.repo) %}
+              {{ form.repo(id='repo-name') }}
+              {{ form.repo.label }}
+              {% endcall %}
+
+              <!-- Base Input Field -->
+              {% call render_field(form.base) %}
+              {{ form.base(id='commit-base') }}
+              {{ form.base.label }}
+              {% endcall %}
+
+              <!-- HEAD Input Field -->
+              {% call render_field(form.head) %}
+              {{ form.head(id='commit-head') }}
+              {{ form.head.label }}
+              {% endcall %}
+
+              <div class="row">
+                <footer class="col s12 form-footer">
+                  <p class="right-align">
+                    <button type="submit"
+                            class="btn btn-large waves-effect waves-light">Submit
+                    </button>
+                    <br/></p>
+                </footer>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let options = {};
+    let selectElems = document.querySelectorAll('select');
+    let selectInstances = M.FormSelect.init(selectElems, options);
+
+    // Post any error messages
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          M.toast({html: "{{ message }}"});
+        {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+  });
+</script>
+
+{% endblock scripts %}
