@@ -25,6 +25,6 @@ TUTOR_REPOS = [
 
 
 class PullRequestExportForm(FlaskForm):
-    repo = SelectField('Repository', choices=[(x, x) for x in TUTOR_REPOS])
-    base = StringField('Base', [Length(min=7, max=40), DataRequired()])
-    head = StringField('Head', [Length(min=7, max=40), DataRequired()])
+    repo_1 = SelectField('Repository', choices=[(x, x) for x in TUTOR_REPOS])
+    base_1 = StringField('Base', validators=[Length(min=7, max=40), DataRequired()])
+    head_1 = StringField('Head', validators=[Length(min=7, max=40), DataRequired()])
