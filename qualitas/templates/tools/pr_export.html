@@ -5,71 +5,156 @@
 
 {% block content %}
 
-<div class="container">
-
-  <div class="row">
-    <div class="col s12">
-      <div class="card large">
-        <div class="card-content black-text">
-          <span class="card-title">Release PR Commit Exporter</span>
-          <div class="form-wrapper">
-            <form action="" method="POST" role="form">
-              {{ form.hidden_tag() }}
-
-              <!-- Repo Select Field -->
-              {% call render_field(form.repo) %}
-              {{ form.repo(id='repo-name') }}
-              {{ form.repo.label }}
-              {% endcall %}
-
-              <!-- Base Input Field -->
-              {% call render_field(form.base) %}
-              {{ form.base(id='commit-base') }}
-              {{ form.base.label }}
-              {% endcall %}
-
-              <!-- HEAD Input Field -->
-              {% call render_field(form.head) %}
-              {{ form.head(id='commit-head') }}
-              {{ form.head.label }}
-              {% endcall %}
-
-              <div class="row">
-                <footer class="col s12 form-footer">
-                  <p class="right-align">
-                    <button type="submit"
-                            class="btn btn-large waves-effect waves-light">Submit
-                    </button>
-                    <br/></p>
-                </footer>
-            </form>
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+        <div class="card">
+          <div class="card-content black-text">
+            <span class="card-title">Release PR Commit Exporter</span>
+            <div class="form-wrapper">
+              <form id="pr-form" action="" method="POST" role="form">
+                {{ form.hidden_tag() }}
+                <div id="fieldset-wrapper">
+                  <fieldset id="repo-fieldset" class="repo-fieldset">
+                    <div class="col s4">
+                    <!-- Repo Select Field -->
+                    {% call render_field(form.repo_1) %}
+                      <span>{{ form.repo_1.label }}</span>
+                      {{ form.repo_1(id='repo', class='browser-default') }}
+                    {% endcall %}
+                    </div>
+                    <div class="col s4">
+                      <!-- Base Input Field -->
+                      {% call render_field(form.base_1) %}
+                        {{ form.base_1(id='base') }}
+                        {{ form.base_1.label }}
+                      {% endcall %}
+                    </div>
+                    <div class="col s4">
+                      <!-- HEAD Input Field -->
+                      {% call render_field(form.head_1) %}
+                        {{ form.head_1(id='head') }}
+                        {{ form.head_1.label }}
+                      {% endcall %}
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="row">
+                  <footer class="col s12 form-footer">
+                    <div class="row">
+                    <p class="left-align">
+                    <a class="btn-floating btn-large waves-effect waves-light red" onclick="clone()"><i class="material-icons">add</i></a>
+                    </p>
+                    </div>
+                    <p class="right-align">
+                      <button type="submit" class="btn btn-large waves-effect waves-light">Submit</button>
+                      <br/>
+                    </p>
+                  </footer>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 {% endblock content %}
 
 {% block scripts %}
-{{ super() }}
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    let options = {};
-    let selectElems = document.querySelectorAll('select');
-    let selectInstances = M.FormSelect.init(selectElems, options);
+  {{ super() }}
+  <script>
+    let cloneIndex = $('.repo-fieldset').length;
 
-    // Post any error messages
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-          M.toast({html: "{{ message }}"});
-        {% endfor %}
-      {% endif %}
+    function initForm() {
+      let selectOptions = {};
+      let fabOptions = {};
+      initFormSelect(selectOptions);
+      initFab(fabOptions);
+    }
+
+    function initFab(options) {
+      let elems = document.querySelectorAll('.fixed-action-btn');
+      M.FloatingActionButton.init(elems, options);
+    }
+
+    function initFormSelect(options) {
+      let selectElems = document.querySelectorAll('select');
+      M.FormSelect.init(selectElems, options);
+    }
+
+    function remove(el) {
+      $(el).remove();
+      cloneIndex--;
+      console.log('cloneIndex = ' + cloneIndex);
+    }
+
+    function genFieldIndex(str) {
+       let arr = str.split('_');
+       // Change the 1 to wherever the incremented value is in your id
+       arr[1] = cloneIndex;
+       // Smash it back together and return
+       return arr.join('_');
+    }
+
+    function clone() {
+
+      let fieldTypes = ['select', 'input'];
+      let $fieldset = $('#repo-fieldset').clone();
+      cloneIndex ++;
+      console.log('cloneIndex = ' + cloneIndex);
+
+      $fieldset.attr('id', genFieldIndex($fieldset.attr('id')));
+
+      for (let i = fieldTypes.length; i-- > 0;) {
+        let fields = $fieldset.find(fieldTypes[i]);
+        for (let f = fields.length; f-- > 0;) {
+          let $field = $(fields[f]);
+          // Increment the id and name according to cloneIndex
+          if ($field.attr('name')) {
+            $field.attr('id', genFieldIndex($field.attr('id')));
+            $field.attr('name', genFieldIndex($field.attr('name')));
+          }
+
+          // Clear value if it is an input field
+          if (fieldTypes[i] === 'input') {
+            $field.val('')
+          }
+
+        }
+      }
+
+      // Append a Remove button
+      let $button = $('<a></a>').addClass('btn-small')
+            .addClass('waves-effect')
+            .addClass('deep-orange')
+            .addClass('waves-light')
+            .addClass('right')
+            .text('Remove')
+            .click(function() {remove($fieldset)});
+
+      // Append Remove button to fieldset
+      $fieldset.append($button);
+
+      $('#fieldset-wrapper').append($fieldset);
+
+      return $fieldset
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+      initForm();
+
+      // Post any error messages
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+            M.toast({html: "{{ message }}"});
+          {% endfor %}
+        {% endif %}
       {% endwith %}
-
-  });
-</script>
+    });
+  </script>
 
 {% endblock scripts %}
