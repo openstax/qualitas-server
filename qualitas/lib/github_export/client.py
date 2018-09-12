@@ -19,7 +19,6 @@ class Commit(ShortCommit):
     For squash commits we look at the message for a particular regex match by
     looking for `(#PR_ID)` in the commit message.
     """
-
     class_name = 'Export Commit'
 
     def __init__(self, json, repo_name):
@@ -47,7 +46,6 @@ class Commit(ShortCommit):
 
     @property
     def is_pr_commit(self):
-        """Hoping this doesn't get to confusing but an in general use of Pull Request Commit"""
         return self.is_merge_commit or self.is_squash_commit
 
     @property
@@ -94,10 +92,6 @@ class GitHubClient(GitHub):
 
     def __init__(self, user, password):
         super(GitHubClient, self).__init__(self, user, password)
-        # Squash commits and Merge commits have different ways they reference
-        # the PR id. This regex matches for (#1234) and #1234
-        # self._regex_pr_id = re.compile('((?<=\#)\d+|(?<=\(\#\))\d+)')
-        # self._gh_url_pr_template = ''
 
     def _compare_commits(self, repo_name, base, head):
         org_name = repo_name.split('/')[0]
@@ -109,8 +103,6 @@ class GitHubClient(GitHub):
     def find_pr_commits(self, repo_name, base, head):
         comparison = self._compare_commits(repo_name, base, head)
         _pr_commits = []
-
-        LOGS.info('Commits returned were {}'.format(len(comparison.commits)))
 
         for commit in comparison.commits:
             # Use our commit object
