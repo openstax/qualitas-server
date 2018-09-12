@@ -6,8 +6,7 @@
   <title>CNX Repos Dashboard</title>
 
   <meta name="viewport" content="width=700">
-  <link rel="shortcut icon" href="http://ks52.web.rice.edu/newspaper.ico"
-        type="image/x-icon">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='ico/newspaper.ico') }}" type="image/x-icon">
   <style>
     body {
       font-family: Noto Sans, Arial, sans-serif;
@@ -32,14 +31,13 @@
   </style>
 
   <script>
-
-
     function makeGETrequest(url, callback) {
       let xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function () {
         if (xhr.readyState == XMLHttpRequest.DONE) {
-          if (typeof )
-          callback(JSON.parse(xhr.responseText));
+          if (typeof(callback) == 'function' ) {
+            callback(JSON.parse(xhr.responseText));
+          }
         }
       };
       xhr.open('GET', url);
@@ -77,7 +75,6 @@
 
     function getLatestCNXTag(repo) {
       let tags_url = 'https://api.github.com/repos/' + repo + '/tags';
-
 
       let xhr = new XMLHttpRequest();
 
@@ -141,105 +138,7 @@
   </script>
 </head>
 
-<body><!DOCTYPE html>
-<head>
-  <title>CNX Repos Dashboard</title>
-  <meta charset="UTF-8">
-  <meta name=viewport content="width=700">
-  <link rel="shortcut icon" href="newspaper.ico" type="image/x-icon">
-  <style>
-    body {
-      font-family: Noto Sans, Arial, sans-serif;
-      font-size: small;
-    }
 
-    table {
-      width: 700px;
-    }
-
-    .noborder {
-      border: 0;
-    }
-
-    td {
-      border: 1px solid gray;
-      text-align: left;
-      vertical-align: top;
-      padding: 7px;
-      width: 50%;
-    }
-  </style>
-
-  <script>
-
-    function getLatestCNXTag(repo) {
-      tags_url = 'https://api.github.com/repos/' + repo + '/tags';
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-          response = xhr.responseText;
-          resp = JSON.parse(response);
-          latest_tag = resp[0].name;
-
-          newlink = document.createElement('a');
-          newlink.innerHTML = latest_tag;
-          newlink.setAttribute('target', '_blank');
-          newlink.setAttribute('title', 'Click to compare to master');
-          newlink.setAttribute('href', 'https://github.com/' + repo
-            + '/compare/' + latest_tag + '...master');
-          document.getElementById(repo).appendChild(newlink);
-
-        }
-      }
-      xhr.open('GET', tags_url);
-      xhr.send(null);
-    }
-
-    function getPypiVersion(repo) {
-      // https://pypi.org/pypi/nebuchadnezzar/json
-      pypi_url = 'https://pypi.org/pypi/' + repo + '/json';
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-          response = xhr.responseText;
-          resp = JSON.parse(response);
-          pypi_version = resp.info.version;
-
-          newlink = document.createElement('a');
-          newlink.innerHTML = pypi_version;
-          newlink.setAttribute('target', '_blank');
-          newlink.setAttribute('title', 'Visit project on pypi');
-          newlink.setAttribute('href', 'https://pypi.org/project/' + repo);
-          document.getElementById('pypi/' + repo).appendChild(newlink);
-
-        }
-      }
-      xhr.open('GET', pypi_url);
-      xhr.send(null);
-    }
-
-    // for user input to look up the latest github tag
-    function lookupLatestCNXTag(repo) {
-      repo = document.getElementById("repo-input").value;
-      //alert(repo);
-      tags_url = 'https://api.github.com/repos/Connexions/' + repo + '/tags';
-      var xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-          response = xhr.responseText;
-          resp = JSON.parse(response);
-          text = 'latest github tag for ' + repo + ': ' + resp[0].name;
-          alert(text);
-        }
-      }
-      xhr.open('GET', tags_url, true);
-      xhr.send(null);
-    }
-
-  </script>
-</head>
-
-<body>
 
 <h1>CNX Repos Dashboard</h1>
 
@@ -307,7 +206,7 @@
       <br>&nbsp; &nbsp;
       <a href="https://github.com/Connexions/cnx-archive/tags" target="_blank">latest
         github tag</a>: <span id='Connexions/cnx-archive'><script>getLatestCNXTag('Connexions/cnx-archive');</script></span>
-      &#8226; latest pypi tag: <span id='pypi/cnx-archive'><script>getPypiVersion('Connexions/cnx-archive')</script></span>
+      &#8226; latest pypi tag: <span id='pypi/cnx-archive'><script>getPypiVersion('cnx-archive')</script></span>
     </td>
 
     <td>
@@ -321,7 +220,7 @@
       <br>&nbsp; &nbsp;
       <a href="https://github.com/Connexions/cnx-db/tags" target="_blank">latest
         github tag</a>: <span id='Connexions/cnx-db'><script>getLatestCNXTag('Connexions/cnx-db');</script></span>
-      &#8226; latest pypi tag: <span id='pypi/cnx-db'><script>getPypiVersion('Connexions/cnx-db')</script></span>
+      &#8226; latest pypi tag: <span id='pypi/cnx-db'><script>getPypiVersion('cnx-db')</script></span>
     </td>
   </tr>
   <tr>
