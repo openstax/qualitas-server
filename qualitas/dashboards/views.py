@@ -17,6 +17,11 @@ def urlcommands():
     return render_template('urlcommands.html')
 
 
+@dashboards.route('/cnx-json-loader', methods=['GET'])
+def cnx_json_loader():
+    return render_template('cnx_json_loader.html')
+
+
 @dashboards.route('/cnx-repos-proto')
 def cnx_repos_proto():
     from .proto_data import quick_links, cnx_server_files
