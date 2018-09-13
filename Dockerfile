@@ -1,7 +1,7 @@
 FROM python:3.6-alpine
 
 # Install base packages
-RUN apk add --update --no-cache gcc g++ postgresql-dev && \
+RUN apk add --update --no-cache gcc g++ postgresql-dev curl && \
     apk add --no-cache tini && apk add --no-cache libffi-dev
 
 
