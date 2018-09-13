@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>CNX URL to JSON loader</title>
+<style>
+body {
+  font-family: Noto Sans, Helvetica, sans-serif;
+}
+h1 {
+  font-family: Roboto Slab, serif;
+  color: #5E6062;
+}
+code {
+    font-size: 85%;
+    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    display: inline;
+    color: #555555;
+    background: #f4f4f4;
+    padding: 0.2em 0.2em;
+}
+.link {
+  font-size: 18px;
+  color: blue;
+  text-decoration: underline;
+}
+.link:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+</style>
+
+<script type="text/javascript">
+// URL to shorten == https://dev00.cnx.org/contents/GFy_h8cu@10.61:rZudN6XP@2/Introduction
+// URL to return == https://archive-dev00.cnx.org/contents/GFy_h8cu@10.61.json
+
+function book_json() {
+  var book_url = prompt('Enter full CNX URL for the book/collection:');
+  const regex = /^[a-z]+:\/\/([\S]+):/;
+  var book_match = regex.exec(book_url);
+  short_url = book_match[1];
+//check if prod
+  if (short_url.includes('.cnx')) {
+    var book_json_url = "https://archive-" + short_url + ".json" ;
+  }
+  else {
+    var book_json_url = "https://archive." + short_url + ".json" ;
+  }
+  window.open(book_json_url, "_top", "false");
+}
+
+function page_json() {
+  var book_url = prompt('Enter full CNX URL for the book/collection:');
+  const regex = /^[a-z]+:\/\/([\S]+\/[\S]+\/)[\S]+:([\S]+)\//;
+  var page_match = regex.exec(book_url);
+  domain = page_match[1];
+  page_short_id = page_match[2];
+//check if prod
+  if (domain.includes('.cnx')) {
+    var page_json_url = "https://archive-" + domain + page_short_id + ".json" ;
+  }
+  else {
+    var page_json_url = "https://archive." + domain + page_short_id + ".json" ;
+  }
+  //alert(domain)
+  window.open(page_json_url, "_top", "false");
+}
+
+function extras() {
+ var book_url = prompt('Enter full CNX URL for the book/collection:');
+ const regex = /^[a-z]+:\/\/([\S]+\/)[\S]+\/([\S]+):[\S]+\//;
+ var book_match = regex.exec(book_url);
+ domain = book_match[1];
+ book_short_id= book_match[2];
+//check if prod
+ if (domain.includes('.cnx')) {
+   var extras_json_url = "https://archive-" + domain + "extras/" + book_short_id;
+ }
+ else {
+   var extras_json_url = "https://archive." + domain + "extras/" + book_short_id;
+ }
+ //alert(domain)
+ window.open(extras_json_url, "_top", "false");
+}
+
+
+</script>
+</head>
+
+<body>
+  <h1>CNX JSON Loader</h1>
+  Instructions:
+  <ol>
+    <li>Load a CNX book in a different browser tab and wait for it to fully load. The URL will look something like this:<br>
+     <code>https://qa.cnx.org/contents/r-QzKsl_@8.1:_97x1rAv@3/Introduction-to-Sociology</code></li>
+    <li>Copy the URL from the browser location bar.</li>
+    <li>Click one of the links below.</li>
+    <li>Paste the URL from step 2 above into the prompt to get your JSON.</li>
+  </ol>
+  <br>
+  <span onclick="book_json()" class="link">Load book/collection json</span>
+  <br> <br>
+  <span onclick="page_json()" class="link">Load page/module json</span>
+  <br> <br>
+  <span onclick="extras()" class="link">Load extras json</span>
+</body>
+</html>
