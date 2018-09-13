@@ -12,6 +12,11 @@ def cnx_repos():
     return render_template('cnx_repos.html')
 
 
+@dashboards.route('/urlcommands', methods=['GET'])
+def urlcommands():
+    return render_template('urlcommands.html')
+
+
 @dashboards.route('/cnx-repos-proto')
 def cnx_repos_proto():
     from .proto_data import quick_links, cnx_server_files
