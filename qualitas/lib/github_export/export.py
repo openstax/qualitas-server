@@ -1,7 +1,11 @@
+import logging
+
 from flask import current_app as app
 from github3 import exceptions
 
 from .client import GitHubClient
+
+LOGS = logging.getLogger(__name__)
 
 
 def get_pr_commit_data(repo_name, base, head):
@@ -15,6 +19,7 @@ def get_pr_commit_data(repo_name, base, head):
     row_data = []
     if pr_commits:
         for commit in pr_commits:
+            LOGS.info(commit)
             row = dict()
             row['repository'] = commit.repository
             row['commit_message'] = commit.message

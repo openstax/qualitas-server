@@ -42,15 +42,20 @@ class Commit(ShortCommit):
         if self.is_pr_commit:
             return re.search(self._regex_pr_id, self.message).group(0)
         else:
+            LOGS.debug(f'PR ID not found{self.sha}')
             return None
 
     @property
     def is_pr_commit(self):
-        return self.is_merge_commit or self.is_squash_commit
+        return (self.is_merge_commit or self.is_squash_commit) and not self.is_master_merge
 
     @property
     def is_merge_commit(self):
         return len(self.parents) > 1
+
+    @property
+    def is_master_merge(self):
+        return 'Merge' in self.message and 'branch' in self.message and 'master' in self.message
 
     @property
     def is_squash_commit(self):
@@ -109,7 +114,7 @@ class GitHubClient(GitHub):
             commit = Commit(commit._json_data, repo_name)
             LOGS.info(f'Checking commit {commit.sha}')
 
-            if commit.is_merge_commit or commit.is_squash_commit:
+            if commit.is_pr_commit:
                 LOGS.info(commit)
                 _pr_commits.append(commit)
 
