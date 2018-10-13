@@ -7,6 +7,8 @@ services:
   - docker
 install:
   - docker build -t qualitas-server/travis .
+script:
+  - python --version
 after_success:
   - docker-compose down
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
