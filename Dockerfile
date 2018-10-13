@@ -1,4 +1,4 @@
-FROM python:3.6-alpine
+FROM python:3.7-alpine
 
 # Install base packages
 RUN apk add --update --no-cache gcc g++ postgresql-dev curl && \
