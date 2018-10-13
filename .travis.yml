@@ -1,0 +1,16 @@
+language: python
+python:
+  - '3.7'
+dist: xenial
+sudo: required
+services:
+  - docker
+install:
+  - docker-compose -f travis-compose.yml up -d
+after_success:
+  - docker-compose down
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker build -t registry.heroku.com/openstax/web .
+    docker login -u "$HEROKU_USERNAME" -p "$HEROKU_API_KEY" registry.heroku.com;
+    docker push registry.heroku.com/qualitas-server/web;
+    fi
