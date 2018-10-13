@@ -6,7 +6,7 @@ sudo: required
 services:
   - docker
 install:
-  - docker-compose -f travis-compose.yml up -d
+  - docker build -t qualitas-server/travis .
 after_success:
   - docker-compose down
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
