@@ -9,6 +9,7 @@ from ..core import db
 
 auth = Blueprint('auth',
                  __name__,
+                 url_prefix='/auth',
                  template_folder='../templates/auth')
 
 
@@ -19,9 +20,9 @@ def login():
 
         if form.validate_on_submit():
 
-            # utils.login_user(form.user, False)
+            utils.login_user(form.user, False)
             # db.session.commit()
 
             return redirect(url_for('home.index'))
 
-        return render_template('login.html')
+        return render_template('login.html', form=form)

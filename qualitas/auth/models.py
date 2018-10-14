@@ -6,7 +6,9 @@ from ..core import db
 roles_users = db.Table(
     'roles_users',
     db.Column('user_id', db.Integer(), db.ForeignKey('users.id')),
-    db.Column('role_id', db.Integer(), db.ForeignKey('roles.id')))
+    db.Column('role_id', db.Integer(), db.ForeignKey('roles.id')),
+    extend_existing=True
+)
 
 
 class Role(RoleMixin, db.Model):
@@ -30,14 +32,15 @@ class Role(RoleMixin, db.Model):
 
 class GitHubUser(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=False)
+    username = db.Column(db.String, nullable=False)
     display_name = db.Column(db.String, nullable=False)
     profile_image = db.Column(db.String, nullable=False)
-    profile_link = db.Column(db.string, nullable=False)
+    profile_link = db.Column(db.String, nullable=False)
 
     @classmethod
-    def gh_load(cls, ident, update=True):
+    def gh_load(cls, username, update=True):
 
-        o = cls.get_unique(id=id)
+        o = cls.query.filter(cls.username == username).first_or_404()
 
         if update or o.display_name is None:
             o.gh_update()

@@ -6,7 +6,7 @@ from qualitas.auth.models import User
 
 
 class LoginForm(FlaskForm):
-    user_id = StringField('User ID', validators=[InputRequired()])
+    username = StringField('Username', validators=[InputRequired()])
 
-    def validate_user_id(self, field):
+    def validate_username(self, field):
         self.user = User.gh_load(field.data)
