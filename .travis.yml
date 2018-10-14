@@ -6,9 +6,9 @@ sudo: required
 services:
   - docker
 install:
-  - docker build -t qualitas-server/travis .
+  - docker-compose -f travis-compose.yml up -d
 script:
-  - python --version
+  - docker-compose -f travis-compose exec web /bin/sh -c "python manage.py --help"
 after_success:
   - docker-compose down
   - if [ "$TRAVIS_BRANCH" == "master" ]; then

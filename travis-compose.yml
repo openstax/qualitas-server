@@ -4,11 +4,11 @@ services:
     build: ./
     ports:
       - "5000:5000"
-    environment:
-      - REDIS_URL=redis://redis:6379
     links:
-      - redis
-  redis:
-    image: redis:latest
+      - db
+  db:
+    image: postgres:10.5-alpine
+    environment:
+      - DB_NAME=testing
     ports:
-      - '127.0.0.1:6380:6380'
+      - '127.0.0.1:5432:5432'
