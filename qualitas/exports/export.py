@@ -3,7 +3,7 @@ import logging
 from flask import current_app as app
 from github3 import exceptions
 
-from .client import GitHubClient
+from qualitas.lib.github.client import GitHubClient
 
 LOGS = logging.getLogger(__name__)
 
