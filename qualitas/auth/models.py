@@ -28,22 +28,37 @@ class Role(RoleMixin, db.Model):
         return self.name
 
 
-class User(UserMixin, db.Model):
+class GitHubUser(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=False)
+    display_name = db.Column(db.String, nullable=False)
+    profile_image = db.Column(db.String, nullable=False)
+    profile_link = db.Column(db.string, nullable=False)
+
+    @classmethod
+    def gh_load(cls, ident, update=True):
+
+        o = cls.get_unique(id=id)
+
+        if update or o.display_name is None:
+            o.gh_update()
+
+        return o
+
+    def gh_update(self, data=None):
+        if data is None:
+            pass
+
+
+class User(UserMixin, GitHubUser):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True)
-    password = db.Column(db.String(120))
+    id = db.Column(db.Integer, db.ForeignKey(GitHubUser.id), primary_key=True)
     active = db.Column(db.Boolean())
-    confirmed_at = db.Column(db.DateTime())
     last_login_at = db.Column(db.DateTime())
     current_login_at = db.Column(db.DateTime())
     last_login_ip = db.Column(db.String(100))
     current_login_ip = db.Column(db.String(100))
     login_count = db.Column(db.Integer)
-    registered_at = db.Column(db.DateTime())
-    first_name = db.Column(db.String(100))
-    last_name = db.Column(db.String(100))
 
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))

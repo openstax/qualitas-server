@@ -1,13 +1,9 @@
 from flask import Flask
 from flask_security import SQLAlchemyUserDatastore
-from flask_sqlalchemy import SQLAlchemy
 
-# from .core import sess
+from .auth.models import User, Role
+from .core import db, security
 from .utils import register_blueprints
-
-# Instantiate Extensions
-security = Security()
-db = SQLAlchemy()
 
 
 def create_app(package_name, package_path, settings=None):

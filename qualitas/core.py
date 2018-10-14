@@ -1,4 +1,6 @@
-from flask_session import Session
+from flask_security import Security
+from flask_sqlalchemy import SQLAlchemy
 
-
-sess = Session()
+# Instantiate Extensions
+security = Security()
+db = SQLAlchemy()
