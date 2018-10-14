@@ -1,7 +1,11 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-# from .core import sess
-from .utils import register_blueprints
+from .ext.markdown import Markdown, markdown
+from .utils import register_blueprints, WikiTitleConverter, SlugConverter
+
+# Instantiate Extensions
+db = SQLAlchemy()
 
 
 def create_app(package_name, package_path, settings=None):
@@ -27,7 +31,27 @@ def create_app(package_name, package_path, settings=None):
     if settings:
         app.config.update(settings)
 
-    # sess.init_app(app)
+    # register jinja2 extensions and filters
+    jinja_extensions = [
+        'jinja2.ext.do',
+        'jinja2.ext.loopcontrols',
+        'jinja2.ext.with_',
+        Markdown
+    ]
+
+    app.jinja_options = app.jinja_options.copy()
+    app.jinja_options['extensions'].extend(jinja_extensions)
+    app.jinja_env.filters['markdown'] = markdown
+
+    db.init_app(app)
+
+    app.add_url_rule(
+        '/favicon.ico', None, app.send_static_file,
+        defaults={'filename': 'ico/rotary.ico'}
+    )
+
+    app.url_map.converters['wiki_title'] = WikiTitleConverter
+    app.url_map.converters['slug'] = SlugConverter
 
     # Helper for auto-registering blueprints
     register_blueprints(app, package_name, package_path)

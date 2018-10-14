@@ -1,7 +1,7 @@
 .PHONY: clean clean-test clean-pyc clean-build docs help
 .DEFAULT_GOAL := help
 
-DB := qualitas
+DB := qualitas_db
 
 clean: clean-build clean-pyc clean-test
 
