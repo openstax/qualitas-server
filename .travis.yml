@@ -8,7 +8,7 @@ services:
 install:
   - docker-compose -f travis-compose.yml up -d
 script:
-  - docker-compose -f travis-compose exec web /bin/sh -c "python manage.py --help"
+  - docker-compose -f travis-compose.yml exec web /bin/sh -c "python manage.py --help"
 after_success:
   - docker-compose down
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
