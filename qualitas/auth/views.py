@@ -12,15 +12,15 @@ auth = Blueprint('auth',
                  template_folder='../templates/auth')
 
 
-@auth.route('/login', methods=['GET'])
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_app.debug and 'GITHUB_SECRET' not in current_app.config:
+    if current_app.debug:
         form = LoginForm(request.form)
 
         if form.validate_on_submit():
 
-            utils.login_user(form.user, False)
-            db.session.commit()
+            # utils.login_user(form.user, False)
+            # db.session.commit()
 
             return redirect(url_for('home.index'))
 
