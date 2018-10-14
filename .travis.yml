@@ -6,13 +6,13 @@ sudo: required
 services:
   - docker
 install:
-  - docker build -t qualitas-server/travis .
+  - docker-compose -f travis-compose.yml up -d
 script:
-  - python --version
+  - docker-compose -f travis-compose.yml exec web /bin/sh -c "python manage.py --help"
 after_success:
   - docker-compose down
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker build -t registry.heroku.com/openstax/web .
+    docker build -t registry.heroku.com/qualitas-server/web .
     docker login -u "$HEROKU_USERNAME" -p "$HEROKU_API_KEY" registry.heroku.com;
     docker push registry.heroku.com/qualitas-server/web;
     fi
