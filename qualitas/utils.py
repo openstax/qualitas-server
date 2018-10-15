@@ -5,8 +5,9 @@ import pkgutil
 
 from datetime import datetime
 from io import StringIO
+from urllib.parse import urlparse, urljoin
 
-from flask import Blueprint, Response
+from flask import Blueprint, Response, request, url_for, redirect
 
 
 def make_database_url():
@@ -47,6 +48,32 @@ def register_blueprints(app, package_name, package_path):
                 rv.append(item)
 
     return rv
+
+
+# http://flask.pocoo.org/snippets/62/
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
+
+def get_redirect_target():
+    for target in request.form.get('next'), request.args.get('next'), request.referrer:
+        if not target:
+            continue
+
+        if is_safe_url(target):
+            return target
+
+
+def redirect_next(endpoint='home.index', **values):
+    target = get_redirect_target()
+
+    if not target:
+        target = url_for(endpoint, **values)
+
+    return redirect(target)
 
 
 def to_csv(fieldnames, collection):

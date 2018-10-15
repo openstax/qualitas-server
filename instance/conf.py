@@ -16,4 +16,4 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 GITHUB_USER = os.environ.get('GITHUB_USER', None)
 GITHUB_PASSWORD = os.environ.get('GITHUB_PASSWORD', None)
 GITHUB_CLIENT_ID = os.environ.get('GITHUB_CLIENT_ID', None)
-GITHUB_SECRET = os.environ.get('GITHUB_SECRET', None)
+GITHUB_CLIENT_SECRET = os.environ.get('GITHUB_CLIENT_SECRET', None)
