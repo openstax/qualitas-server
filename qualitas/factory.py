@@ -1,6 +1,8 @@
 from flask import Flask
+from flask_security import SQLAlchemyUserDatastore
 
-# from .core import sess
+from .auth.models import User, Role
+from .core import db, security
 from .utils import register_blueprints
 
 
@@ -27,7 +29,10 @@ def create_app(package_name, package_path, settings=None):
     if settings:
         app.config.update(settings)
 
-    # sess.init_app(app)
+    db.init_app(app)
+    app.security = security.init_app(app,
+                                     SQLAlchemyUserDatastore(db, User, Role),
+                                     register_blueprint=False)
 
     # Helper for auto-registering blueprints
     register_blueprints(app, package_name, package_path)

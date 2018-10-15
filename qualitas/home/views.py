@@ -3,7 +3,6 @@ import logging
 from flask import (Blueprint,
                    render_template)
 
-
 LOGS = logging.getLogger(__name__)
 
 home = Blueprint('home',
