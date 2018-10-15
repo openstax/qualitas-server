@@ -12,7 +12,7 @@ script:
 after_success:
   - docker-compose down
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker build -t registry.heroku.com/qualitas-server/web .
+    docker build -t registry.heroku.com/qualitas-server/web .;
     docker login -u "$HEROKU_USERNAME" -p "$HEROKU_API_KEY" registry.heroku.com;
     docker push registry.heroku.com/qualitas-server/web;
     fi

@@ -7,10 +7,9 @@ from flask import (Blueprint,
                    url_for, flash)
 
 from qualitas.tools.forms import PullRequestExportForm
-from qualitas.lib.github_export import export
+from qualitas.exports import export
 from qualitas.utils import render_csv
 
-logging.basicConfig(level=logging.DEBUG)
 LOGS = logging.getLogger(__name__)
 
 tools = Blueprint('tools',

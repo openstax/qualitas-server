@@ -23,6 +23,11 @@ clean-test: ## remove test and coverage artifacts
 	rm -f .coverage
 	rm -fr htmlcov/
 
+initdb:
+	docker-compose exec db psql -h db -d postgres -U postgres -c "DROP DATABASE IF EXISTS ${DB}"
+	docker-compose exec db psql -h db -d postgres -U postgres -c "CREATE DATABASE ${DB} ENCODING 'UTF8'"
+	docker-compose exec web alembic upgrade head
+
 venv:
 	python3 -m venv .venv && \
 		source .venv/bin/activate && \
@@ -34,3 +39,4 @@ help:
 	@echo "clean-build 		Remove build artifacts"
 	@echo "clean-pyc		Remove file artifacts"
 	@echo "clean-test		Remove test artifacts"
+	@echo "init-db			Create the database and run migrations"

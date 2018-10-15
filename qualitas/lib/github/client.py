@@ -95,8 +95,8 @@ class GitHubClient(GitHub):
     the framework.
     """
 
-    def __init__(self, user, password):
-        super(GitHubClient, self).__init__(self, user, password)
+    def __init__(self, user=None, password=None, token=None):
+        super(GitHubClient, self).__init__(user, password, token)
 
     def _compare_commits(self, repo_name, base, head):
         org_name = repo_name.split('/')[0]

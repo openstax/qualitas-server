@@ -1,11 +1,11 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_security import SQLAlchemyUserDatastore
 
+from .auth.models import User, Role
+from .core import db, security
+from .utils import register_blueprints
 from .ext.markdown import Markdown, markdown
 from .utils import register_blueprints, WikiTitleConverter, SlugConverter
-
-# Instantiate Extensions
-db = SQLAlchemy()
 
 
 def create_app(package_name, package_path, settings=None):
@@ -31,6 +31,11 @@ def create_app(package_name, package_path, settings=None):
     if settings:
         app.config.update(settings)
 
+    db.init_app(app)
+    app.security = security.init_app(app,
+                                     SQLAlchemyUserDatastore(db, User, Role),
+                                     register_blueprint=False)
+
     # register jinja2 extensions and filters
     jinja_extensions = [
         'jinja2.ext.do',
@@ -42,8 +47,6 @@ def create_app(package_name, package_path, settings=None):
     app.jinja_options = app.jinja_options.copy()
     app.jinja_options['extensions'].extend(jinja_extensions)
     app.jinja_env.filters['markdown'] = markdown
-
-    db.init_app(app)
 
     app.add_url_rule(
         '/favicon.ico', None, app.send_static_file,
