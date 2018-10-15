@@ -21,7 +21,6 @@ itsdangerous==0.24
 Jinja2==2.10
 Mako==1.0.7
 Markdown==3.0.1
-markdown-checklist==0.4.1
 MarkupSafe==1.0
 passlib==1.7.1
 psycopg2==2.7.5

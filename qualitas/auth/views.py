@@ -20,7 +20,7 @@ auth = Blueprint('auth',
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_app.debug and 'GITHUB_CLIENT_ID' not in current_app.config:
+    if current_app.debug and current_app.config['GITHUB_AUTH']:
         form = LoginForm(request.form)
 
         if form.validate_on_submit():

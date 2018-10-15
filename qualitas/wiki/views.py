@@ -5,6 +5,7 @@ from flask import (Blueprint,
                    request,
                    redirect,
                    url_for, flash)
+from flask_login import login_required, current_user
 from flask_wtf import FlaskForm
 
 from qualitas.factory import db
@@ -26,13 +27,10 @@ def index():
 
     return render_template('index.html', wiki_pages=wiki_pages)
 
-# @wiki.route('/create', endpoint='create', methods=['GET', 'POST'])
-# @wiki.route('/<wiki_title:title>/update', methods=['GET', 'POST'])
-# def update(title=None):
-#     # Pick the proper form bas
 
 @wiki.route('/create', endpoint='create', methods=['GET', 'POST'])
 @wiki.route('/<wiki_title:title>/update', methods=['GET', 'POST'])
+@login_required
 def update(title=None):
     page = WikiPage.query.filter(WikiPage.title == title).first_or_404() if title is not None else None
 
@@ -43,7 +41,7 @@ def update(title=None):
     if form.validate_on_submit():
         if page is None:
             page = WikiPage()
-            db.session.merge(page)
+        page.author = current_user
         form.populate_obj(page)
         db.session.merge(page)
         db.session.commit()
@@ -59,6 +57,7 @@ def detail(title):
 
 
 @wiki.route('<wiki_title:title>/delete', methods=['GET', 'POST'])
+@login_required
 def delete(title):
     page = WikiPage.query.filter(WikiPage.title == title).first_or_404()
     form = FlaskForm()
@@ -69,5 +68,3 @@ def delete(title):
 
         return redirect(url_for('wiki.index'))
     return render_template('delete.html', page=page, form=form)
-
-

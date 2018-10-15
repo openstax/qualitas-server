@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from flask import url_for
+from qualitas.auth.models import User
 
 from qualitas.factory import db
 
@@ -14,6 +15,9 @@ class WikiPage(db.Model):
     public = db.Column(db.Boolean, nullable=False, default=False)
     draft = db.Column(db.Boolean, nullable=False, default=False)
     redirect_id = db.Column(db.Integer, db.ForeignKey('wiki_page.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    author = db.relationship(User)
 
     def __str__(self):
         return self.title
