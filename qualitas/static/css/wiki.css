@@ -14,7 +14,7 @@ html, body {
 }
 
 #text-editor {
-    font-size: 2em;
+    font-size: 1.4em;
     line-height: 1.5;
     /* padding: 45px 25px 34px 25px; */
     max-width: 70%;
@@ -22,7 +22,7 @@ html, body {
 }
 
 #wiki-title {
-    font-size: 2em;
+    font-size: 1.4em;
     max-width: 70%;
     /* padding-left: 100px; */
     margin-left: 25px;
@@ -30,8 +30,8 @@ html, body {
 }
 
 .wiki-text {
-    font-size: 1.2em;
-    line-height: 1.2;
+    font-size: 1.4em;
+    line-height: 1.5;
     font-family: 'Merriweather', Georgia, 'Times New Roman', Times, serif;
     color: #424242;
     max-width: 34em;
