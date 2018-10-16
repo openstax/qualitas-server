@@ -16,9 +16,11 @@ Flask-WTF==0.14.2
 github3.py==1.1.0
 gunicorn==19.9.0
 idna==2.7
+inflection==0.3.1
 itsdangerous==0.24
 Jinja2==2.10
 Mako==1.0.7
+Markdown==3.0.1
 MarkupSafe==1.0
 passlib==1.7.1
 psycopg2==2.7.5

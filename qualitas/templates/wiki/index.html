@@ -1,0 +1,23 @@
+{% extends 'wiki/base.html' %}
+
+{% block title %}Wiki Pages | Qualitas{% endblock title %}
+
+{% block content %}
+
+  <div class="container">
+
+    <div class="col s12">
+      <div class="card">
+      <a href="{{ url_for('wiki.create') }}" class="btn-floating btn-large waves-effect waves-light red right halfway-fab"><i class="material-icons">add</i></a></div>
+        <ul class="collection with-header">
+          <li class="collection-header"><h4>Wiki Pages</h4></li>
+          {% for page in wiki_pages %}
+            <li class="collection-item avatar"><img src="{{ page.author.profile_image }}" class="circle"><a
+              href="{{ page.detail_url }}">{{ page.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}

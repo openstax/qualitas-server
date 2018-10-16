@@ -2,8 +2,10 @@
   <div class="nav-wrapper grey darken-3">
     <a href="{{ url_for('home.index') }}"
        class="brand-logo center hide-on-small-only">Qualitas</a>
-    {#      <ul id="nav-mobile" class="left">#}
-    {#      </ul>#}
+    <ul id="nav-mobile" class="left">
+        <li><a href="{{ url_for('home.index') }}">Home</a></li>
+        <li><a href="{{ url_for('wiki.index') }}">Wiki</a></li>
+    </ul>
     <ul id="nav-mobile" class="right">
       {% if current_user.is_authenticated %}
         <li><a href="{{ url_for('auth.logout') }}">Logout {{ current_user.display_name }}!</a></li>

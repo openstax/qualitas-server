@@ -5,9 +5,12 @@ import pkgutil
 
 from datetime import datetime
 from io import StringIO
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse, urljoin, quote
 
 from flask import Blueprint, Response, request, url_for, redirect
+from flask import Blueprint, Response
+from inflection import parameterize
+from werkzeug.routing import BaseConverter
 
 
 def make_database_url():
@@ -103,3 +106,44 @@ def render_csv(fieldnames, collection, filename, datestamp=True):
                     mimetype='text/csv',
                     headers={'Content-Disposition':
                              'attachment;filename={}'.format(filename)})
+
+
+class WikiTitleConverter(BaseConverter):
+    """Matches words separated by spaces or underscores.
+
+    When parsing the url, underscores are converted to spaces.
+    When building the url, spaces are converted to underscores.
+    """
+
+    def to_python(self, value):
+        return value.replace('_', ' ')
+
+    def to_url(self, value):
+        return quote(value.replace(' ', '_'))
+
+
+class SlugConverter(BaseConverter):
+    """Matches an int id and optional slug, separated by "/".
+
+    :param attr: name of field to slugify, or None for default of str(instance)
+    :param length: max length of slug when building url
+    """
+
+    regex = r'-?\d+(?:/[\w\-]*)?'
+
+    def __init__(self, map, attr=None, length=80):
+        self.attr = attr
+        self.length = int(length)
+
+        super(SlugConverter, self).__init__(map)
+
+    def to_python(self, value):
+        id, slug = (value.split('/') + [None])[:2]
+
+        return int(id)
+
+    def to_url(self, value):
+        raw = str(value) if self.attr is None else getattr(value, self.attr, '')
+        slug = parameterize(raw)[:self.length].rstrip('-')
+
+        return '{}/{}'.format(value.id, slug).rstrip('/')

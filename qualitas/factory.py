@@ -4,6 +4,8 @@ from flask_security import SQLAlchemyUserDatastore
 from .auth.models import User, Role
 from .core import db, security
 from .utils import register_blueprints
+from .ext.markdown import Markdown, markdown
+from .utils import register_blueprints, WikiTitleConverter, SlugConverter
 
 
 def create_app(package_name, package_path, settings=None):
@@ -33,6 +35,26 @@ def create_app(package_name, package_path, settings=None):
     app.security = security.init_app(app,
                                      SQLAlchemyUserDatastore(db, User, Role),
                                      register_blueprint=False)
+
+    # register jinja2 extensions and filters
+    jinja_extensions = [
+        'jinja2.ext.do',
+        'jinja2.ext.loopcontrols',
+        'jinja2.ext.with_',
+        Markdown
+    ]
+
+    app.jinja_options = app.jinja_options.copy()
+    app.jinja_options['extensions'].extend(jinja_extensions)
+    app.jinja_env.filters['markdown'] = markdown
+
+    app.add_url_rule(
+        '/favicon.ico', None, app.send_static_file,
+        defaults={'filename': 'ico/rotary.ico'}
+    )
+
+    app.url_map.converters['wiki_title'] = WikiTitleConverter
+    app.url_map.converters['slug'] = SlugConverter
 
     # Helper for auto-registering blueprints
     register_blueprints(app, package_name, package_path)
