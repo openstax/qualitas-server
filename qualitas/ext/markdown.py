@@ -1,9 +1,6 @@
 from jinja2 import environmentfilter, nodes, TemplateError
 from jinja2.ext import Extension
 
-from markdown_checklist.extension import ChecklistExtension
-
-
 
 @environmentfilter
 def markdown(env, value):
