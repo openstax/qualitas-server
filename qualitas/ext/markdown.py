@@ -20,6 +20,7 @@ def markdown(env, value):
                   'def_list',
                   'fenced_code',
                   'tables',
+                  'sane_lists',
                   'qualitas.ext.checklist']
 
     d = dict()

@@ -2,3 +2,12 @@
 fieldset {
     border-style: none;
 }
+
+
+ul:not(.browser-default) {
+    list-style-type: inherit; /* overrides materialize-css behavior*/
+}
+
+ul:not(.browser-default) > li {
+    list-style-type: inherit; /* overrides materialize-css behavior*/
+}
