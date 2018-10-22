@@ -10,7 +10,6 @@ def markdown(env, value):
     try:
         import markdown as md
     except ImportError:
-        log.error("Cannot load the markdown library.")
         raise TemplateError("Cannot load the markdown library")
     output = value
 
@@ -21,7 +20,9 @@ def markdown(env, value):
                   'fenced_code',
                   'tables',
                   'sane_lists',
-                  'qualitas.ext.checklist']
+                  'codehilite',
+                  'qualitas.ext.materialize_checklist',
+                  'qualitas.ext.materialize_ul']
 
     d = dict()
     d['extensions'] = list()
