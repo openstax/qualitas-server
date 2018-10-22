@@ -3,19 +3,3 @@ fieldset {
     border-style: none;
 }
 
-
-ul:not(.browser-default) {
-    list-style-type: inherit; /* overrides materialize-css behavior*/
-}
-
-ul:not(.browser-default) > li {
-    list-style-type: inherit; /* overrides materialize-css behavior*/
-}
-
-ul#nav-mobile {
-    list-style-type: none;
-}
-
-ul#nav-mobile > li {
-    list-style-type: none;
-}
