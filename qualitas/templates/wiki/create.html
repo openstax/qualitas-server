@@ -13,24 +13,21 @@
   <div class="container page">
 
     <div class="row">
-      <div class="col s1">
+      <div class="col s12 m1 l1">
         <div class="icon-bar">
           <div class="nav-edit" onClick="openStackEdit()">
-              <i class="material-icons prefix">open_in_new</i>
+              <i class="material-icons prefix" title="Open in StackEdit">open_in_new</i>
           </div>
           <div class="nav-save" onClick="submitForm()">
-            <i class="material-icons prefix">save</i>
+            <i class="material-icons prefix" title="Save Wiki">save</i>
           </div>
-          <div class="nav-save">
+          <div class="nav-back">
             <a href="{% if update %}{{ url_for('wiki.detail', title=form.title.data) }}{% else %}{{ url_for('wiki.index') }}{% endif %}">
-              <i class="material-icons prefix">backspace</i></a>
+              <i class="material-icons prefix" title="Back">backspace</i></a>
           </div>
         </div>
       </div>
-      <div class="col s1">
-
-      </div>
-      <div class="col s10">
+      <div class="col offset-s1 s10">
         <form  id="text-editor-form" method="POST" role="form">
           {{ form.hidden_tag() }}
 
@@ -67,8 +64,8 @@
     const stackedit = new Stackedit();
 
     function submitForm(){
-      document.getElementById('text-editor-form').submit()
-    };
+      document.getElementById('text-editor-form').submit();
+    }
 
     function openStackEdit() {
 
@@ -79,15 +76,13 @@
           text: editor.value // and the Markdown content.
         }
       });
-
-    };
+    }
 
     // Listen to StackEdit events and apply the changes to the textarea.
     stackedit.on('fileChange', (file) => {
       editor.value = file.content.text;
       M.textareaAutoResize(editor);
     })
-    ;
   </script>
 
 
