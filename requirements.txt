@@ -5,6 +5,7 @@ certifi==2018.8.13
 chardet==3.0.4
 click==6.7
 Flask==1.0.2
+Flask-Babel==0.11.2
 Flask-BabelEx==0.9.3
 Flask-Login==0.4.1
 Flask-Mail==0.9.1
@@ -21,10 +22,11 @@ itsdangerous==0.24
 Jinja2==2.10
 Mako==1.0.7
 Markdown==3.0.1
+markdown-checklist==0.4.1
 MarkupSafe==1.0
 passlib==1.7.1
 psycopg2==2.7.5
-pygments==2.2.0
+Pygments==2.2.0
 python-dateutil==2.7.3
 python-dotenv==0.9.1
 python-editor==1.0.3
