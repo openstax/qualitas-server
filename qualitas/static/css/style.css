@@ -3,3 +3,6 @@ fieldset {
     border-style: none;
 }
 
+strong {
+    font-weight: 800;
+}

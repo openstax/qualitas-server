@@ -2,89 +2,88 @@
 {%- from '_helpers.html' import render_field %}
 
 {% set update = False %}
+{% set ace_editor = True %}
 
 {% if form.id %}
   {% set update = True %}
 {% endif %}
 
-{% block title %} {% if update %}Update {% else %}Create {% endif %} Wiki | Qualitas{% endblock title %}
+{% block title %} {% if update %}Update {% else %}Create {% endif %} Wiki |
+  Qualitas{% endblock title %}
 
 {% block content %}
   <div class="container page">
 
     <div class="row">
-      <div class="col s12 m1 l1">
-        <div class="icon-bar">
-          <div class="nav-edit" onClick="openStackEdit()">
-              <i class="material-icons prefix" title="Open in StackEdit">open_in_new</i>
-          </div>
-          <div class="nav-save" onClick="submitForm()">
-            <i class="material-icons prefix" title="Save Wiki">save</i>
-          </div>
-          <div class="nav-back">
-            <a href="{% if update %}{{ url_for('wiki.detail', title=form.title.data) }}{% else %}{{ url_for('wiki.index') }}{% endif %}">
-              <i class="material-icons prefix" title="Back">backspace</i></a>
-          </div>
+      <div class="col s12 offset-m1 m11 offset-l1 l11 ">
+        <div class="form-wrapper">
+          <form id="text-editor-form" method="POST" role="form">
+            {{ form.hidden_tag() }}
+
+            {% if update %}
+              {{ form.id() }}
+            {% endif %}
+
+            <!-- Title Field -->
+            {% call render_field(form.title) %}
+              <div class="wiki-title-wrapper">
+                {{ form.title(id='wiki-title', placeholder='Enter the title') }}
+              </div>
+            {% endcall %}
+
+            <!-- TextArea Field -->
+            {% call render_field(form.text) %}
+              <div class="text-editor-wrapper">
+                <label>Wiki Text</label>
+                {{ form.text(id='wiki-text', class='materialize-textarea', rows=20, **{'data-editor': 'markdown'}) }}
+              </div>
+            {% endcall %}
+            <div class="row">
+              <div class="col s12 offset-m1 m11 offset-l1 l11">
+                <p class="left-align">
+                  <button type="submit" class="btn btn-large waves-effect waves-light">Submit</button>
+                  <a href="{% if update %}{{ url_for('wiki.detail', title=form.title.data) }}{% else %}{{ url_for('wiki.index') }}{% endif %}" class="btn btn-large waves-effect waves-light grey lighten-1">Cancel</a>
+                </p>
+              </div>
+            </div>
+          </form>
         </div>
-      </div>
-      <div class="col offset-s1 s10">
-        <form  id="text-editor-form" method="POST" role="form">
-          {{ form.hidden_tag() }}
-
-          {% if form.id %}
-            {{ form.id() }}
-          {% endif %}
-
-          <!-- Title Field -->
-          {% call render_field(form.title) %}
-            <div class="wiki-title-wrapper">
-              {{ form.title(id='wiki-title', placeholder='Enter the title') }}
-            </div>
-          {% endcall %}
-
-          <!-- TextArea Field -->
-          {% call render_field(form.text) %}
-            <div class="text-editor-wrapper">
-                {{ form.text(id='text-editor', class='materialize-textarea', placeholder='Write something amazing') }}
-            </div>
-          {% endcall %}
-        </form>
       </div>
 
     </div>
   </div>
 {% endblock content %}
 
-{% block scripts %}
-  {{ super() }}
-  <script src="https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js"></script>
-
-  <script>
-    const editor = document.querySelector('textarea');
-    const stackedit = new Stackedit();
-
-    function submitForm(){
-      document.getElementById('text-editor-form').submit();
-    }
-
-    function openStackEdit() {
-
-      // Open the iframe
-      stackedit.openFile({
-        name: 'open-draft', // with an optional filename
-        content: {
-          text: editor.value // and the Markdown content.
-        }
-      });
-    }
-
-    // Listen to StackEdit events and apply the changes to the textarea.
-    stackedit.on('fileChange', (file) => {
-      editor.value = file.content.text;
-      M.textareaAutoResize(editor);
-    })
-  </script>
-
-
-{% endblock scripts %}
+{#{% block scripts %}#}
+{#  {{ super() }}#}
+{#  <script src="https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js"></script>#}
+{##}
+{#  <script>#}
+{#    const editor = document.querySelector('textarea');#}
+{#    const stackedit = new Stackedit();#}
+{##}
+{#    function submitForm(){#}
+{#      document.getElementById('text-editor-form').submit();#}
+{#    }#}
+{##}
+{#    function openStackEdit() {#}
+{##}
+{#      // Open the iframe#}
+{#      stackedit.openFile({#}
+{#        name: 'open-draft', // with an optional filename#}
+{#        content: {#}
+{#          text: editor.value // and the Markdown content.#}
+{#        }#}
+{#      });#}
+{#    }#}
+{##}
+{#    // Listen to StackEdit events and apply the changes to the textarea.#}
+{#    stackedit.on('fileChange', (file) => {#}
+{#      editor.value = file.content.text;#}
+{#      M.textareaAutoResize(editor);#}
+{#    })#}
+{#  </script>#}
+{##}
+{##}
+{#{% endblock scripts %}#}
 
