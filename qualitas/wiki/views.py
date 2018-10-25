@@ -23,7 +23,7 @@ wiki = Blueprint('wiki',
 
 @wiki.route('/', methods=['GET'])
 def index():
-    wiki_pages = WikiPage.query.all()
+    wiki_pages = WikiPage.query.order_by(WikiPage.updated.desc())
 
     return render_template('index.html', wiki_pages=wiki_pages)
 
