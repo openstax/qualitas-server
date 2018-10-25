@@ -8,8 +8,7 @@
   {% set update = True %}
 {% endif %}
 
-{% block title %} {% if update %}Update {% else %}Create {% endif %} Wiki |
-  Qualitas{% endblock title %}
+{% block title %} {% if update %}Update {% else %}Create {% endif %} Wiki | Qualitas{% endblock title %}
 
 {% block content %}
   <div class="container page">
@@ -53,37 +52,3 @@
     </div>
   </div>
 {% endblock content %}
-
-{#{% block scripts %}#}
-{#  {{ super() }}#}
-{#  <script src="https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js"></script>#}
-{##}
-{#  <script>#}
-{#    const editor = document.querySelector('textarea');#}
-{#    const stackedit = new Stackedit();#}
-{##}
-{#    function submitForm(){#}
-{#      document.getElementById('text-editor-form').submit();#}
-{#    }#}
-{##}
-{#    function openStackEdit() {#}
-{##}
-{#      // Open the iframe#}
-{#      stackedit.openFile({#}
-{#        name: 'open-draft', // with an optional filename#}
-{#        content: {#}
-{#          text: editor.value // and the Markdown content.#}
-{#        }#}
-{#      });#}
-{#    }#}
-{##}
-{#    // Listen to StackEdit events and apply the changes to the textarea.#}
-{#    stackedit.on('fileChange', (file) => {#}
-{#      editor.value = file.content.text;#}
-{#      M.textareaAutoResize(editor);#}
-{#    })#}
-{#  </script>#}
-{##}
-{##}
-{#{% endblock scripts %}#}
-
