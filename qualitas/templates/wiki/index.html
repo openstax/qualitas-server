@@ -5,7 +5,6 @@
 {% block content %}
 
   <div class="container">
-
     <div class="col s12">
       <div class="card">
       <a href="{{ url_for('wiki.create') }}" class="btn-floating btn-large waves-effect waves-light red right halfway-fab"><i class="material-icons">add</i></a></div>
@@ -16,7 +15,6 @@
               <a href="{{ page.detail_url }}"><span class="title">{{ page.title }}</span>
               </a>
               <p>Last updated by {{ page.author.username }} on {{ page.updated|datetimeformat(format='short') }}</p>
-
             </li>
           {% endfor %}
         </ul>
