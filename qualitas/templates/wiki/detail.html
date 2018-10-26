@@ -1,5 +1,13 @@
 {% extends 'wiki/base.html' %}
 
+{% block metas %}
+    {{ super() }}
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:title" content="{{ wiki.title }}">
+    <meta property="og:description" content="{{ wiki.text | markdown | safe }}">
+    <meta property="og:site_name" content="OpenStax Qualitas">
+{% endblock metas  %}
+
 {% block title %}{{ page.title }} | Qualitas{% endblock title %}
 
 {% block content %}
