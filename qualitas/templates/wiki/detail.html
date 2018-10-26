@@ -3,8 +3,8 @@
 {% block metas %}
     {{ super() }}
     <meta property="og:url" content="{{ request.url }}">
-    <meta property="og:title" content="{{ wiki.title }}">
-    <meta property="og:description" content="{{ wiki.text | markdown | safe }}">
+    <meta property="og:title" content="{{ page.title }}">
+    <meta property="og:description" content="{{ page.text | markdown}}">
     <meta property="og:site_name" content="OpenStax Qualitas">
 {% endblock metas  %}
 
