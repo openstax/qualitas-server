@@ -18,12 +18,16 @@
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                 rel="stylesheet">
           <!-- Import Google Roboto Font -->
-          <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet'>
+          <link
+            href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900'
+            rel='stylesheet'>
           <!-- Import Custom CSS -->
           <!-- Call super() on the child template to run these -->
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+          <link rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
           <!--Import local styles -->
-          <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+          <link rel="stylesheet"
+                href="{{ url_for('static', filename='css/style.css') }}">
 
         {%- endblock styles %}
 
@@ -39,13 +43,13 @@
     {% block body -%}
 
       {% block header %}
-          {% block navbar %}
-              {% include 'includes/nav.html' %}
-          {% endblock navbar %}
+        {% block navbar %}
+          {% include 'includes/nav.html' %}
+        {% endblock navbar %}
       {% endblock header %}
 
       {%- block content %}
-        {% endblock content -%}
+      {% endblock content -%}
 
       {% block footer %}
       {% endblock footer %}
@@ -63,8 +67,45 @@
         <!-- ADD JAVASCRIPT SOURCES NEEDED FOR ALL TEMPLATES -->
 
         <!-- Import jquery before materialize.js -->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+        <script type="text/javascript"
+                src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+
+        {% if ace_editor %}
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
+            <script type="text/javascript">
+              // https://gist.github.com/duncansmart/5267653
+              $('textarea[data-editor]').each(function () {
+                var textarea = $(this);
+                var mode = textarea.data('editor');
+
+                var div = $('<div>', {
+                  'width': textarea.outerWidth(),
+                  'height': 400,
+                  'class': textarea.attr('class')
+                }).insertBefore(textarea);
+
+                textarea.hide();
+
+                var editor = ace.edit(div[0]);
+                var session = editor.getSession();
+
+                editor.setTheme("ace/theme/github");
+
+                session.setValue(textarea.val());
+                session.setMode('ace/mode/' + mode);
+                session.setNewLineMode('unix');
+                session.setTabSize(4);
+                session.setUseSoftTabs(true);
+                session.setUseWrapMode(true);
+
+                textarea.closest('form').submit(function () {
+                  textarea.val(editor.getSession().getValue());
+                });
+              });
+            </script>
+        {% endif %}
       {% endblock scripts -%}
 
     {%- endblock body %}

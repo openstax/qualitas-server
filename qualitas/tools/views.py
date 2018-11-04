@@ -1,12 +1,15 @@
 import logging
+from urllib.parse import urljoin
 
+import requests
 from flask import (Blueprint,
                    render_template,
                    request,
                    redirect,
                    url_for, flash)
 
-from qualitas.tools.forms import PullRequestExportForm
+from qualitas.lib.parsers.release import ReleaseParser
+from qualitas.tools.forms import PullRequestExportForm, ServerDiffForm
 from qualitas.exports import export
 from qualitas.utils import render_csv
 
@@ -68,3 +71,48 @@ def pull_request_export():
             return redirect(url_for('tools.pull_request_export'))
 
     return render_template('pr_export.html', form=form)
+
+
+@tools.route('/history-diff', methods=['GET', 'POST'])
+def history_diff():
+    releases_separator = '==============================='
+    form = ServerDiffForm(request.form)
+    diff = ""
+
+    if form.validate_on_submit():
+        server1 = form.server_1.data
+        server2 = form.server_2.data
+
+        server1_url = urljoin(server1, 'history.txt')
+        server2_url = urljoin(server2, 'history.txt')
+
+        # Set a boolean if the servers are the same. If they are the same then
+        # We will return the diff of most current release and the previous release.
+        # If they are different we will diff the current release of each.
+        is_same = server1_url == server2_url
+
+        if is_same:
+            server1_text = requests.get(server1_url).text
+            server1_releases = [ReleaseParser(i) for i in
+                                server1_text.split(releases_separator)]
+
+            current_release = server1_releases[0]
+            previous_release = server1_releases[1]
+            diff = current_release.diff(previous_release)
+        else:
+            server1_text = requests.get(server1_url).text
+            server1_releases = [ReleaseParser(i) for i in
+                                server1_text.split(releases_separator)]
+
+            server2_text = requests.get(server2_url).text
+            server2_releases = [ReleaseParser(i) for i in
+                                server2_text.split(releases_separator)]
+
+            server1_current_release = server1_releases[0]
+            server2_current_release = server2_releases[0]
+
+            diff = server1_current_release.diff(server2_current_release)
+
+    return render_template('history_diff.html',
+                           form=form,
+                           diff=diff)

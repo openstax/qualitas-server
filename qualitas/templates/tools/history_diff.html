@@ -1,0 +1,62 @@
+{% extends 'tools/base.html' %}
+{%- from '_helpers.html' import render_field %}
+{% set ace_editor = True %}
+
+{% block title %}Server Diff Tool | Qualitas{% endblock title %}
+
+{% block content %}
+  <div class="container page">
+    <div class="row">
+      <div class="col s12 m4 l4">
+        <form action="" method="POST" role="form">
+          {{ form.hidden_tag() }}
+
+          <!-- SERVER 1 SELECT FIELD -->
+          {% call render_field(form.server_1) %}
+            <span>{{ form.server_1.label }}</span>
+            {{ form.server_1(id='server_1', class='browser-default') }}
+          {% endcall %}
+
+          <!-- SERVER 2 SELECT FIELD -->
+          {% call render_field(form.server_2) %}
+            <span>{{ form.server_2.label }}</span>
+            {{ form.server_2(id='server_2', class='browser-default') }}
+          {% endcall %}
+
+          <div class="row">
+            <footer class="col s12 form-footer">
+              <p class="left-align">
+                <button type="submit" class="btn waves-effect waves-light">
+                  Submit
+                </button>
+                <br/>
+              </p>
+
+            </footer>
+          </div>
+        </form>
+      <div class="row">
+        <p>The diff will show server 1 in <span style="font-weight: 600;">black</span> and server 2 in <span style="color:#df224f;">red</span></p>
+
+      </div>
+
+      </div>
+      <div class="col s12 m8 l8">
+
+        {% if diff %}
+          <textarea data-editor="diff">
+          {{ diff | safe }}
+          </textarea>
+
+
+        {% else %}
+          <p>
+            <strong>Select a server from the select boxes to the left to generate a diff of the most recent release on each server.
+            If the servers are the same it will show the most recent release compared to the previous.
+            </strong>
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock content %}
