@@ -6,40 +6,4 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/codehilite.css') }}">
 {% endblock extra_styles %}
 
-{% if ace_editor %}
-  {% block scripts %}
-  {{ super() }}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
-    <script type="text/javascript">
-        // https://gist.github.com/duncansmart/5267653
-        $('textarea[data-editor]').each(function() {
-            var textarea = $(this);
-            var mode = textarea.data('editor');
 
-            var div = $('<div>', {
-                'width': textarea.outerWidth(),
-                'height': 400,
-                'class': textarea.attr('class')
-            }).insertBefore(textarea);
-
-            textarea.hide();
-
-            var editor = ace.edit(div[0]);
-            var session = editor.getSession();
-
-            editor.setTheme("ace/theme/github");
-
-            session.setValue(textarea.val());
-            session.setMode('ace/mode/' + mode);
-            session.setNewLineMode('unix');
-            session.setTabSize(4);
-            session.setUseSoftTabs(true);
-            session.setUseWrapMode(true);
-
-            textarea.closest('form').submit(function() {
-                textarea.val(editor.getSession().getValue());
-            });
-        });
-    </script>
-  {% endblock scripts %}
-{% endif %}
