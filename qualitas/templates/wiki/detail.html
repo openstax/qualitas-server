@@ -15,6 +15,7 @@
   <div class="container page">
     <div class="row">
       <div class="col s12 m1 l1">
+        {% if current_user.is_authenticated %}
         <div class="icon-bar">
           <div class="nav-edit">
             <a href="{{ url_for('wiki.update', title=page.title) }}"><i
@@ -25,6 +26,7 @@
               class="material-icons prefix" title="Delete Wiki">delete</i></a>
           </div>
         </div>
+        {% endif %}
       </div>
 
       <div class="col s12 offset-m1 m10 offset-l1 l10">
