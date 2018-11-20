@@ -4,6 +4,26 @@ html, body {
   padding: 0;
 }
 
+code {
+    background: #dddddd;
+    padding: 4px;
+
+}
+
+
+pre {
+    border: solid 1px #d9d9d9;
+    border-radius: 0;
+    background: #fff;
+    padding: 0;
+    line-height: 23px;
+    margin-bottom: 30px;
+    white-space: pre;
+    overflow-x: auto;
+    word-break: inherit;
+    word-wrap: inherit;
+}
+
 .container.page {
   min-height: 100vh;
   width: 100%;
@@ -95,10 +115,4 @@ html, body {
 
 .icon-bar i:hover {
     background-color: rgba(0, 0, 0, 0.56);
-}
-
-code {
-    background: #dddddd;
-    padding: 4px;
-
 }
