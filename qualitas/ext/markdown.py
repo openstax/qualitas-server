@@ -1,5 +1,6 @@
 from jinja2 import environmentfilter, nodes, TemplateError
 from jinja2.ext import Extension
+from markupsafe import Markup
 
 
 @environmentfilter
@@ -13,7 +14,8 @@ def markdown(env, value):
         raise TemplateError("Cannot load the markdown library")
     output = value
 
-    extensions = ['meta',
+    extensions = ['admonition',
+                  'meta',
                   'attr_list',
                   'toc',
                   'def_list',
@@ -22,7 +24,8 @@ def markdown(env, value):
                   'sane_lists',
                   'codehilite',
                   'qualitas.ext.materialize_checklist',
-                  'qualitas.ext.materialize_ul']
+                  'qualitas.ext.materialize_ul'
+                  ]
 
     d = dict()
     d['extensions'] = list()
@@ -30,7 +33,9 @@ def markdown(env, value):
 
     marked = md.Markdown(**d)
 
-    return marked.convert(output)
+    converted = marked.convert(output)
+
+    return Markup(converted)
 
 
 class Markdown(Extension):
