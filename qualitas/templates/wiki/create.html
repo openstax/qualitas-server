@@ -37,6 +37,25 @@
                 {{ form.text(id='wiki-text', class='materialize-textarea', rows=20, **{'data-editor': 'markdown'}) }}
               </div>
             {% endcall %}
+
+            <!-- Draft and Public Checkbox Fields -->
+            <div class="row">
+              <div class="col s12 offset-m1 m11 offset-l1 l11">
+                <p>
+                  <label>
+                    {{ form.draft() }}
+                    <span>{{ form.draft.label }}</span>
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    {{ form.public() }}
+                    <span>{{ form.public.label }}</span>
+                  </label>
+                </p>
+              </div>
+            </div>
+
             <div class="row">
               <div class="col s12 offset-m1 m11 offset-l1 l11">
                 <p class="left-align">

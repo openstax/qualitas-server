@@ -3,7 +3,12 @@ from urllib.parse import quote, urlencode, parse_qs
 
 import requests
 from flask import (Blueprint,
-                   render_template, current_app, redirect, url_for, request, session)
+                   render_template,
+                   current_app,
+                   redirect,
+                   url_for,
+                   request,
+                   session)
 from flask_login import current_user
 from flask_security import utils
 from qualitas.auth.models import User
