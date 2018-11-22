@@ -25,6 +25,18 @@ wiki = Blueprint('wiki',
 def index():
     wiki_pages = WikiPage.query.order_by(WikiPage.updated.desc())
 
+    if not current_user.is_authenticated:
+        wiki_pages = wiki_pages.filter(db.and_(
+            WikiPage.public == True, WikiPage.draft == False))
+    else:
+        # Subquery needed to hide non-user draft pages
+        non_user_pages = WikiPage.query.filter(db.and_(
+            WikiPage.author_id != current_user.id,
+            WikiPage.draft == True)).with_entities(WikiPage.id).subquery()
+
+        wiki_pages = WikiPage.query.filter(
+            ~WikiPage.id.in_(non_user_pages)).order_by(WikiPage.updated.desc())
+
     return render_template('index.html', wiki_pages=wiki_pages)
 
 
@@ -32,7 +44,8 @@ def index():
 @wiki.route('/<wiki_title:title>/update', methods=['GET', 'POST'])
 @login_required
 def update(title=None):
-    page = WikiPage.query.filter(WikiPage.title == title).first_or_404() if title is not None else None
+    page = WikiPage.query.filter(
+        WikiPage.title == title).first_or_404() if title is not None else None
 
     if page:
         form = EditWikiForm(obj=page)
@@ -41,7 +54,8 @@ def update(title=None):
     if form.validate_on_submit():
         if page is None:
             page = WikiPage()
-        page.author = current_user
+            page.author = current_user
+        page.last_updated_by = current_user
         form.populate_obj(page)
         db.session.merge(page)
         db.session.commit()

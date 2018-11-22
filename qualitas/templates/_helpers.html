@@ -1,25 +1,25 @@
 {% macro form_errors(form, hiddens=True) %}
   {%- if form.errors %}
     {%- for fieldname, errors in form.errors.items() %}
-        {%- for error in errors %}
-          <p class="error">{{error}}</p>
-        {%- endfor %}
+      {%- for error in errors %}
+        <p class="error">{{ error }}</p>
+      {%- endfor %}
     {%- endfor %}
   {%- endif %}
 {%- endmacro %}
 
 {% macro field_errors(field) %}
-    {% if field.errors %}
-        {%- for error in field.errors %}
-            <p class="error">{{ error }}</p>
-        {%- endfor %}
-    {% endif %}
+  {% if field.errors %}
+    {%- for error in field.errors %}
+      <p class="error">{{ error }}</p>
+    {%- endfor %}
+  {% endif %}
 {% endmacro %}
 
 {%- macro render_field(field) %}
-<div class="row">
-  <div class="input-field col s12{{ ' has-error' if field.errors }}">
-    {{ caller() }}
+  <div class="row">
+    <div class="input-field col s12{{ ' has-error' if field.errors }}">
+      {{ caller() }}
+    </div>
   </div>
-</div>
 {%- endmacro %}

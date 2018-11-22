@@ -16,8 +16,10 @@ class WikiPage(db.Model):
     draft = db.Column(db.Boolean, nullable=False, default=False)
     redirect_id = db.Column(db.Integer, db.ForeignKey('wiki_page.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    last_updated_by_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    author = db.relationship(User)
+    author = db.relationship(User, foreign_keys=[author_id])
+    last_updated_by = db.relationship(User, foreign_keys=[last_updated_by_id])
 
     def __str__(self):
         return self.title
