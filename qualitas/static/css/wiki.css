@@ -24,6 +24,28 @@ pre {
     word-wrap: inherit;
 }
 
+div.admonition {
+    font-size: 0.9em;
+    margin: 1em 0 1em 0;
+    border-radius: 2px;
+    background-color: #f7f7f7;
+    padding: 0 15px;
+}
+
+div.admonition p {
+    padding-left: 4px;
+}
+
+div.admonition.note p.admonition-title::before {
+  content: "✏️ Note: ";
+}
+
+div.admonition p.admonition-title {
+    margin-top: 1em;
+    padding-top: 0.5em;
+    font-weight: bold;
+}
+
 .container.page {
   min-height: 100vh;
   width: 100%;

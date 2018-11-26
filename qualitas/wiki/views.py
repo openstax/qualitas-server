@@ -34,8 +34,8 @@ def index():
             WikiPage.author_id != current_user.id,
             WikiPage.draft == True)).with_entities(WikiPage.id).subquery()
 
-        wiki_pages = WikiPage.query.filter(
-            ~WikiPage.id.in_(non_user_pages)).order_by(WikiPage.updated.desc())
+        wiki_pages = wiki_pages.filter(
+            ~WikiPage.id.in_(non_user_pages))
 
     return render_template('index.html', wiki_pages=wiki_pages)
 
