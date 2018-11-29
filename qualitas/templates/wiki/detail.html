@@ -4,7 +4,7 @@
     {{ super() }}
     <meta property="og:url" content="{{ request.url }}">
     <meta property="og:title" content="{{ page.title }}">
-    <meta property="og:description" content="{{ page.text[:50] }}">
+    <meta property="og:description" content="{{ page.text[:160] }} ...">
     <meta property="og:site_name" content="OpenStax Qualitas">
     <meta property="og:type" content="website">
 {% endblock metas  %}

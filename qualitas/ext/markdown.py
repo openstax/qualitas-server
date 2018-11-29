@@ -1,5 +1,6 @@
 from jinja2 import environmentfilter, nodes, TemplateError
 from jinja2.ext import Extension
+from markdown.extensions import toc
 from markupsafe import Markup
 
 
@@ -17,7 +18,7 @@ def markdown(env, value):
     extensions = ['admonition',
                   'meta',
                   'attr_list',
-                  'toc',
+                  toc.TocExtension(baselevel=1, permalink=True),
                   'def_list',
                   'fenced_code',
                   'tables',

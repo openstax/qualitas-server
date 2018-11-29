@@ -10,6 +10,10 @@ code {
 
 }
 
+h5 {
+    font-size: 1.88rem;
+}
+
 
 pre {
     border: none 0 #d9d9d9;
@@ -53,6 +57,14 @@ div.admonition p.admonition-title {
 
 .content-wrapper-100vh {
   min-height: 100vh;
+}
+
+a.headerlink {
+    opacity: 0;
+}
+
+a.headerlink:hover {
+    opacity: 1;
 }
 
 #text-editor {
