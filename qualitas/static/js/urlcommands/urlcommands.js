@@ -29,12 +29,12 @@ function checkserver(x) {
       }
     }
   }
-  if (x.contains("devb")) {
-    short_url = "https://legacy-devb.cnx.org/content/";
-    long_url = "https://legacy-devb.cnx.org/content/col";
-    servername = "legacy-devb.cnx.org";
-    webview_url = "https://devb.cnx.org/content/";
-    front_end = "https://devb.cnx.org";
+  if (x.contains("easyvm5")) {
+    short_url = "https://legacy-easyvm5.cnx.org/content/";
+    long_url = "https://legacy-easyvm5.cnx.org/content/col";
+    servername = "legacy-easyvm5.cnx.org";
+    webview_url = "https://easyvm5.cnx.org/content/";
+    front_end = "https://easyvm5.cnx.org";
   }
   if (x.contains("prod")) {
     short_url = "https://legacy.cnx.org/content/";
@@ -240,7 +240,7 @@ function qptool(x) {
 
 function queue_tool(x) {
   checkserver(x);
-  // http://legacy-devb.cnx.org/queue_tool/manage_overview?trigger=Refresh
+  // http://legacy-easyvm5.cnx.org/queue_tool/manage_overview?trigger=Refresh
   window.open("https://" + servername + "/queue_tool/manage_overview?trigger=Refresh", "_self");
   validID = false;
 }
