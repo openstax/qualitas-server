@@ -30,8 +30,11 @@ def create_app(package_name, package_path, settings=None):
 
     if settings:
         app.config.update(settings)
+
+    # Attach extensions to main app
     babel.init_app(app)
     db.init_app(app)
+    github.init_app(app)
     app.security = security.init_app(app,
                                      SQLAlchemyUserDatastore(db, User, Role),
                                      register_blueprint=False)
