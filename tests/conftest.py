@@ -7,8 +7,8 @@ from qualitas import create_app
 
 
 credentials = [
-    os.environ.get("GITHUB_USER", "foo").encode(),
-    os.environ.get("GITHUB_PASSWORD", "bar").encode(),
+    os.environ.get("GITHUB_USER", "foo"),
+    os.environ.get("GITHUB_PASSWORD", "bar"),
     os.environ.get("GITHUB_AUTH_TOKEN", None)
 ]
 
