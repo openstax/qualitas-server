@@ -12,6 +12,6 @@ services:
       - DATABASE_URL=postgres://postgres:@db/testing
       - FLASK_APP=wsgi.py
       - FLASK_DEBUG=1
-      - FLASK_ENV=test
+      - FLASK_ENV=development
     ports:
       - '127.0.0.1:5433:5432'
