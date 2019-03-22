@@ -5,7 +5,36 @@ from .client import GitHubClient
 LOGS = logging.getLogger(__name__)
 
 
-class FlaskGitHub(object):
+class GitHub(object):
+    """A Flask extension that adds GitHub functionality to our core app.
+
+    Extensions are used by Flask to add functionality. This class essentially
+    registers our GitHubClient to the core app so that it's accessible to any
+    parts of the app that require it.
+
+    The minimum requirement for a Flask extenison is that it has a `init_app`
+    method that acts as a callback. The reason for this is so that it can be
+    registered with the core app in 2 ways.
+
+    The first doesn't use an application factory:
+
+    ```
+    app = Flask(__name__)
+
+    github = FlaskGitHub(app)
+    ```
+
+    The second uses an application factory:
+
+    ```
+    github = FlaskGitHub()
+
+    def create_app():
+        app = Flask(__name__)
+
+        github = github.init_app(app)
+    ```
+    """
 
     def __init__(self, app=None, client_class=GitHubClient):
         self.app = app
@@ -43,6 +72,11 @@ class FlaskGitHub(object):
         self.auto_login()
 
     def get_client(self):
+        """Returns our wrapper of the github3 GitHub client
+
+        The main github3 client that we wrap doesn't require authentication so
+        we go ahead and instantiate it so we have it available.
+        """
         return GitHubClient()
 
     def token_login(self):
