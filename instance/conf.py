@@ -20,6 +20,7 @@ GITHUB_PASSWORD = os.environ.get('GITHUB_PASSWORD', None)
 GITHUB_CLIENT_ID = os.environ.get('GITHUB_CLIENT_ID', None)
 GITHUB_CLIENT_SECRET = os.environ.get('GITHUB_CLIENT_SECRET', None)
 GITHUB_AUTH = os.environ.get('GITHUB_AUTH', True)
+GITHUB_AUTH_TOKEN = os.environ.get('GITHUB_AUTH_TOKEN', None)
 
 # Flask-Security
 SECURITY_CONFIRMABLE = False

@@ -2,8 +2,7 @@ from flask import Flask
 from flask_security import SQLAlchemyUserDatastore
 
 from .auth.models import User, Role
-from .core import babel, db, security
-from .utils import register_blueprints
+from .core import babel, db, github, security
 from .ext.markdown import Markdown, markdown
 from .utils import register_blueprints, WikiTitleConverter, SlugConverter
 
@@ -60,6 +59,7 @@ def create_app(package_name, package_path, settings=None):
     app.url_map.converters['slug'] = SlugConverter
 
     # Helper for auto-registering blueprints
+    # http://flask.pocoo.org/docs/1.0/blueprints/
     register_blueprints(app, package_name, package_path)
 
     return app

@@ -9,7 +9,6 @@ from flask import (Blueprint,
                    url_for,
                    request,
                    session)
-from flask_login import current_user
 from flask_security import utils
 from qualitas.auth.models import User
 from qualitas.utils import redirect_next

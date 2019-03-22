@@ -19,4 +19,3 @@ db = SQLAlchemy(
 )
 github = FlaskGitHub()
 security = Security()
-

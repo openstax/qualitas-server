@@ -1,16 +1,47 @@
+import os
+
 import pytest
-from flask import Flask, Response
+from webtest import TestApp
 
-from qualitas.ext import flask_github
+from qualitas import create_app
 
 
-@pytest.fixture()
-def app(request):
-    app = Flask(__name__)
-    app.response_class = Response
-    app.debug = True
-    app.config['SECRET_KEY'] = 'abigsecret'
-    app.config['TESTING'] = True
+credentials = [
+    os.environ.get("GITHUB_USER", "foo").encode(),
+    os.environ.get("GITHUB_PASSWORD", "bar").encode(),
+]
 
-    github = flask_github.FlaskGitHub()
-    app.github = github.client
+
+@pytest.fixture(scope='session')
+def app_config():
+    """The config for the test application"""
+    settings = {
+        'TESTING': True,
+        'SECRET_KEY': 'a key for testing',
+        'DEBUG': True,
+        'GITHUB_USER': credentials[0],
+        'GITHUB_PASSWORD': credentials[1]
+    }
+
+    return settings
+
+
+@pytest.fixture(scope='session')
+def app(app_config):
+    """The test application"""
+    _app = create_app()
+    _app.config.update(app_config)
+
+    ctx = _app.test_request_context()
+    ctx.push()
+
+    yield _app
+
+    ctx.pop()
+
+
+@pytest.fixture(scope='function')
+def test_client(app):
+    """
+    Configure a WebTest client for nice convenience methods."""
+    return TestApp(app)
