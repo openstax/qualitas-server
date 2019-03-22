@@ -2,7 +2,7 @@ from qualitas.exports.export import get_pr_commit_data
 from .helpers import data_loader
 
 
-def test_pr_export(test_client):
+def test_get_pr_commit_data(test_client):
 
     # FIXME: This test is probably best handled with betamax so that we're not
     # having to make 3rd party requests on every test run. That"s not often
