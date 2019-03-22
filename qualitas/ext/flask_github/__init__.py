@@ -14,25 +14,27 @@ class GitHub(object):
 
     The minimum requirement for a Flask extenison is that it has a `init_app`
     method that acts as a callback. The reason for this is so that it can be
-    registered with the core app in 2 ways.
+    configured and registered with the core app in 2 ways.
 
     The first doesn't use an application factory:
 
     ```
     app = Flask(__name__)
 
-    github = FlaskGitHub(app)
+    github = GitHub(app)
     ```
 
     The second uses an application factory:
 
     ```
-    github = FlaskGitHub()
+    github = GitHub()
 
     def create_app():
         app = Flask(__name__)
 
         github = github.init_app(app)
+
+        return app
     ```
     """
 
