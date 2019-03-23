@@ -3,7 +3,7 @@ FROM python:3.7-alpine
 # Install base packages
 RUN apk add --update --no-cache gcc g++ postgresql-dev curl && \
     apk add --no-cache tini && apk add --no-cache libffi-dev && \
-    apk add --make
+    apk add make
 
 
 WORKDIR /app
