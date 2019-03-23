@@ -9,7 +9,6 @@ from flask import (Blueprint,
                    url_for,
                    request,
                    session)
-from flask_login import current_user
 from flask_security import utils
 from qualitas.auth.models import User
 from qualitas.utils import redirect_next
@@ -25,7 +24,7 @@ auth = Blueprint('auth',
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_app.debug and current_app.config['GITHUB_AUTH']:
+    if current_app.debug and current_app.config['GITHUB_AUTH_ENABLED']:
         form = LoginForm(request.form)
 
         if form.validate_on_submit():

@@ -1,19 +1,15 @@
 import logging
 
-from flask import current_app as app
-from github3 import exceptions
-
-from qualitas.lib.github.client import GitHubClient
+import github3
 
 LOGS = logging.getLogger(__name__)
 
 
-def get_pr_commit_data(repo_name, base, head):
-    client = GitHubClient(app.config['GITHUB_USER'],
-                          app.config['GITHUB_PASSWORD'])
+def get_pr_commit_data(client, repo_name, base, head):
+
     try:
         pr_commits = client.find_pr_commits(repo_name, base, head)
-    except exceptions.NotFoundError:
+    except github3.exceptions.NotFoundError:
         return None
 
     row_data = []

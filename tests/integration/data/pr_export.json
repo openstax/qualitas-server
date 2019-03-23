@@ -1,0 +1,22 @@
+[
+  {
+    "repository": "openstax/biglearn-api",
+    "commit_message": "Merge pull request #51 from openstax/faster_metadatas\n\nAdded metadata sequence numbers to course and ecosystem metadatas",
+    "commit_sha": "cb5fc8e77d4ecc3787905e9c124fbb3b1c7e203f",
+    "commit_link": "https://github.com/openstax/biglearn-api/commit/cb5fc8e77d4ecc3787905e9c124fbb3b1c7e203f",
+    "cl_trimmed": "https://github.com/openstax/biglearn-api/commit/cb5fc8e",
+    "pr_id": "51",
+    "pr_link": "https://github.com/openstax/biglearn-api/pull/51",
+    "text": "Added metadata sequence numbers to course and ecos [PR 51](https://github.com/openstax/biglearn-api/commit/cb5fc8e)[cb5fc8e](https://github.com/openstax/biglearn-api/pull/51)"
+  },
+  {
+    "repository": "openstax/biglearn-api",
+    "commit_message": "Merge pull request #78 from openstax/speed_up_event_query\n\nSpeed up the event queries",
+    "commit_sha": "3c0fdb4ad15127d0d3eac2ff9ba376f94bf4c24f",
+    "commit_link": "https://github.com/openstax/biglearn-api/commit/3c0fdb4ad15127d0d3eac2ff9ba376f94bf4c24f",
+    "cl_trimmed": "https://github.com/openstax/biglearn-api/commit/3c0fdb4",
+    "pr_id": "78",
+    "pr_link": "https://github.com/openstax/biglearn-api/pull/78",
+    "text": "Speed up the event queries [PR 78](https://github.com/openstax/biglearn-api/commit/3c0fdb4)[3c0fdb4](https://github.com/openstax/biglearn-api/pull/78)"
+  }
+]

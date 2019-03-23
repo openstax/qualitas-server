@@ -2,6 +2,8 @@ from flask_babel import Babel
 from flask_security import Security
 from flask_sqlalchemy import SQLAlchemy
 
+from qualitas.ext.flask_github import GitHub
+
 # Instantiate Extensions
 from sqlalchemy import MetaData
 
@@ -15,5 +17,5 @@ db = SQLAlchemy(
         'ck': 'ck_%(table_name)s_%(constraint_name)s',
     }),
 )
+github = GitHub()
 security = Security()
-

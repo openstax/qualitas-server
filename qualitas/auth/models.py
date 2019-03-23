@@ -1,7 +1,6 @@
 import requests
-from flask import current_app as app, current_app, abort
+from flask import current_app as app, abort
 from flask_security import UserMixin, RoleMixin
-from qualitas.lib.github.client import GitHubClient
 
 from ..core import db
 
@@ -56,8 +55,7 @@ class GitHubUser(db.Model):
 
     def gh_update(self, username, data=None):
         if data is None:
-            client = GitHubClient(app.config['GITHUB_USER'],
-                                  app.config['GITHUB_PASSWORD'])
+            client = app.github.client
             data = client.user(username)
             
         if data:

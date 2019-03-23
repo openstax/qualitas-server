@@ -6,8 +6,10 @@ from flask import (Blueprint,
                    render_template,
                    request,
                    redirect,
-                   url_for, flash)
+                   url_for,
+                   flash)
 
+from qualitas.core import github
 from qualitas.lib.parsers.release import ReleaseParser
 from qualitas.tools.forms import PullRequestExportForm, ServerDiffForm
 from qualitas.exports import export
@@ -50,7 +52,8 @@ def pull_request_export():
             base = form_data[f'base_{n}'][0]
             head = form_data[f'head_{n}'][0]
             LOGS.info(f'Currently processing {repo_name} b{base} h{head}')
-            commits = export.get_pr_commit_data(repo_name,
+            commits = export.get_pr_commit_data(github.client,
+                                                repo_name,
                                                 base,
                                                 head)
             if commits:

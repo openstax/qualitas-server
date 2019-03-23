@@ -6,9 +6,10 @@ sudo: required
 services:
   - docker
 install:
-  - docker-compose -f travis-compose.yml up -d
+  - docker-compose -f travis-compose.yml up -d --build
 script:
   - docker-compose -f travis-compose.yml exec web /bin/sh -c "python --version"
+  - docker-compose -f travis-compose.yml exec web /bin/sh -c "pytest --cov=./qualitas --cov-report=xml:./cov.xml --cov-report=term"
 after_success:
   - docker-compose down
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
