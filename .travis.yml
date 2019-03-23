@@ -9,7 +9,7 @@ install:
   - docker-compose -f travis-compose.yml up -d
 script:
   - docker-compose -f travis-compose.yml exec web /bin/sh -c "python --version"
-  - docker-compose -f travis-compose.yml exec web /bin/sh -c "pytest"
+  - docker-compose -f travis-compose.yml exec web /bin/sh -c "env"
 after_success:
   - docker-compose down
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
