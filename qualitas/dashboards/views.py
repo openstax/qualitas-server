@@ -22,6 +22,13 @@ def cnx_json_loader():
     return render_template('cnx_json_loader.html')
 
 
+@dashboards.route('/tutor-repo-versions')
+def tutor_versions():
+    repos = ["openstax/accounts"]
+
+    return render_template('tutor_repo_versions.html')
+
+
 @dashboards.route('/cnx-repos-proto')
 def cnx_repos_proto():
     from .proto_data import quick_links, cnx_server_files
