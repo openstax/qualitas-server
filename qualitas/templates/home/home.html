@@ -54,11 +54,13 @@
       <div class="col s12 m6">
         <div class="card blue-grey darken-1">
           <div class="card-content white-text">
-            <span class="card-title">CNX JSON Loader Dashboard</span>
-            <p>This dashboard loads the JSON for a CNX book or page based on a collection URL</p>
+            <span class="card-title">TUTOR/BIT Repository Dashboard</span>
+            <p>This dashboard allows you to see the repositories, open issues,
+              pull requests, latest tags, and latest releases for
+              Tutor and BIT projects</p>
           </div>
           <div class="card-action">
-            <a href="{{ url_for('dashboards.cnx_json_loader') }}">Go To
+            <a href="{{ url_for('dashboards.tutor_repos') }}">Go To
               Dashboard</a>
           </div>
         </div>
@@ -75,6 +77,19 @@
           <div class="card-action">
             <a href="{{ url_for('tools.history_diff') }}">Go To
               Form</a>
+          </div>
+        </div>
+      </div>
+
+        <div class="col s12 m6">
+        <div class="card blue-grey darken-1">
+          <div class="card-content white-text">
+            <span class="card-title">CNX JSON Loader Dashboard</span>
+            <p>This dashboard loads the JSON for a CNX book or page based on a collection URL</p>
+          </div>
+          <div class="card-action">
+            <a href="{{ url_for('dashboards.cnx_json_loader') }}">Go To
+              Dashboard</a>
           </div>
         </div>
       </div>

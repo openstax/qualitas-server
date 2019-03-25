@@ -27,7 +27,7 @@ def cnx_json_loader():
 
 
 @dashboards.route('/tutor-repos')
-def tutor_versions():
+def tutor_repos():
     client = app.github.client
     repository_data = get_repository_dashboard_data(client, TUTOR_REPOS)
 
