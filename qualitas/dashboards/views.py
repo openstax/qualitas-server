@@ -1,5 +1,9 @@
 from flask import (Blueprint,
+                   current_app as app,
                    render_template)
+
+from qualitas.admin.data import TUTOR_REPOS
+from qualitas.dashboards.logic import get_repository_dashboard_data
 
 dashboards = Blueprint('dashboards',
                        __name__,
@@ -22,11 +26,12 @@ def cnx_json_loader():
     return render_template('cnx_json_loader.html')
 
 
-@dashboards.route('/tutor-repo-versions')
+@dashboards.route('/tutor-repos')
 def tutor_versions():
-    repos = ["openstax/accounts"]
+    client = app.github.client
+    repository_data = get_repository_dashboard_data(client, TUTOR_REPOS)
 
-    return render_template('tutor_repo_versions.html')
+    return render_template('tutor_repos.html', repositories=repository_data)
 
 
 @dashboards.route('/cnx-repos-proto')
