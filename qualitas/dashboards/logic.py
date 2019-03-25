@@ -5,8 +5,7 @@ def get_repository_dashboard_data(client, repositories):
         org_name = repository.split("/")[0]
         repo_name = repository.split("/")[1]
 
-        repo = client.repository(org_name, repo_name)
-        repo_data = prepare_repo_data(repo)
+        repo_data = prepare_repo_data(client.repository(org_name, repo_name))
         repos_version_data.append(repo_data)
 
     return repos_version_data
