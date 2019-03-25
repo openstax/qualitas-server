@@ -14,7 +14,6 @@ def get_repository_dashboard_data(client, repositories):
 def prepare_repo_data(repo):
     repo_data = {}
     latest_tag = [tag for tag in repo.tags(number=1)]
-    latest_release = [release for release in repo.releases(number=1)]
     latest_commit = [commit for commit in repo.commits(number=1)]
     open_pull_requests = [pr for pr in repo.pull_requests()]
 
@@ -25,8 +24,6 @@ def prepare_repo_data(repo):
     repo_data["issues_url"] = f"{repo.html_url}/issues"
     repo_data["latest_tag"] = latest_tag[0].name if latest_tag else ""
     repo_data["tags_url"] = f"{repo.html_url}/tags"
-    repo_data["latest_release"] = latest_release[0].tag_name \
-        if latest_release else ""
     repo_data["releases_url"] = f"{repo.html_url}/releases"
     repo_data["open_pull_requests_count"] = len(open_pull_requests)
     repo_data["pull_request_url"] = f"{repo.html_url}/pulls"
