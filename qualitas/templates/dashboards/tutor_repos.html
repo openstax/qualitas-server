@@ -20,19 +20,17 @@
                 <th>Open Issues</th>
                 <th>PRs</th>
                 <th>Latest GitHub Tag</th>
-                <th>Latest Release</th>
                 <th>Latest Commit</th>
               </tr>
               </thead>
               <tbody>
                 {% for repo in repositories %}
                   <tr>
-                    <td><a href="{{ repo.repo_url }}">{{ repo.repo_name }}</a></td>
-                    <td><a href="{{ repo.issues_url }}">{{ repo.open_issues_count }}</a></td>
-                    <td><a href="{{ repo.pull_request_url }}">{{ repo.open_pull_requests_count }}</a></td>
-                    <td><a href="{{ repo.tags_url }}">{{ repo.latest_tag }}</a></td>
-                    <td><a href="{{ repo.release_url }}">{{ repo.latest_release }}</a></td>
-                    <td><a href="{{ repo.commit_url }}">{{ repo.latest_commit_sha[:7] }}</a></td>
+                    <td><a href="{{ repo.repo_url }}" target="_blank">{{ repo.repo_name }}</a></td>
+                    <td><a href="{{ repo.issues_url }}" target="_blank">{{ repo.open_issues_count }}</a></td>
+                    <td><a href="{{ repo.pull_request_url }}" target="_blank">{{ repo.open_pull_requests_count }}</a></td>
+                    <td><a href="{{ repo.tags_url }}" target="_blank">{{ repo.latest_tag }}</a></td>
+                    <td><a href="{{ repo.commit_url }}" target="_blank">{{ repo.latest_commit_sha[:7] }}</a></td>
                   </tr>
 
                 {% endfor %}
