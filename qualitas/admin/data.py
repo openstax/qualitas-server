@@ -6,15 +6,12 @@ but right now this will get us by.
 TUTOR_REPOS = [
     'openstax/accounts',
     'openstax/exercises',
-    'openstax/ospayments',
     'openstax/tutor-js',
-    'openstax/openstax-cms',
-    'openstax/os-webview',
     'openstax/biglearn-api',
     'openstax/biglearn-local-query',
     'openstax/biglearn-scheduler',
-    'openstax/oscms-deployment',
-    'openstax/ospayments-deployment',
+    'openstax/biglearn-sparfa-server',
+    'openstax/biglearn-sparfa-algs',
     'openstax/tutor-deployment',
     'openstax/tutor-server'
 ]
