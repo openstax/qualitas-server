@@ -1,10 +1,16 @@
 from flask import (Blueprint,
+                   current_app as app,
                    render_template)
+
+from qualitas.admin import data
+from qualitas.dashboards.logic import get_repository_dashboard_data
 
 dashboards = Blueprint('dashboards',
                        __name__,
                        url_prefix='/dashboards',
                        template_folder='../templates/dashboards')
+
+TUTOR_REPOS = data.get_tutor_repos()
 
 
 @dashboards.route('/cnx-repos', methods=['GET'])
@@ -20,6 +26,13 @@ def urlcommands():
 @dashboards.route('/cnx-json-loader', methods=['GET'])
 def cnx_json_loader():
     return render_template('cnx_json_loader.html')
+
+
+@dashboards.route('/tutor-repos')
+def tutor_repos():
+    repository_data = get_repository_dashboard_data(TUTOR_REPOS)
+
+    return render_template('tutor_repos.html', repositories=repository_data)
 
 
 @dashboards.route('/cnx-repos-proto')

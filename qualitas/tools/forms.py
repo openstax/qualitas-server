@@ -3,33 +3,9 @@ from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, validators
 from wtforms.validators import DataRequired, Length
 
+from qualitas.admin.data import get_tutor_repos, CNX_HOSTS
 
-# List of Tutor Products
-TUTOR_REPOS = [
-    'openstax/accounts',
-    'openstax/exercises',
-    'openstax/payments',
-    'openstax/tutor-js',
-    'openstax/openstax-cms',
-    'openstax/os-webview',
-    'openstax/biglearn-api',
-    'openstax/biglearn-local-query',
-    'openstax/biglearn-scheduler',
-    'openstax/hypothesis-deployment',
-    'openstax/hypothesis-server',
-    'openstax/oscms-deployment',
-    'openstax/ospayments-deployment',
-    'openstax/tutor-deployment',
-    'openstax/tutor-server'
-]
-
-CNX_HOSTS = [
-    'https://cnx.org',
-    'https://qa.cnx.org',
-    'https://staging.cnx.org',
-    'https://devb.cnx.org',
-    'https://content01.cnx.org'
-]
+TUTOR_REPOS = get_tutor_repos()
 
 
 class PullRequestExportForm(FlaskForm):

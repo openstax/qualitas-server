@@ -90,7 +90,7 @@ class GitHub(object):
         if self.user and self.password:
             self.client.login(self.user, self.password)
         else:
-            LOGS.warning("No GitHub username and password found for basic auth."
+            LOGS.warning("No GitHub username and password found for basic auth. "
                          "Your requests may be limited if they exceed the limits.")
 
     def auto_login(self):

@@ -2,17 +2,18 @@ version: '3'
 services:
   web:
     build: ./
+    environment:
+      - DATABASE_URL=postgres://postgres:@db/testing
+      - FLASK_APP=wsgi.py
+      - FLASK_DEBUG=1
+      - FLASK_ENV=development
+      - GITHUB_USER=${GITHUB_USER}
+      - GITHUB_PASSWORD=${GITHUB_PASSWORD}
     ports:
       - "5000:5000"
     links:
       - db
   db:
     image: postgres:10.5-alpine
-    environment:
-      - DATABASE_URL=postgres://postgres:@db/testing
-      - FLASK_APP=wsgi.py
-      - FLASK_DEBUG=1
-      - FLASK_ENV=development
-      - GITHUB_AUTH_TOKEN=${GITHUB_AUTH_TOKEN}
     ports:
       - '127.0.0.1:5433:5432'
