@@ -1,14 +1,17 @@
-def get_repository_dashboard_data(client, repositories):
-    repos_version_data = []
+from qualitas.core import github
+
+
+def get_repository_dashboard_data(repositories):
+    repos_data = []
 
     for repository in repositories:
-        org_name = repository.split("/")[0]
-        repo_name = repository.split("/")[1]
+        repo = get_github_repository_data(repository)
 
-        repo_data = prepare_repo_data(client.repository(org_name, repo_name))
-        repos_version_data.append(repo_data)
+        repo_prepped = prepare_repo_data(repo)
 
-    return repos_version_data
+        repos_data.append(repo_prepped)
+
+    return repos_data
 
 
 def prepare_repo_data(repo):
@@ -30,3 +33,11 @@ def prepare_repo_data(repo):
     repo_data["commit_url"] = f"{repo.html_url}/commits"
 
     return repo_data
+
+
+def get_github_repository_data(repo_full_name):
+    org_name = repo_full_name.split("/")[0]
+    repo_name = repo_full_name.split("/")[1]
+    repo = github.client.repository(org_name, repo_name)
+
+    return repo

@@ -3,7 +3,9 @@ from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, validators
 from wtforms.validators import DataRequired, Length
 
-from qualitas.admin.data import TUTOR_REPOS, CNX_HOSTS
+from qualitas.admin.data import get_tutor_repos, CNX_HOSTS
+
+TUTOR_REPOS = get_tutor_repos()
 
 
 class PullRequestExportForm(FlaskForm):

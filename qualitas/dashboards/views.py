@@ -2,13 +2,15 @@ from flask import (Blueprint,
                    current_app as app,
                    render_template)
 
-from qualitas.admin.data import TUTOR_REPOS
+from qualitas.admin import data
 from qualitas.dashboards.logic import get_repository_dashboard_data
 
 dashboards = Blueprint('dashboards',
                        __name__,
                        url_prefix='/dashboards',
                        template_folder='../templates/dashboards')
+
+TUTOR_REPOS = data.get_tutor_repos()
 
 
 @dashboards.route('/cnx-repos', methods=['GET'])
@@ -28,8 +30,7 @@ def cnx_json_loader():
 
 @dashboards.route('/tutor-repos')
 def tutor_repos():
-    client = app.github.client
-    repository_data = get_repository_dashboard_data(client, TUTOR_REPOS)
+    repository_data = get_repository_dashboard_data(TUTOR_REPOS)
 
     return render_template('tutor_repos.html', repositories=repository_data)
 
