@@ -34,18 +34,23 @@ def pull_request_export():
         LOGS.debug(form_data)
 
         # Ensure the number of fields is a multiple of 3
-        if len(form_data) % 3 != 0:
+        if len(form_data) % 4 != 0:
             flash('Incorrect number of entries per repository')
             return redirect(url_for('tools.pull_request_export'))
 
         LOGS.info('The POSTED form has the correct number of fields')
 
         # Determine the number of repos
-        repo_num = int(len(form_data) / 3)
+        repo_num = int(len(form_data) / 4)
 
         LOGS.info(f'Total Repos to check are {repo_num}')
 
         pr_commits = []
+
+        view_data = False
+
+        if form.data["view_data"] == "on":
+            view_data = True
 
         for n in range(1, repo_num + 1):
             repo_name = form_data[f'repo_{n}'][0]
@@ -61,12 +66,14 @@ def pull_request_export():
             else:
                 LOGS.info(f'No PR Commits found for {repo_name}')
 
-        if pr_commits:
+        if pr_commits and not view_data:
             LOGS.info('There were pr {} commits found'.format(len(pr_commits)))
             fieldnames = pr_commits[0].keys()
 
             return render_csv(
                 fieldnames, pr_commits, 'pr-commits')
+        elif pr_commits and view_data:
+            return render_template('pr_export_view.html', pr_commits=pr_commits)
         else:
             LOGS.info('Something went wrong or no results were found')
             flash('There was a problem trying to find pull request commits. '

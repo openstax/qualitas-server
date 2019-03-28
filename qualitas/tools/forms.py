@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 
-from wtforms import SelectField, StringField, validators
+from wtforms import SelectField, StringField, HiddenField
 from wtforms.validators import DataRequired, Length
 
 from qualitas.admin.data import get_tutor_repos, CNX_HOSTS
@@ -12,6 +12,7 @@ class PullRequestExportForm(FlaskForm):
     repo_1 = SelectField('Repository', choices=[(x, x) for x in TUTOR_REPOS])
     base_1 = StringField('Base', validators=[Length(min=7, max=40), DataRequired()])
     head_1 = StringField('Head', validators=[Length(min=7, max=40), DataRequired()])
+    view_data = HiddenField(default='off')
 
 
 class ServerDiffForm(FlaskForm):
