@@ -72,7 +72,7 @@ def pull_request_export():
         elif pr_commits and view_data:
             return render_template('pr_export_view.html', pr_commits=pr_commits)
         else:
-            LOGS.info('Something went wrong or no results were found')
+            LOGS.warning('Something went wrong or no results were found')
             flash('There was a problem trying to find pull request commits. '
                   'Ensure you filled out all fields correctly')
             return redirect(url_for('tools.pull_request_export'))

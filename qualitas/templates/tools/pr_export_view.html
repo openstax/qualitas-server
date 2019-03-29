@@ -8,30 +8,22 @@
       <div class="col s12">
       <h2>Pull Request Data</h2>
         <div class="repo-table-wrapper">
-          <table id="repo-table">
+          <table id="repo-table" class="cell-border">
               <thead>
               <tr>
                 <th>Repository</th>
                 <th>PR ID</th>
                 <th>Commit Message</th>
                 <th>Commit SHA</th>
-                <th>Commit Link</th>
-                <th>Commit Link (short)</th>
-                <th>PR Link</th>
-                <th>Text</th>
               </tr>
               </thead>
               <tbody>
                 {% for commit in pr_commits %}
                   <tr>
                     <td>{{ commit.repository }}</td>
-                    <td>{{ commit.pr_id }}</td>
+                    <td><a href="{{ commit.pr_link }}">{{ commit.pr_id }}</a></td>
                     <td>{{ commit.commit_message }}</td>
-                    <td>{{ commit.commit_sha }}</td>
-                    <td>{{ commit.commit_link }}</td>
-                    <td>{{ commit.cl_trimmed }}</td>
-                    <td>{{ commit.pr_link }}</td>
-                    <td>{{ commit.text }}</td>
+                    <td><a href="{{ commit.commit_link }}">{{ commit.commit_sha[:7] }}</a></td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -53,9 +45,14 @@
           "pageLength": 20,
           "columnDefs": [
             {
-              className: "dt-left"
+              "targets": 2,
+              "className": "dt-left",
+              "render": function(data, type, row) {
+                return data.replace(/(?:\r\n|\r|\n)/g, "<br>");
+              }
+
             }
-          ]
+          ],
         }
         );
     } );
