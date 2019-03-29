@@ -143,13 +143,12 @@
       return $fieldset
     }
 
-    function viewDataSubmit(e) {
+    function viewDataSubmit() {
       let $view_data = $('#view_data');
       $view_data.val('on');
     }
 
-    function exportDataSubmit(e) {
-      e.preventDefault();
+    function exportDataSubmit() {
       let $view_data = $('#view_data');
       $view_data.val('off');
     }
