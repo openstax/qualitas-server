@@ -47,10 +47,7 @@ def pull_request_export():
 
         pr_commits = []
 
-        view_data = False
-
-        if form.data["view_data"] == "on":
-            view_data = True
+        view_data = form.data["view_data"] == "on"
 
         for n in range(1, repo_num + 1):
             repo_name = form_data[f'repo_{n}'][0]
