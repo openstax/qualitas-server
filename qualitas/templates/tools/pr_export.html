@@ -1,4 +1,4 @@
-{% extends 'layouts/base.html' %}
+{% extends 'tools/base.html' %}
 {%- from '_helpers.html' import render_field %}
 
 {% block title %}Qualitas | PR Commit Exporter{% endblock title %}
@@ -47,7 +47,8 @@
                     </p>
                     </div>
                     <p class="right-align">
-                      <button type="submit" class="btn btn-large waves-effect waves-light">Submit</button>
+                      <button class="btn btn-large waves-effect waves-light" onclick="exportDataSubmit()">Export CSV</button>
+                      <button class="btn btn-large waves-effect waves-light blue" onclick="viewDataSubmit()">View Data</button>
                       <br/>
                     </p>
                   </footer>
@@ -140,6 +141,16 @@
       $('#fieldset-wrapper').append($fieldset);
 
       return $fieldset
+    }
+
+    function viewDataSubmit() {
+      let $view_data = $('#view_data');
+      $view_data.val('on');
+    }
+
+    function exportDataSubmit() {
+      let $view_data = $('#view_data');
+      $view_data.val('off');
     }
 
     document.addEventListener('DOMContentLoaded', function () {

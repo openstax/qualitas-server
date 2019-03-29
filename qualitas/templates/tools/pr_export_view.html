@@ -6,26 +6,24 @@
 
     <div class="row">
       <div class="col s12">
-      <h2>Tutor Repository Data</h2>
+      <h2>Pull Request Data</h2>
         <div class="repo-table-wrapper">
-          <table id="repo-table">
+          <table id="repo-table" class="cell-border">
               <thead>
               <tr>
                 <th>Repository</th>
-                <th>Open Issues</th>
-                <th>PRs</th>
-                <th>Latest GitHub Tag</th>
-                <th>Latest Commit</th>
+                <th>PR ID</th>
+                <th>Commit Message</th>
+                <th>Commit SHA</th>
               </tr>
               </thead>
               <tbody>
-                {% for repo in repositories %}
+                {% for commit in pr_commits %}
                   <tr>
-                    <td><a href="{{ repo.repo_url }}" target="_blank">{{ repo.repo_name }}</a></td>
-                    <td><a href="{{ repo.issues_url }}" target="_blank">{{ repo.open_issues_count }}</a></td>
-                    <td><a href="{{ repo.pull_request_url }}" target="_blank">{{ repo.open_pull_requests_count }}</a></td>
-                    <td><a href="{{ repo.tags_url }}" target="_blank">{{ repo.latest_tag }}</a></td>
-                    <td><a href="{{ repo.commit_url }}" target="_blank">{{ repo.latest_commit_sha[:7] }}</a></td>
+                    <td>{{ commit.repository }}</td>
+                    <td><a href="{{ commit.pr_link }}">{{ commit.pr_id }}</a></td>
+                    <td>{{ commit.commit_message }}</td>
+                    <td><a href="{{ commit.commit_link }}">{{ commit.commit_sha[:7] }}</a></td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -47,9 +45,14 @@
           "pageLength": 20,
           "columnDefs": [
             {
-              className: "dt-left"
+              "targets": 2,
+              "className": "dt-left",
+              "render": function(data, type, row) {
+                return data.replace(/(?:\r\n|\r|\n)/g, "<br>");
+              }
+
             }
-          ]
+          ],
         }
         );
     } );
