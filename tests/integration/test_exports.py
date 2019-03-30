@@ -5,7 +5,7 @@ from .helpers import data_loader
 def test_get_pr_commit_data(test_client):
 
     # FIXME: This test is probably best handled with betamax so that we're not
-    # having to make 3rd party requests on every test run. That"s not often
+    # having to make 3rd party requests on every test run. That's not often
     # ATM. Updates to qualitas are not very frequent right now.
     # As we advance the test framework we can make this better
 

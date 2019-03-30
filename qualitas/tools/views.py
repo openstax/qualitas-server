@@ -29,25 +29,25 @@ def pull_request_export():
 
     if request.method == 'POST':
         form_data = dict(request.form)
-        # Remove CSRF Token
+
+        view_data = form.data["view_data"] == "on"
         form_data.pop('csrf_token')
+        form_data.pop('view_data')
         LOGS.debug(form_data)
 
         # Ensure the number of fields is a multiple of 3
-        if len(form_data) % 4 != 0:
+        if len(form_data) % 3 != 0:
             flash('Incorrect number of entries per repository')
             return redirect(url_for('tools.pull_request_export'))
 
         LOGS.info('The POSTED form has the correct number of fields')
 
         # Determine the number of repos
-        repo_num = int(len(form_data) / 4)
+        repo_num = int(len(form_data) / 3)
 
         LOGS.info(f'Total Repos to check are {repo_num}')
 
         pr_commits = []
-
-        view_data = form.data["view_data"] == "on"
 
         for n in range(1, repo_num + 1):
             repo_name = form_data[f'repo_{n}'][0]
