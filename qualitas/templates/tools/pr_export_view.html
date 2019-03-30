@@ -21,9 +21,9 @@
                 {% for commit in pr_commits %}
                   <tr>
                     <td>{{ commit.repository }}</td>
-                    <td><a href="{{ commit.pr_link }}">{{ commit.pr_id }}</a></td>
+                    <td><a href="{{ commit.pr_link }}" target="_blank">{{ commit.pr_id }}</a></td>
                     <td>{{ commit.commit_message }}</td>
-                    <td><a href="{{ commit.commit_link }}">{{ commit.commit_sha[:7] }}</a></td>
+                    <td><a href="{{ commit.commit_link }}" target="_blank">{{ commit.commit_sha[:7] }}</a></td>
                   </tr>
                 {% endfor %}
               </tbody>
