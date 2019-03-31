@@ -70,7 +70,10 @@ def pull_request_export():
             return render_csv(
                 fieldnames, pr_commits, 'pr-commits')
         elif pr_commits and view_data:
-            return render_template('pr_export_view.html', pr_commits=pr_commits)
+            return render_template('pr_export_view.html',
+                                   base=base,
+                                   head=head,
+                                   pr_commits=pr_commits)
         else:
             LOGS.warning('Something went wrong or no results were found')
             flash('There was a problem trying to find pull request commits. '

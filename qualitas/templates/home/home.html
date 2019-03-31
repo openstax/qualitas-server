@@ -10,11 +10,11 @@
       <div class="col s12 m6">
         <div class="card blue-grey darken-1">
           <div class="card-content white-text">
-            <span class="card-title">PR Commit Exporter</span>
-            <p>This tool allows you to select a repository along with a base
-              SHA1 and head SHA1</p>
+            <span class="card-title">Merged PR Commit Export/Viewer</span>
+            <p>This tool allows you to select multiple repositories along with a base
+              Tag/SHA1 and head Tag/SHA1 and display all Merged PR Commits between them.</p>
             <br>
-            <p>It will return all the merged PR commits as a csv file</p>
+            <p>This will return all the merged PR commits in a html view or as a downloadable CSV file.</p>
           </div>
           <div class="card-action">
             <a href="{{ url_for('tools.pull_request_export') }}">Go To Form</a>
@@ -60,8 +60,7 @@
               Tutor and BIT projects</p>
           </div>
           <div class="card-action">
-            <a href="{{ url_for('dashboards.tutor_repos') }}">Go To
-              Dashboard</a>
+            <a href="{{ url_for('dashboards.tutor_repos') }}">Go To Dashboard</a>
           </div>
         </div>
       </div>

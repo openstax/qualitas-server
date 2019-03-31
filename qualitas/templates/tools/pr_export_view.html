@@ -6,7 +6,8 @@
 
     <div class="row">
       <div class="col s12">
-      <h2>Pull Request Data</h2>
+      <h2>Merged Pull Request Commit Data</h2>
+        <h4>{{ base }} ... {{ head }}</h4>
         <div class="repo-table-wrapper">
           <table id="repo-table" class="cell-border">
               <thead>
@@ -15,6 +16,7 @@
                 <th>PR ID</th>
                 <th>Commit Message</th>
                 <th>Commit SHA</th>
+                <th>Milestone</th>
               </tr>
               </thead>
               <tbody>
@@ -24,6 +26,7 @@
                     <td><a href="{{ commit.pr_link }}" target="_blank">{{ commit.pr_id }}</a></td>
                     <td>{{ commit.commit_message }}</td>
                     <td><a href="{{ commit.commit_link }}" target="_blank">{{ commit.commit_sha[:7] }}</a></td>
+                    <td>{{ commit.milestone }}</td>
                   </tr>
                 {% endfor %}
               </tbody>

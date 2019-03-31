@@ -18,7 +18,7 @@ class Commit(ShortCommit):
     For squash commits we look at the message for a particular regex match by
     looking for `(#PR_ID)` in the commit message.
     """
-    class_name = 'Export Commit'
+    class_name = 'FlaskGitHub Commit'
 
     def __init__(self, json, repo_name):
         self.repository = repo_name

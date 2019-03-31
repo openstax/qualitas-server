@@ -17,15 +17,15 @@ class GitHubClient(GitHub):
     def __init__(self, user=None, password=None, token=None):
         super(GitHubClient, self).__init__(user, password, token)
 
-    def _compare_commits(self, repo_name, base, head):
+    def find_pr_commits(self, repo_name, base, head):
+
         org_name = repo_name.split('/')[0]
         repo_name = repo_name.split('/')[1]
 
         repo = self.repository(org_name, repo_name)
-        return repo.compare_commits(base, head)
 
-    def find_pr_commits(self, repo_name, base, head):
-        comparison = self._compare_commits(repo_name, base, head)
+        comparison = repo.compare_commits(base, head)
+
         _pr_commits = []
 
         for commit in comparison.commits:
@@ -35,6 +35,13 @@ class GitHubClient(GitHub):
 
             if commit.is_pr_commit:
                 LOGS.info(commit)
+                pr_issue = repo.issue(commit.pr_id)
+
+                if pr_issue.milestone:
+                    commit.milestone = pr_issue.milestone.title
+                else:
+                    commit.milestone = ""
+
                 _pr_commits.append(commit)
 
         if _pr_commits:
