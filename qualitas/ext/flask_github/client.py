@@ -30,7 +30,7 @@ class GitHubClient(GitHub):
 
         for commit in comparison.commits:
             # Use our commit object
-            commit = Commit(commit._json_data, repo_name)
+            commit = Commit(commit._json_data, repo.full_name)
             LOGS.info(f'Checking commit {commit.sha}')
 
             if commit.is_pr_commit:
