@@ -67,12 +67,9 @@ def pull_request_export():
             LOGS.info('There were pr {} commits found'.format(len(pr_commits)))
             fieldnames = pr_commits[0].keys()
 
-            return render_csv(
-                fieldnames, pr_commits, 'pr-commits')
+            return render_csv( fieldnames, pr_commits, 'pr-commits')
         elif pr_commits and view_data:
             return render_template('pr_export_view.html',
-                                   base=base,
-                                   head=head,
                                    pr_commits=pr_commits)
         else:
             LOGS.warning('Something went wrong or no results were found')
