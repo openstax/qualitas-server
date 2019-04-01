@@ -14,6 +14,12 @@ def get_tutor_repos():
         'openstax/biglearn-scheduler',
         'openstax/biglearn-sparfa-server',
         'openstax/biglearn-sparfa-algs',
+        'openstax/openstax-cms',
+        'openstax/os-webview',
+        'openstax/oscms-deployment',
+        'openstax/ospayments',
+        'openstax/ospayments-deployment',
+        'openstax/response-collector',
         'openstax/tutor-deployment',
         'openstax/tutor-server'
     ]
