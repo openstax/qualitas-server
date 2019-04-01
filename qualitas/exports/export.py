@@ -25,6 +25,7 @@ def get_pr_commit_data(client, repo_name, base, head):
             row['pr_id'] = commit.pr_id
             row['pr_link'] = commit.pr_link
             row['text'] = commit.text
+            row['milestone'] = commit.milestone
             row_data.append(row)
         return row_data
     else:
