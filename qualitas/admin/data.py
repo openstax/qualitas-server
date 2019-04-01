@@ -19,6 +19,7 @@ def get_tutor_repos():
         'openstax/oscms-deployment',
         'openstax/ospayments',
         'openstax/ospayments-deployment',
+        'openstax/response-collector',
         'openstax/tutor-deployment',
         'openstax/tutor-server'
     ]
