@@ -3,6 +3,7 @@ from flask_security import Security
 from flask_sqlalchemy import SQLAlchemy
 
 from qualitas.ext.flask_github import GitHub
+from qualitas.ext.flask_zenhub import ZenHub
 
 # Instantiate Extensions
 from sqlalchemy import MetaData
@@ -19,3 +20,4 @@ db = SQLAlchemy(
 )
 github = GitHub()
 security = Security()
+zenhub = ZenHub()

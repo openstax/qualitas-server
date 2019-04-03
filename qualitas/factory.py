@@ -2,9 +2,15 @@ from flask import Flask
 from flask_security import SQLAlchemyUserDatastore
 
 from .auth.models import User, Role
-from .core import babel, db, github, security
+from .core import (babel,
+                   db,
+                   github,
+                   security,
+                   zenhub)
 from .ext.markdown import Markdown, markdown
-from .utils import register_blueprints, WikiTitleConverter, SlugConverter
+from .utils import (register_blueprints,
+                    WikiTitleConverter,
+                    SlugConverter)
 
 
 def create_app(package_name, package_path, settings=None):
@@ -37,6 +43,7 @@ def create_app(package_name, package_path, settings=None):
     app.security = security.init_app(app,
                                      SQLAlchemyUserDatastore(db, User, Role),
                                      register_blueprint=False)
+    zenhub.init_app(app)
 
     # register jinja2 extensions and filters
     jinja_extensions = [
