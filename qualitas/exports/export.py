@@ -18,6 +18,8 @@ def get_pr_commit_data(github_client, zenhub_client, repo_name, base, head):
             row = dict()
             row['repository'] = commit.repository.full_name
             row['repository_id'] = commit.repository.id
+            row['base'] = base
+            row['head'] = head
             row['commit_message'] = commit.message
             row['commit_sha'] = commit.sha
             row['commit_link'] = commit.html_url
@@ -26,17 +28,25 @@ def get_pr_commit_data(github_client, zenhub_client, repo_name, base, head):
             row['pr_link'] = commit.pr_link
             row['text'] = commit.text
             row['milestone'] = commit.milestone
+            row['is_connected'] = check_issue_connection(zenhub_client,
+                                                         commit.repository.id,
+                                                         commit.pr_id)
 
-            linked_issue = get_connected_issue(zenhub_client,
-                                               commit.repository.id,
-                                               commit.pr_id)
             row_data.append(row)
         return row_data
     else:
         return None
 
 
-def get_connected_issue(zenhub_client, repo_id, issue_id):
-    issue = zenhub_client.get_connected_issue(repo_id, issue_id)
+def check_issue_connection(zenhub_client, repo_id, issue_id):
+    events = zenhub_client.get_issue_events(repo_id, issue_id)
 
-    return issue
+    for event in events:
+        if event['type'] == 'disconnectPR':
+            return False
+        elif event['type'] == 'connectPR':
+            return True
+        else:
+            continue
+
+    return False

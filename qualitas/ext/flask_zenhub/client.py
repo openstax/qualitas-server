@@ -1,7 +1,6 @@
 import logging
 import time
 from datetime import datetime
-from urllib.parse import urlencode
 
 import backoff
 import requests
@@ -10,16 +9,14 @@ LOGS = logging.getLogger(__name__)
 
 
 class ZenHubClient(object):
-    def __init__(self, token, v4_token=None, session=requests.Session):
-        self.public_api_url = 'https://api.zenhub.io/p1'
-        self.v4_api_url = 'https://api.zenhub.io/v4'
-        self.public_token = token
-        self.v4_token = v4_token
+    def __init__(self, token, session=requests.Session):
+        self.base_url = 'https://api.zenhub.io/p1'
+        self.token = token
         self.session = session()
         self.session.headers.update({
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'X-Authentication-Token': self.public_token,
+            'X-Authentication-Token': self.token,
         })
 
     @backoff.on_exception(
@@ -44,62 +41,26 @@ class ZenHubClient(object):
         """Sends a get request"""
         return self.request('get', url, **kwargs)
 
-    def _build_url(self, *args, **kwargs):
-        """Builds the url to use the public api or v4 api url
-
-        In order to use the v4 api the first keyword arg needs to be:
-
-        `is_public=False`
-
-        Example:
-
-            self._build_url('repositories',
-                             repo_id,
-                            'connected',
-                            is_public=False,
-                            connected_issue_num=540)
-
-        """
-        is_public = True
-
-        if 'is_public' in kwargs:
-            is_public = kwargs.pop('is_public')
-
-        if is_public:
-            parts = [self.public_api_url]
-        else:
-            parts = [self.v4_api_url]
+    def _build_url(self, *args):
+        parts = [self.base_url]
 
         parts.extend(args)
         parts = [str(p) for p in parts]
 
-        if is_public:
-            return '/'.join(parts)
-        else:
-            url = '/'.join(parts) + '?'
-            qs = urlencode(kwargs)
-            return url + qs
+        return '/'.join(parts)
 
     def get_board(self, repo_id):
-        url = self._build_url('repositories', repo_id, 'board', is_public=True)
+        url = self._build_url('repositories', repo_id, 'board')
         return self.get(url)
 
     def get_issue(self, repo_id, issue_number):
-        url = self._build_url('repositories', repo_id, 'issues', issue_number, is_public=True)
+        url = self._build_url('repositories', repo_id, 'issues', issue_number)
         return self.get(url)
 
     def get_issue_events(self, repo_id, issue_number):
-        url = self._build_url('repositories', repo_id, 'issues', issue_number, 'events',
-                              is_public=True)
+        url = self._build_url('repositories', repo_id, 'issues', issue_number, 'events',)
         return self.get(url)
 
-    def get_connected_issue(self, repo_id, issue_number):
-        url = self._build_url('repositories',
-                              repo_id,
-                              'connected',
-                              is_public=False,
-                              connected_issue_number=issue_number)
-        return self.get(url)
 
     @staticmethod
     def _deal_with_limits(response):

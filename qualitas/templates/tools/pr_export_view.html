@@ -12,20 +12,26 @@
               <thead>
               <tr>
                 <th>Repository</th>
+                <th>Base</th>
+                <th>Head</th>
                 <th>PR ID</th>
                 <th>Commit Message</th>
                 <th>Commit SHA</th>
                 <th>Milestone</th>
+                <th>Connected?</th>
               </tr>
               </thead>
               <tbody>
                 {% for commit in pr_commits %}
                   <tr>
                     <td>{{ commit.repository }}</td>
+                    <td>{{ commit.base }}</td>
+                    <td>{{ commit.head }}</td>
                     <td><a href="{{ commit.pr_link }}" target="_blank">{{ commit.pr_id }}</a></td>
                     <td>{{ commit.commit_message }}</td>
                     <td><a href="{{ commit.commit_link }}" target="_blank">{{ commit.commit_sha[:7] }}</a></td>
                     <td>{{ commit.milestone }}</td>
+                    <td>{% if commit.is_connected %}✅{% else %}❌{% endif %}</td>
                   </tr>
                 {% endfor %}
               </tbody>
