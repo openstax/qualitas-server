@@ -14,7 +14,7 @@ class ZenHub(object):
 
     def init_app(self, app):
         self.app = app
-        self.zenhub = self
+        app.zenhub = self
         app.extensions['zenhub'] = self
 
         app.config.setdefault('ZENHUB_TOKEN')
