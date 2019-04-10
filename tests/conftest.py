@@ -9,6 +9,7 @@ from qualitas import create_app
 credentials = [
     os.environ.get("GITHUB_USER", "foo"),
     os.environ.get("GITHUB_PASSWORD", "bar"),
+    os.environ.get("ZENHUB_TOKEN", "x" * 20)
 ]
 
 
@@ -21,6 +22,7 @@ def app_config():
         'DEBUG': True,
         'GITHUB_USER': credentials[0],
         'GITHUB_PASSWORD': credentials[1],
+        'ZENHUB_TOKEN': credentials[2]
     }
 
     return settings

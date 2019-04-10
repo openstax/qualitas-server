@@ -9,7 +9,7 @@ from flask import (Blueprint,
                    url_for,
                    flash)
 
-from qualitas.core import github
+from qualitas.core import github, zenhub
 from qualitas.lib.parsers.release import ReleaseParser
 from qualitas.tools.forms import PullRequestExportForm, ServerDiffForm
 from qualitas.exports import export
@@ -55,6 +55,7 @@ def pull_request_export():
             head = form_data[f'head_{n}'][0]
             LOGS.info(f'Currently processing {repo_name} b{base} h{head}')
             commits = export.get_pr_commit_data(github.client,
+                                                zenhub.client,
                                                 repo_name,
                                                 base,
                                                 head)
@@ -67,7 +68,7 @@ def pull_request_export():
             LOGS.info('There were pr {} commits found'.format(len(pr_commits)))
             fieldnames = pr_commits[0].keys()
 
-            return render_csv( fieldnames, pr_commits, 'pr-commits')
+            return render_csv(fieldnames, pr_commits, 'pr-commits')
         elif pr_commits and view_data:
             return render_template('pr_export_view.html',
                                    pr_commits=pr_commits)

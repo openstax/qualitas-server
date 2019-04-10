@@ -20,8 +20,8 @@ class Commit(ShortCommit):
     """
     class_name = 'FlaskGitHub Commit'
 
-    def __init__(self, json, repo_name):
-        self.repository = repo_name
+    def __init__(self, json, repository):
+        self.repository = repository
         self._json_data = json
         self._update_attributes(json)
 

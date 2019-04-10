@@ -10,12 +10,13 @@ def test_get_pr_commit_data(test_client):
     # As we advance the test framework we can make this better
 
     data = data_loader("pr_export.json")
-    client = test_client.app.github.client
+    gh_client = test_client.app.github.client
+    zh_client = test_client.app.zenhub.client
 
     repo = "openstax/biglearn-api"
     base = "ce2503b458a36053c5b7cb4fa88706a66e447fc2"
     head = "3c0fdb4ad15127d0d3eac2ff9ba376f94bf4c24f"
 
-    pr_data = get_pr_commit_data(client, repo, base, head)
+    pr_data = get_pr_commit_data(gh_client, zh_client, repo, base, head)
 
     assert data == pr_data
