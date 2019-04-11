@@ -1,7 +1,7 @@
 html, body {
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 code {
@@ -10,23 +10,38 @@ code {
 
 }
 
+h1 {
+    font-size: 4.0rem;
+}
+
+h2 {
+    font-size: 3.0rem;
+}
+
+h3 {
+    font-size: 2.0rem;
+}
+
 h5 {
-    font-size: 1.88rem;
+    font-size: 1.5rem;
 }
 
 
 pre {
+
+    font-size: 0.8em;
     border: none 0 #d9d9d9;
     border-radius: 0;
     background: #ffffff;
     padding: 0;
-    line-height: 23px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+    margin-top: 10px;
     white-space: pre;
     overflow-x: auto;
     word-break: inherit;
     word-wrap: inherit;
 }
+
 
 div.admonition {
     font-size: 0.9em;
@@ -41,7 +56,7 @@ div.admonition p {
 }
 
 div.admonition.note p.admonition-title::before {
-  content: "✏️ Note: ";
+    content: "✏️ Note: ";
 }
 
 div.admonition p.admonition-title {
@@ -51,12 +66,12 @@ div.admonition p.admonition-title {
 }
 
 .container.page {
-  min-height: 100vh;
-  width: 100%;
+    min-height: 100vh;
+    width: 100%;
 }
 
 .content-wrapper-100vh {
-  min-height: 100vh;
+    min-height: 100vh;
 }
 
 a.headerlink {
@@ -102,7 +117,7 @@ a.headerlink:hover {
 }
 
 .text-editor-wrapper {
-    padding-left:25px;
+    padding-left: 25px;
     width: 90%;
 
 }
@@ -129,11 +144,13 @@ a.headerlink:hover {
         position: relative;
         width: 204px;
     }
+
     .nav-edit {
         float: left;
         position: relative;
         display: inline-block;
     }
+
     .nav-save {
         float: left;
         position: relative;
