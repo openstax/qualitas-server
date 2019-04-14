@@ -7,7 +7,6 @@ from qualitas.dashboards.logic import get_repository_dashboard_data
 
 dashboards = Blueprint('dashboards',
                        __name__,
-                       url_prefix='/dashboards',
                        template_folder='../templates/dashboards')
 
 TUTOR_REPOS = data.get_tutor_repos()

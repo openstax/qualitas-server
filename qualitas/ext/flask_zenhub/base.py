@@ -6,7 +6,7 @@ class ZenHub(object):
 
     def __init__(self, app=None, client_class=ZenHubClient):
         self.app = app
-        self.client = client_class
+        self._client = client_class
         self.token = None
 
         if app is not None:
@@ -17,11 +17,11 @@ class ZenHub(object):
         app.zenhub = self
         app.extensions['zenhub'] = self
 
-        app.config.setdefault('ZENHUB_TOKEN')
+        app.config.setdefault('ZENHUB_TOKEN', None)
 
         self.token = app.config['ZENHUB_TOKEN']
 
         self.client = self.init_client()
 
     def init_client(self):
-        return self.client(token=self.token)
+        return self._client(token=self.token)

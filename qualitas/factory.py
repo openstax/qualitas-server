@@ -2,15 +2,20 @@ from flask import Flask
 from flask_security import SQLAlchemyUserDatastore
 
 from .auth.models import User, Role
+from .auth.views import auth
 from .core import (babel,
                    db,
                    github,
                    security,
                    zenhub)
+from .dashboards.views import dashboards
 from .ext.markdown import Markdown, markdown
+from .home.views import home
+from .tools.views import tools
 from .utils import (register_blueprints,
                     WikiTitleConverter,
                     SlugConverter)
+from .wiki.views import wiki
 
 
 def create_app(package_name, package_path, settings=None):
@@ -65,8 +70,11 @@ def create_app(package_name, package_path, settings=None):
     app.url_map.converters['wiki_title'] = WikiTitleConverter
     app.url_map.converters['slug'] = SlugConverter
 
-    # Helper for auto-registering blueprints
-    # http://flask.pocoo.org/docs/1.0/blueprints/
-    register_blueprints(app, package_name, package_path)
+    # Register blueprints
+    app.register_blueprint(home, url_prefix="/")
+    app.register_blueprint(auth, url_prefix="/auth")
+    app.register_blueprint(dashboards, url_prefix="/dashboards")
+    app.register_blueprint(tools, url_prefix="/tools")
+    app.register_blueprint(wiki, url_prefix="/wiki")
 
     return app

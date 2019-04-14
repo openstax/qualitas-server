@@ -18,7 +18,6 @@ from ..core import db
 
 auth = Blueprint('auth',
                  __name__,
-                 url_prefix='/auth',
                  template_folder='../templates/auth')
 
 
