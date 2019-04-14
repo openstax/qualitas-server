@@ -3,7 +3,6 @@ services:
   web:
     build: ./
     environment:
-      - DATABASE_URL=postgres://postgres:@db/testing
       - FLASK_APP=wsgi.py
       - FLASK_DEBUG=1
       - FLASK_ENV=development
