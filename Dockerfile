@@ -1,13 +1,16 @@
 FROM python:3.7-alpine
 
 # Install base packages
-RUN apk add --update --no-cache gcc g++ postgresql-dev curl && \
-    apk add --no-cache tini && apk add --no-cache libffi-dev
-
+RUN apk add --update --no-cache --virtual .build-deps gcc g++ postgresql-dev curl \
+    libffi-dev tini yaml-dev python3-dev py3-psutil linux-headers musl-dev && \
+    apk add --no-cache --update python3 && \
+    pip3 install --upgrade pip setuptools && \
+    rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
 COPY ["requirements.txt", "/app"]
+RUN pip install -U pip
 RUN pip install -r requirements.txt
 
 COPY . .
