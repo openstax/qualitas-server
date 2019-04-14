@@ -9,6 +9,8 @@ services:
       - GITHUB_USER=${GITHUB_USER}
       - GITHUB_PASSWORD=${GITHUB_PASSWORD}
       - ZENHUB_TOKEN=${ZENHUB_TOKEN}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
     ports:
       - "5000:5000"
     links:
