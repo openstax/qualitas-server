@@ -12,13 +12,11 @@ from .dashboards.views import dashboards
 from .ext.markdown import Markdown, markdown
 from .home.views import home
 from .tools.views import tools
-from .utils import (register_blueprints,
-                    WikiTitleConverter,
-                    SlugConverter)
+from .utils import SlugConverter, WikiTitleConverter
 from .wiki.views import wiki
 
 
-def create_app(package_name, package_path, settings=None):
+def create_app(package_name, settings=None):
     """
     This function creates the application using the application factory pattern.
     Extensions and blueprints are then initialized onto the the application

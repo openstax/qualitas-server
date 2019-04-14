@@ -1,14 +1,14 @@
 import csv
-import importlib
 import os
-import pkgutil
 
 from datetime import datetime
 from io import StringIO
 from urllib.parse import urlparse, urljoin, quote
 
-from flask import Blueprint, Response, request, url_for, redirect
-from flask import Blueprint, Response
+from flask import (redirect,
+                   Response,
+                   request,
+                   url_for)
 from inflection import parameterize
 from werkzeug.routing import BaseConverter
 
@@ -25,32 +25,6 @@ def make_database_url():
             os.environ.get('DB_PORT', '5432'),
             os.environ.get('DB_NAME', 'tests'),
         )
-
-
-def register_blueprints(app, package_name, package_path):
-    """
-    Register all Blueprint instances on the specified Flask application found
-    in all modules for any found package
-
-    :param app: the Flask application
-    :param package_name: the package name
-    :param package_path: the package path
-    :return:
-    """
-    rv = []
-    base_dir = package_path[0]
-    for _, pkgname, ispkg in pkgutil.walk_packages([base_dir]):
-        for _, modname, ismod in pkgutil.iter_modules(
-                [os.path.join(base_dir, pkgname)]):
-            m = importlib.import_module(
-                '{0}.{1}.{2}'.format(package_name, pkgname, modname))
-            for item in dir(m):
-                item = getattr(m, item)
-                if isinstance(item, Blueprint):
-                    app.register_blueprint(item)
-                rv.append(item)
-
-    return rv
 
 
 # http://flask.pocoo.org/snippets/62/
