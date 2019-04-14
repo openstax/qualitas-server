@@ -1,14 +1,14 @@
 import csv
-import importlib
 import os
-import pkgutil
 
 from datetime import datetime
 from io import StringIO
 from urllib.parse import urlparse, urljoin, quote
 
-from flask import Blueprint, Response, request, url_for, redirect
-from flask import Blueprint, Response
+from flask import (redirect,
+                   Response,
+                   request,
+                   url_for)
 from inflection import parameterize
 from werkzeug.routing import BaseConverter
 
