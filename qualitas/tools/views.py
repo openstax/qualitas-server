@@ -19,7 +19,6 @@ LOGS = logging.getLogger(__name__)
 
 tools = Blueprint('tools',
                   __name__,
-                  url_prefix='/tools',
                   template_folder='../templates/tools')
 
 
