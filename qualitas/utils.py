@@ -13,17 +13,19 @@ from inflection import parameterize
 from werkzeug.routing import BaseConverter
 
 
-def make_database_url():
+def make_database_url(**environ):
+    if not environ:
+        environ = os.environ
     # Check for DATABASE_URL that is provided by heroku
-    if 'DATABASE_URL' in os.environ and os.environ['DATABASE_URL']:
-        return os.environ.get('DATABASE_URL')
+    if 'DATABASE_URL' in environ and environ['DATABASE_URL']:
+        return environ.get('DATABASE_URL')
     else:
         return 'postgresql+psycopg2://{0}:{1}@{2}:{3}/{4}'.format(
-            os.environ.get('DB_USER', 'postgres'),
-            os.environ.get('DB_PASSWORD', ''),
-            os.environ.get('DB_HOST', '127.0.0.1'),
-            os.environ.get('DB_PORT', '5432'),
-            os.environ.get('DB_NAME', 'tests'),
+            environ.get('DB_USER', 'postgres'),
+            environ.get('DB_PASSWORD', ''),
+            environ.get('DB_HOST', '127.0.0.1'),
+            environ.get('DB_PORT', '5432'),
+            environ.get('DB_NAME', 'tests'),
         )
 
 

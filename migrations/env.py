@@ -14,7 +14,7 @@ sys.path.insert(1, os.path.join(os.getcwd(), 'website'))
 
 from qualitas import create_app
 from qualitas.factory import db
-from qualitas.utils import make_database_url
+from instance import conf
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -36,7 +36,7 @@ target_metadata = db.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-url = make_database_url()
+url = conf.SQLALCHEMY_DATABASE_URI
 
 
 def run_migrations_offline():

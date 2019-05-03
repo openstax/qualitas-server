@@ -9,7 +9,20 @@ from qualitas.utils import make_database_url
 # MAIN FLASK APPLICATION
 DEBUG = os.environ.get('FLASK_DEBUG', False)
 SECRET_KEY = os.environ.get('SESSION_SECRET', str(uuid.uuid4()))
-SQLALCHEMY_DATABASE_URI = make_database_url()
+DB_USER = os.environ.get('DB_USER', 'postgres')
+DB_PASSWORD = os.environ.get('DB_PASSWORD', '')
+DB_HOST = os.environ.get('DB_HOST', '127.0.0.1')
+DB_PORT = os.environ.get('DB_PORT', '5432')
+DB_NAME = os.environ.get('DB_NAME', 'qualitas_db')
+DB_URL = os.environ.get('DB_URL')
+SQLALCHEMY_DATABASE_URI = make_database_url(
+    DB_USER=DB_USER,
+    DB_PASSWORD=DB_PASSWORD,
+    DB_HOST=DB_HOST,
+    DB_PORT=DB_PORT,
+    DB_NAME=DB_NAME,
+    DB_URL=DB_URL,
+)
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SERVER_NAME = os.environ.get('FLASK_SERVER_NAME', None)
 PREFERRED_URL_SCHEME = os.environ.get('FLASK_PREFERRED_URL_SCHEME', 'http')
