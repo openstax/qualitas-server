@@ -1,4 +1,4 @@
-.PHONY: clean clean-test clean-pyc clean-build docs help
+.PHONY: clean clean-test clean-pyc clean-build test help
 .DEFAULT_GOAL := help
 
 DB_NAME ?= qualitas_db
