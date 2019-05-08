@@ -14,6 +14,11 @@ from werkzeug.routing import BaseConverter
 
 
 def make_database_url(**environ):
+    """
+
+    :param environ:
+    :return:
+    """
     if not environ:
         environ = os.environ
     # Check for DATABASE_URL that is provided by heroku
@@ -23,7 +28,7 @@ def make_database_url(**environ):
         return 'postgresql+psycopg2://{0}:{1}@{2}:{3}/{4}'.format(
             environ.get('DB_USER', 'postgres'),
             environ.get('DB_PASSWORD', ''),
-            environ.get('DB_HOST', '127.0.0.1'),
+            environ.get('DB_HOST', 'db'),
             environ.get('DB_PORT', '5432'),
             environ.get('DB_NAME', 'tests'),
         )

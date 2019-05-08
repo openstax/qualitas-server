@@ -10,10 +10,11 @@ from alembic import context
 from sqlalchemy import create_engine
 
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
-sys.path.insert(1, os.path.join(os.getcwd(), 'website'))
+sys.path.insert(1, os.path.join(os.getcwd(), 'qualitas'))
 
 from qualitas import create_app
 from qualitas.factory import db
+from qualitas.utils import make_database_url
 from instance import conf
 
 # this is the Alembic Config object, which provides
@@ -36,7 +37,7 @@ target_metadata = db.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-url = conf.SQLALCHEMY_DATABASE_URI
+url = make_database_url()
 
 
 def run_migrations_offline():
