@@ -24,10 +24,10 @@ def config_database(request):
     connection_string = 'postgresql+psycopg2://{0}@{1}:{2}/{3}'
 
     config = get_config(request)
-    pg_host = config.get('host')
+    pg_host = config.get('host', 'db')
     pg_port = config.get('port', 5432)
-    pg_user = config.get('user')
-    pg_db = config.get('db', 'tests')
+    pg_user = config.get('user', 'postgres')
+    pg_db = 'tests'
 
     # Create the database
     init_postgresql_database(pg_user, pg_host, pg_port, pg_db)
@@ -36,7 +36,7 @@ def config_database(request):
 
     # Ensure the database gets deleted
     drop_postgresql_database(
-        pg_user, pg_host, pg_port, pg_db, '10.5'
+        pg_user, pg_host, pg_port, pg_db, '11'
     )
 
 

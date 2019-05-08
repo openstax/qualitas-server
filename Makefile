@@ -28,6 +28,9 @@ initdb:
 	docker-compose exec db psql -h db -d postgres -U postgres -c "CREATE DATABASE ${DB_NAME} ENCODING 'UTF8'"
 	docker-compose exec web alembic upgrade head
 
+test:
+	docker-compose exec web pytest
+
 venv:
 	python3 -m venv .venv && \
 		source .venv/bin/activate && \

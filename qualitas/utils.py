@@ -13,17 +13,17 @@ from inflection import parameterize
 from werkzeug.routing import BaseConverter
 
 
-def make_database_url():
+def make_database_url(user='postgres', password='', host='db', port=5432, db_name='tests'):
     # Check for DATABASE_URL that is provided by heroku
     if 'DATABASE_URL' in os.environ and os.environ['DATABASE_URL']:
         return os.environ.get('DATABASE_URL')
     else:
         return 'postgresql+psycopg2://{0}:{1}@{2}:{3}/{4}'.format(
-            os.environ.get('DB_USER', 'postgres'),
-            os.environ.get('DB_PASSWORD', ''),
-            os.environ.get('DB_HOST', '127.0.0.1'),
-            os.environ.get('DB_PORT', '5432'),
-            os.environ.get('DB_NAME', 'tests'),
+            os.environ.get('DB_USER', user),
+            os.environ.get('DB_PASSWORD', password),
+            os.environ.get('DB_HOST', host),
+            os.environ.get('DB_PORT', port),
+            os.environ.get('DB_NAME', db_name),
         )
 
 
@@ -55,19 +55,19 @@ def redirect_next(endpoint='home.index', **values):
 
 def to_csv(fieldnames, collection):
 
-        def make_writer(sio, fieldnames):
-            return csv.DictWriter(sio, fieldnames, dialect='excel')
+    def make_writer(sio, fieldnames):
+        return csv.DictWriter(sio, fieldnames, dialect='excel')
 
+    sio = StringIO()
+    w = make_writer(sio, fieldnames=fieldnames)
+    w.writeheader()
+    yield sio.getvalue()
+
+    for row in collection:
         sio = StringIO()
         w = make_writer(sio, fieldnames=fieldnames)
-        w.writeheader()
+        w.writerow(row)
         yield sio.getvalue()
-
-        for row in collection:
-            sio = StringIO()
-            w = make_writer(sio, fieldnames=fieldnames)
-            w.writerow(row)
-            yield sio.getvalue()
 
 
 def render_csv(fieldnames, collection, filename, datestamp=True):

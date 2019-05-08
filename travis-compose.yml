@@ -16,6 +16,6 @@ services:
     links:
       - db
   db:
-    image: postgres:10.5-alpine
+    image: postgres:11-alpine
     ports:
       - '127.0.0.1:5432:5432'
