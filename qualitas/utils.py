@@ -14,10 +14,16 @@ from werkzeug.routing import BaseConverter
 
 
 def make_database_url(**environ):
-    """
+    """Creates a database_url based on defaults or environment variables.
 
-    :param environ:
-    :return:
+    Heroku provides access to the database via a `DATABASE_URL` environment
+    variable. This function's main purpose is to check if this is provided and
+    if not to make a database url based on default values or environment
+    variables.
+
+    :param environ: a dictionary of values used to create a database url
+    :type environ: dict
+    :return: a string representation of a database url
     """
     if not environ:
         environ = os.environ
