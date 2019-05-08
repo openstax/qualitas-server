@@ -83,8 +83,6 @@ def app(app_config):
 
     yield _app
 
-    ctx.pop()
-
 
 @pytest.fixture(scope='function')
 def test_client(app):
