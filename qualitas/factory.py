@@ -25,7 +25,6 @@ def create_app(package_name, settings=None):
     http://flask.pocoo.org/docs/0.11/patterns/appfactories/
 
     :param package_name: the name of the package
-    :param package_path: the path of the package
     :param settings: override default settings via a python object
     :return: app: the main flask application object
     """

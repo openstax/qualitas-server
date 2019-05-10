@@ -10,11 +10,12 @@ from alembic import context
 from sqlalchemy import create_engine
 
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
-sys.path.insert(1, os.path.join(os.getcwd(), 'website'))
+sys.path.insert(1, os.path.join(os.getcwd(), 'qualitas'))
 
 from qualitas import create_app
 from qualitas.factory import db
 from qualitas.utils import make_database_url
+from instance import conf
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

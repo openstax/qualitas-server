@@ -19,24 +19,33 @@ credentials = [
 ]
 
 
+@pytest.fixture(scope='function', autouse=True)
+def set_database_name(monkeypatch):
+    monkeypatch.setenv("DB_NAME", "tests")
+
+
 @pytest.fixture(scope='session')
 def config_database(request):
-    connection_string = 'postgresql+psycopg2://{0}@{1}:{2}/{3}'
+    connection_template = 'postgresql+psycopg2://{0}@{1}:{2}/{3}'
 
     config = get_config(request)
-    pg_host = config.get('host')
+    pg_host = config.get('host', 'db')
     pg_port = config.get('port', 5432)
-    pg_user = config.get('user')
-    pg_db = config.get('db', 'tests')
+    pg_user = config.get('user', 'postgres')
+    pg_db = 'tests'
+    connection_string = connection_template.format(pg_user,
+                                                   pg_host,
+                                                   pg_port,
+                                                   pg_db)
 
     # Create the database
     init_postgresql_database(pg_user, pg_host, pg_port, pg_db)
 
-    yield connection_string.format(pg_user, pg_host, pg_port, pg_db)
+    yield connection_string
 
     # Ensure the database gets deleted
     drop_postgresql_database(
-        pg_user, pg_host, pg_port, pg_db, '10.5'
+        pg_user, pg_host, pg_port, pg_db, '11'
     )
 
 
@@ -73,8 +82,6 @@ def app(app_config):
     ctx.push()
 
     yield _app
-
-    ctx.pop()
 
 
 @pytest.fixture(scope='function')

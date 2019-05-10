@@ -1,4 +1,4 @@
-.PHONY: clean clean-test clean-pyc clean-build docs help
+.PHONY: clean clean-test clean-pyc clean-build test help
 .DEFAULT_GOAL := help
 
 DB_NAME ?= qualitas_db
@@ -27,6 +27,9 @@ initdb:
 	docker-compose exec db psql -h db -d postgres -U postgres -c "DROP DATABASE IF EXISTS ${DB_NAME}"
 	docker-compose exec db psql -h db -d postgres -U postgres -c "CREATE DATABASE ${DB_NAME} ENCODING 'UTF8'"
 	docker-compose exec web alembic upgrade head
+
+test:
+	docker-compose exec web pytest
 
 venv:
 	python3 -m venv .venv && \

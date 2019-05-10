@@ -13,17 +13,30 @@ from inflection import parameterize
 from werkzeug.routing import BaseConverter
 
 
-def make_database_url():
+def make_database_url(**environ):
+    """Creates a database_url based on defaults or environment variables.
+
+    Heroku provides access to the database via a `DATABASE_URL` environment
+    variable. This function's main purpose is to check if this is provided and
+    if not to make a database url based on default values or environment
+    variables.
+
+    :param environ: a dictionary of values used to create a database url
+    :type environ: dict
+    :return: a string representation of a database url
+    """
+    if not environ:
+        environ = os.environ
     # Check for DATABASE_URL that is provided by heroku
-    if 'DATABASE_URL' in os.environ and os.environ['DATABASE_URL']:
-        return os.environ.get('DATABASE_URL')
+    if 'DATABASE_URL' in environ and environ['DATABASE_URL']:
+        return environ.get('DATABASE_URL')
     else:
         return 'postgresql+psycopg2://{0}:{1}@{2}:{3}/{4}'.format(
-            os.environ.get('DB_USER', 'postgres'),
-            os.environ.get('DB_PASSWORD', ''),
-            os.environ.get('DB_HOST', '127.0.0.1'),
-            os.environ.get('DB_PORT', '5432'),
-            os.environ.get('DB_NAME', 'tests'),
+            environ.get('DB_USER', 'postgres'),
+            environ.get('DB_PASSWORD', ''),
+            environ.get('DB_HOST', 'db'),
+            environ.get('DB_PORT', '5432'),
+            environ.get('DB_NAME', 'tests'),
         )
 
 
@@ -55,19 +68,19 @@ def redirect_next(endpoint='home.index', **values):
 
 def to_csv(fieldnames, collection):
 
-        def make_writer(sio, fieldnames):
-            return csv.DictWriter(sio, fieldnames, dialect='excel')
+    def make_writer(sio, fieldnames):
+        return csv.DictWriter(sio, fieldnames, dialect='excel')
 
+    sio = StringIO()
+    w = make_writer(sio, fieldnames=fieldnames)
+    w.writeheader()
+    yield sio.getvalue()
+
+    for row in collection:
         sio = StringIO()
         w = make_writer(sio, fieldnames=fieldnames)
-        w.writeheader()
+        w.writerow(row)
         yield sio.getvalue()
-
-        for row in collection:
-            sio = StringIO()
-            w = make_writer(sio, fieldnames=fieldnames)
-            w.writerow(row)
-            yield sio.getvalue()
 
 
 def render_csv(fieldnames, collection, filename, datestamp=True):
