@@ -18,14 +18,14 @@ DB_PASSWORD = os.environ.get('DB_PASSWORD', '')
 DB_HOST = os.environ.get('DB_HOST', 'db')
 DB_PORT = os.environ.get('DB_PORT', '5432')
 DB_NAME = os.environ.get('DB_NAME', 'qualitas_db')
-DB_URL = os.environ.get('DB_URL')
+DATABASE_URL = os.environ.get('DATABASE_URL', None)
 SQLALCHEMY_DATABASE_URI = make_database_url(
     DB_USER=DB_USER,
     DB_PASSWORD=DB_PASSWORD,
     DB_HOST=DB_HOST,
     DB_PORT=DB_PORT,
     DB_NAME=DB_NAME,
-    DB_URL=DB_URL,
+    DATABASE_URL=DATABASE_URL,
 )
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
