@@ -50,3 +50,71 @@ def check_issue_connection(zenhub_client, repo_id, issue_id):
             continue
 
     return False
+
+
+def get_org_releases(github_v4_client, org):
+    github_query = """\
+query {
+    organization(login: "%(org)s") {
+        repositories(first: 100
+                     orderBy: {
+                         direction: DESC
+                         field: PUSHED_AT
+                     }
+                     %(after)s) {
+            nodes {
+                name
+                url
+                pushedAt
+                refs(refPrefix: "refs/tags/"
+                     orderBy: {
+                         direction: ASC
+                         field: TAG_COMMIT_DATE
+                     }
+                     last: 1) {
+                    nodes {
+                        name
+                        target { commitUrl }
+                    }
+                }
+                defaultBranchRef {
+                    target {
+                        oid
+                        commitUrl
+                    }
+                }
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+        }
+    }
+}
+"""
+    after = ''
+    while True:
+        result = github_v4_client.call_api(
+            github_query % {'org': org, 'after': after}
+        )['data']['organization']['repositories']
+
+        for repo in result['nodes']:
+            release = repo['refs']['nodes']
+            head = repo['defaultBranchRef']
+            if release:
+                yield {
+                    'name': repo['name'],
+                    'url': repo['url'],
+                    'pushed_at': repo['pushedAt'],
+                    'release': {
+                        'version': release[0]['name'],
+                        'url': release[0]['target']['commitUrl'],
+                    },
+                    'head_ref': {
+                        'commit': head['target']['oid'],
+                        'url': head['target']['commitUrl'],
+                    },
+                }
+        after = 'after: "{}"'.format(result['pageInfo']['endCursor'])
+        if not result['pageInfo']['hasNextPage']:
+            break
