@@ -1,4 +1,7 @@
+import json
 import logging
+import re
+from urllib.request import urlopen
 
 import github3
 
@@ -118,3 +121,48 @@ query {
         after = 'after: "{}"'.format(result['pageInfo']['endCursor'])
         if not result['pageInfo']['hasNextPage']:
             break
+
+
+def parse_history_txt(server):
+    content = urlopen('https://{}/history.txt'.format(server)).read().decode(
+        'utf-8')
+    latest = re.split('---+\n', re.split('===+\n', content, maxsplit=1)[0])
+    release = {package: [version]
+               for package, version in json.loads(latest[0]).items()}
+    release_date = release.pop('date')[0]
+
+    if 'webview' in release and '(' in release['webview'][0]:
+        # webview version looks like:
+        #    fc509073b895ac03bc66a3191204c1f44c648175 (v0.50.0-11-gfc50907)
+        # only display the version in parentheses for webview
+        version = release['webview'][0].split('(')[1].split(')')[0]
+        release['webview'][0] = version
+
+    for line in latest[1].splitlines():
+        if '==' in line and not line.strip().startswith('#'):
+            package_name, version = line.split('==')
+        elif 'git+https' in line:
+            package_name = line.split('/')[-1].split('@')[0].replace(
+                '.git', '')
+            version = line.split('@')[-1].split('#')[0]
+        else:
+            continue
+        versions = release.setdefault(package_name, [])
+        if version not in versions:
+            versions.append(version)
+
+    for package_name, versions in release.items():
+        for i, version in enumerate(versions):
+            commit = ''
+            if '-g' in version:
+                commit = version.rsplit('-g')[-1]
+            elif re.match('[0-9a-f]{40}$', version):
+                commit = version
+                # truncate full commit hashes
+                version = version[:7]
+            versions[i] = {
+                'version': version,
+                'commit': commit,
+            }
+
+    return release_date, release
