@@ -1,5 +1,5 @@
 from qualitas.exports.export import get_pr_commit_data
-from .helpers import data_loader
+from ..helpers import data_loader
 
 
 def test_get_pr_commit_data(test_client):
@@ -9,7 +9,7 @@ def test_get_pr_commit_data(test_client):
     # ATM. Updates to qualitas are not very frequent right now.
     # As we advance the test framework we can make this better
 
-    data = data_loader("pr_export.json")
+    data = data_loader("integration/pr_export.json")
     gh_client = test_client.app.github.client
     zh_client = test_client.app.zenhub.client
 

@@ -1,4 +1,4 @@
-"""helpers for integration tests."""
+"""helpers for tests."""
 
 import json
 import os
