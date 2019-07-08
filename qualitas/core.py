@@ -2,7 +2,7 @@ from flask_babel import Babel
 from flask_security import Security
 from flask_sqlalchemy import SQLAlchemy
 
-from qualitas.ext.flask_github import GitHub
+from qualitas.ext.flask_github import GitHub, GitHubV4
 from qualitas.ext.flask_zenhub import ZenHub
 
 # Instantiate Extensions
@@ -19,5 +19,6 @@ db = SQLAlchemy(
     }),
 )
 github = GitHub()
+githubv4 = GitHubV4()
 security = Security()
 zenhub = ZenHub()

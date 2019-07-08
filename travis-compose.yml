@@ -10,6 +10,7 @@ services:
       - FLASK_ENV=development
       - GITHUB_USER=${GITHUB_USER}
       - GITHUB_PASSWORD=${GITHUB_PASSWORD}
+      - GITHUB_BEARER_TOKEN=${GITHUB_BEARER_TOKEN}
       - ZENHUB_TOKEN=${ZENHUB_TOKEN}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}

@@ -1,4 +1,7 @@
+import json
 import logging
+import os
+from urllib.request import Request, urlopen
 
 from ghzh import GitHubClient
 
@@ -98,3 +101,43 @@ class GitHub(object):
             self.token_login()
         else:
             self.basic_login()
+
+
+class GitHubV4(object):
+    """
+    A Flask extension to call the GitHub v4 API.
+    """
+    DEFAULT_ENDPOINT = 'https://api.github.com/graphql'
+
+    def __init__(self, app=None):
+        self.app = app
+
+        if app is None:
+            self.endpoint = os.getenv(
+                'GITHUB_V4_ENDPOINT', GitHubV4.DEFAULT_ENDPOINT)
+            self.token = os.environ['GITHUB_BEARER_TOKEN']
+        else:
+            self.init_app(app)
+
+    def init_app(self, app):
+        # Register with the application
+        self.app = app
+        app.githubv4 = self
+        app.extensions['githubv4'] = self
+
+        # Configure the extension
+        app.config.setdefault('GITHUB_BEARER_TOKEN', None)
+        app.config.setdefault('GITHUB_V4_ENDPOINT', DEFAULT_ENDPOINT)
+
+        self.token = app.config['GITHUB_BEARER_TOKEN']
+        self.endpoint = app.config['GITHUB_V4_ENDPOINT']
+
+    def call_api(self, query):
+        req = Request(self.endpoint, method='POST',
+                      data=json.dumps({'query': query}).encode('utf-8'),
+                      headers={'Authorization': 'bearer {}'.format(
+                          self.token)})
+        content = json.loads(urlopen(req).read().decode('utf-8'))
+        if 'errors' in content:
+            LOGS.exception('GitHubV4 error: {}'.format(content))
+        return content
