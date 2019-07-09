@@ -1,6 +1,7 @@
 import json
 import logging
 import re
+import urllib.error
 from urllib.request import urlopen
 
 import github3
@@ -166,3 +167,21 @@ def parse_history_txt(server):
             }
 
     return release_date, release
+
+
+def get_pypi_release(package_name):
+    known_wrong_matches = ('webview',)
+    if package_name in known_wrong_matches:
+        return None
+    url = 'https://pypi.org/pypi/{}/json'.format(package_name)
+    try:
+        content = json.loads(urlopen(url).read().decode('utf-8'))
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return None
+        LOGS.exception('pypi.org returns unexpected error')
+        return None
+    return {
+        'version': content['info']['version'],
+        'url': content['info']['release_url'],
+    }
