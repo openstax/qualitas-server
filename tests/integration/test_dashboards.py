@@ -1,5 +1,5 @@
-def test_get_cnx_repos_view(test_client):
-    response = test_client.get("/dashboards/cnx-repos")
+def test_get_old_cnx_repos_view(test_client):
+    response = test_client.get("/dashboards/old-cnx-repos")
     assert "<title>Qualitas | CNX Repos Dashboard</title>" in response
 
 

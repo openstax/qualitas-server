@@ -12,9 +12,11 @@ dashboards = Blueprint('dashboards',
 TUTOR_REPOS = data.get_tutor_repos()
 
 
-@dashboards.route('/cnx-repos', methods=['GET'])
-def cnx_repos():
-    return render_template('cnx_repos.html')
+@dashboards.route('/old-cnx-repos', methods=['GET'])
+def old_cnx_repos():
+    return render_template('old_cnx_repos.html')
+
+
 
 
 @dashboards.route('/urlcommands', methods=['GET'])
