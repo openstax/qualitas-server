@@ -70,7 +70,14 @@ def test_get_pypi_release(LOGS):
 
     with mock.patch('qualitas.exports.export.urlopen') as urlopen:
         urlopen.side_effect = raise_http_error(500, 'Internal Server Error')
+
+        # should be returning cached value
         assert get_pypi_release('cnx-webview') is None
+        assert not urlopen.called
+        assert not LOGS.exception.called
+
+        # explicitly refresh cache
+        assert get_pypi_release('cnx-webview', refresh_cache=True) is None
         assert LOGS.exception.called
 
     with mock.patch('qualitas.exports.export.urlopen') as urlopen:

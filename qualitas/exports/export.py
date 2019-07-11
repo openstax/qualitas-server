@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+import functools
 import json
 import logging
 import re
@@ -169,6 +171,30 @@ def parse_history_txt(server):
     return release_date, release
 
 
+def pypi_cache(cache_for, none_result_cache_for):
+    def decorator(f):
+        # package_name -> (valid_until, result)
+        cache = {}
+
+        @functools.wraps(f)
+        def inner(package_name, refresh_cache=False):
+            if refresh_cache or package_name not in cache or \
+                    cache[package_name][0] < datetime.now():
+                result = f(package_name)
+                if result is None:
+                    valid_until = datetime.now() + none_result_cache_for
+                else:
+                    valid_until = datetime.now() + cache_for
+                cache[package_name] = (valid_until, result)
+            return cache[package_name][1]
+
+        return inner
+
+    return decorator
+
+
+@pypi_cache(cache_for=timedelta(days=1),
+            none_result_cache_for=timedelta(days=7))
 def get_pypi_release(package_name):
     known_wrong_matches = ('webview',)
     if package_name in known_wrong_matches:
