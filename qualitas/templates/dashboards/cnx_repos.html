@@ -1,0 +1,86 @@
+{% extends 'dashboards/base.html' %}
+
+{% block title %}Qualitas | CNX Repository Dashboard{% endblock title %}
+
+{% block extra_styles %}
+<style type="text/css">
+  .container {
+    width: 100%;
+    max-width: none;
+  }
+</style>
+{% endblock extra_styles %}
+
+{% block content %}
+
+  <div class="container">
+
+    <div class="row">
+      <div class="col s12">
+        <h2>CNX Repository Data</h2>
+        <p><strong>Note:</strong> If you see several versions for a package, it means that archive, publishing, press and legacy have installed different versions of the package.</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Repository</th>
+              <th>GitHub master</th>
+              <th>GitHub tag</th>
+              <th>PyPi release</th>
+              <th><a href="https://qa.cnx.org/history.txt" title="View qa.cnx.org history.txt" target="_blank">qa.cnx.org</a> ({{ release_dates['qa.cnx.org']|truncate(10, end='') }})</th>
+              <th><a href="https://staging.cnx.org/history.txt" title="View staging.cnx.org history.txt" target="_blank">staging.cnx.org</a> ({{ release_dates['staging.cnx.org']|truncate(10, end='') }})</th>
+              <th><a href="https://cnx.org/history.txt" title="View cnx.org history.txt" target="_blank">cnx.org</a> ({{ release_dates['cnx.org']|truncate(10, end='') }})</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for repo in repositories %}
+            <tr>
+              <td><a href="{{ repo.url }}" title="View the github repo" target="_blank">{{ repo.name }}</a></td>
+              <td><a href="{{ repo.head_url }}" title="View the commit" target="_blank">{{ repo.head_commit }}{% if repo.head_full_commit in repo.latest_tag_url %} ({{ repo.latest_tag }}){% endif %}</a></td>
+              <td><a href="{{ repo.latest_tag_url }}" title="View the commit" target="_blank">{{ repo.latest_tag }}</a></td>
+              <td{% if 'pypi' in repo.unexpected %} class="red lighten-5"{% endif %}>
+                {% if repo.pypi %}
+                <a href="{{ repo.pypi.url }}" title="View the pypi release page" target="_blank">{{ repo.pypi.version }}</a>
+                {% else %}
+                -
+                {% endif %}
+              </td>
+              <td{% if 'qa' in repo.unexpected %} class="red lighten-5"{% endif %}>
+                {% for version in repo.qa %}
+                {% if version.commit %}
+                <a href="{{ repo.url }}/commit/{{ version.commit }}" title="View the commit" target="_blank">{{ version.version }}{% if version.commit in repo.latest_tag_url %} ({{ repo.latest_tag }}){% endif %}</a>
+                {% else %}
+                {{ version.version }}
+                {% endif %}
+                {% if not loop.last %}, {% endif %}
+                {% endfor %}
+              </td>
+              <td{% if 'staging' in repo.unexpected %} class="red lighten-5"{% endif %}>
+                {% for version in repo.staging %}
+                {% if version.commit %}
+                <a href="{{ repo.url }}/commit/{{ version.commit }}" title="View the commit" target="_blank">{{ version.version }}</a>
+                {% else %}
+                {{ version.version }}
+                {% endif %}
+                {% if not loop.last %}, {% endif %}
+                {% endfor %}
+              </td>
+              <td{% if 'cnx' in repo.unexpected %} class="red lighten-5"{% endif %}>
+                {% for version in repo.cnx %}
+                {% if version.commit %}
+                <a href="{{ repo.url }}/commit/{{ version.commit }}" title="View the commit" target="_blank">{{ version.version }}</a>
+                {% else %}
+                {{ version.version }}
+                {% endif %}
+                {% if not loop.last %}, {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+{% endblock content %}
