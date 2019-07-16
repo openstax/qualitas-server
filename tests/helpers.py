@@ -1,4 +1,4 @@
-"""helpers for integration tests."""
+"""helpers for tests."""
 
 import json
 import os
@@ -11,7 +11,10 @@ def data_loader(filename):
 
     def data_helper():
         with open(data_file) as infile:
-            data = json.load(infile)
+            if data_file.endswith('.json'):
+                data = json.load(infile)
+            else:
+                data = infile.read()
         return data
 
     return data_helper()

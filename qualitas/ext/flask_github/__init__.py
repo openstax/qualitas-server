@@ -1,1 +1,1 @@
-from .base import GitHub
+from .base import GitHub, GitHubV4

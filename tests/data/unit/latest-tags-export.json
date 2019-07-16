@@ -1,0 +1,67 @@
+[
+    {
+        "name": "cnx-cssselect2",
+        "url": "https://github.com/openstax/cnx-cssselect2",
+        "pushed_at": "2019-02-20T22:01:19Z",
+        "release": {
+            "version": "v0.2.3",
+            "url": "https://github.com/openstax/cnx-cssselect2/commit/e75af7659b2de3e7b9f71a7fd1c8265e69a1532c"
+        },
+        "head_ref": {
+            "commit": "e75af7659b2de3e7b9f71a7fd1c8265e69a1532c",
+            "url": "https://github.com/openstax/cnx-cssselect2/commit/e75af7659b2de3e7b9f71a7fd1c8265e69a1532c"
+        }
+    },
+    {
+        "name": "pytest-selenium-training",
+        "url": "https://github.com/openstax/pytest-selenium-training",
+        "pushed_at": "2019-02-20T21:59:58Z",
+        "release": {
+            "version": "v0.6",
+            "url": "https://github.com/openstax/pytest-selenium-training/commit/a4c58ada3e61713dd2fcc270969c67d697b1fc99"
+        },
+        "head_ref": {
+            "commit": "7573a077758a920b70fa7722ff5a585e1b0983f9",
+            "url": "https://github.com/openstax/pytest-selenium-training/commit/7573a077758a920b70fa7722ff5a585e1b0983f9"
+        }
+    },
+    {
+        "name": "pattern-library",
+        "url": "https://github.com/openstax/pattern-library",
+        "pushed_at": "2019-02-08T19:40:40Z",
+        "release": {
+            "version": "v1.1.5",
+            "url": "https://github.com/openstax/pattern-library/commit/1ec7579443c48c679cefface15f4c4274c132a6e"
+        },
+        "head_ref": {
+            "commit": "2a433bc68e8dbf664186971a16f6b996ef0e7cb8",
+            "url": "https://github.com/openstax/pattern-library/commit/2a433bc68e8dbf664186971a16f6b996ef0e7cb8"
+        }
+    },
+    {
+        "name": "exchange-ruby",
+        "url": "https://github.com/openstax/exchange-ruby",
+        "pushed_at": "2016-02-08T20:38:01Z",
+        "release": {
+            "version": "v0.2.1",
+            "url": "https://github.com/openstax/exchange-ruby/commit/20a3c227c0e8766060da24eccf631dc35efc3860"
+        },
+        "head_ref": {
+            "commit": "3cb440172bbe0373e52b1a16e17cac913061727a",
+            "url": "https://github.com/openstax/exchange-ruby/commit/3cb440172bbe0373e52b1a16e17cac913061727a"
+        }
+    },
+    {
+        "name": "openstax-accounts",
+        "url": "https://github.com/openstax/openstax-accounts",
+        "pushed_at": "2015-12-15T11:20:10Z",
+        "release": {
+            "version": "v1.0.2",
+            "url": "https://github.com/openstax/openstax-accounts/commit/f96049d99ba3abb3c482508c0c19d87b3cecb005"
+        },
+        "head_ref": {
+            "commit": "f96049d99ba3abb3c482508c0c19d87b3cecb005",
+            "url": "https://github.com/openstax/openstax-accounts/commit/f96049d99ba3abb3c482508c0c19d87b3cecb005"
+        }
+    }
+]

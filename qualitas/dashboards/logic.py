@@ -1,4 +1,7 @@
-from qualitas.core import github
+from qualitas.core import github, githubv4
+from qualitas.exports.export import (
+    get_org_releases, get_pypi_release, parse_history_txt,
+)
 
 
 def get_repository_dashboard_data(repositories):
@@ -41,3 +44,74 @@ def get_github_repository_data(repo_full_name):
     repo = github.client.repository(org_name, repo_name)
 
     return repo
+
+
+def version_unexpected(server_versions, repo):
+    if not server_versions:
+        # if the package is not installed on this server, nothing to do
+        return False
+    if len(server_versions) > 1:
+        # more than one version of the same package, not ok
+        return True
+
+    # remove the sometimes prepended v in package versions
+    version = server_versions[0]['version'].replace('v', '')
+    commit = server_versions[0]['commit']
+    tag_url = repo['latest_tag_url']
+    head_commit = repo['head_full_commit']
+    pypi_version = repo['pypi'] and repo['pypi']['version'].replace('v', '')
+    tag = repo['latest_tag'].replace('v', '')
+
+    if commit and (commit in tag_url or commit == head_commit):
+        # if commit is present and is the same as the latest tag or master,
+        # it's ok
+        return False
+    if version in (pypi_version, tag):
+        # if version is the same as the pypi version or latest tag, it's ok
+        return False
+    if tag in version:
+        # if version is "kitschy.kolache v0.76.0" and tag is "v0.76.0", it's ok
+        return False
+
+    # everything else is not ok
+    return True
+
+
+def get_cnx_dashboard_repos():
+    org_repos = []
+    for org in ('openstax', 'Rhaptos'):
+        for r in get_org_releases(githubv4, org):
+            org_repos.append(r)
+    org_repos.sort(key=lambda r: r['pushed_at'], reverse=True)
+    history_txt = {}
+    release_dates = {}
+    server_repos = set()
+    for server in ('qa.cnx.org', 'staging.cnx.org', 'cnx.org'):
+        release_dates[server], history_txt[server] = parse_history_txt(server)
+        server_repos = server_repos.union(history_txt[server].keys())
+    repos = []
+    for r in org_repos:
+        if r['name'] in server_repos:
+            repo = {
+                'name': r['name'],
+                'url': r['url'],
+                'latest_tag': r['release']['version'],
+                'latest_tag_url': r['release']['url'],
+                'head_commit': r['head_ref']['commit'][:7],
+                'head_full_commit': r['head_ref']['commit'],
+                'head_url': r['head_ref']['url'],
+                'pypi': get_pypi_release(r['name']),
+                'unexpected': [],
+                'release_dates': {},
+            }
+            if repo['pypi'] and not repo['latest_tag'].endswith(
+                    repo['pypi']['version']):
+                repo['unexpected'].append('pypi')
+            for server_name, versions in history_txt.items():
+                server_version = versions.get(r['name'], [])
+                server_alias = server_name.split('.', 1)[0]
+                repo[server_alias] = server_version
+                if version_unexpected(server_version, repo):
+                    repo['unexpected'].append(server_alias)
+            repos.append(repo)
+    return release_dates, repos

@@ -3,7 +3,9 @@ from flask import (Blueprint,
                    render_template)
 
 from qualitas.admin import data
-from qualitas.dashboards.logic import get_repository_dashboard_data
+from qualitas.dashboards.logic import (
+    get_repository_dashboard_data, get_cnx_dashboard_repos
+)
 
 dashboards = Blueprint('dashboards',
                        __name__,
@@ -12,9 +14,17 @@ dashboards = Blueprint('dashboards',
 TUTOR_REPOS = data.get_tutor_repos()
 
 
+@dashboards.route('/old-cnx-repos', methods=['GET'])
+def old_cnx_repos():
+    return render_template('old_cnx_repos.html')
+
+
 @dashboards.route('/cnx-repos', methods=['GET'])
 def cnx_repos():
-    return render_template('cnx_repos.html')
+    release_dates, repos = get_cnx_dashboard_repos()
+    return render_template('cnx_repos.html',
+                           release_dates=release_dates,
+                           repositories=repos,)
 
 
 @dashboards.route('/urlcommands', methods=['GET'])
