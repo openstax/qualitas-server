@@ -6,3 +6,10 @@ fieldset {
 strong {
     font-weight: 800;
 }
+
+thead {
+    /* cnx-repos table is long so keep the header visible */
+    top: 0;
+    position: sticky;
+    background-color: white;
+}
