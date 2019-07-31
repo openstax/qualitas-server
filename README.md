@@ -3,16 +3,11 @@
 Home to any tools or dashboards used by the OpenStax QA team.
 
 
-
-### External Services
+## Get Started
 
 The following external services are required:
 
-  - PostgreSQL 9.6
-
-## Get Started
-
-It's expected that you'll be running the application and external services with docker.
+  - PostgreSQL 11
 
 We recommend you install them using Docker and Docker Compose.
 This should work on any OS that docker can be installed on:
