@@ -42,4 +42,4 @@ help:
 	@echo "clean-build 		Remove build artifacts"
 	@echo "clean-pyc		Remove file artifacts"
 	@echo "clean-test		Remove test artifacts"
-	@echo "init-db			Create the database and run migrations"
+	@echo "initdb			Create the database and run migrations"
