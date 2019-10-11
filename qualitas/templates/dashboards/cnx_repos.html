@@ -35,8 +35,8 @@
             {% for repo in repositories %}
             <tr>
               <td><a href="{{ repo.url }}" title="View the github repo" target="_blank">{{ repo.name }}</a></td>
-              <td><a href="{{ repo.head_url }}" title="View the commit" target="_blank">{{ repo.head_commit }}{% if repo.head_full_commit in repo.latest_tag_url %} ({{ repo.latest_tag }}){% endif %}</a></td>
-              <td><a href="{{ repo.latest_tag_url }}" title="View the commit" target="_blank">{{ repo.latest_tag }}</a></td>
+              <td><a href="{{ repo.head_url }}" title="View the commit" target="_blank">{{ repo.head_commit }}{% if repo.head_full_commit in repo.latest_tag_commit_url %} ({{ repo.latest_tag }}){% endif %}</a></td>
+              <td><a href="{{ repo.latest_tag_url }}" title="View the tag" target="_blank">{{ repo.latest_tag }}</a></td>
               <td{% if 'pypi' in repo.unexpected %} class="red lighten-5"{% endif %}>
                 {% if repo.pypi %}
                 <a href="{{ repo.pypi.url }}" title="View the pypi release page" target="_blank">{{ repo.pypi.version }}</a>
@@ -47,7 +47,7 @@
               <td{% if 'qa' in repo.unexpected %} class="red lighten-5"{% endif %}>
                 {% for version in repo.qa %}
                 {% if version.commit %}
-                <a href="{{ repo.url }}/commit/{{ version.commit }}" title="View the commit" target="_blank">{{ version.version }}{% if version.commit in repo.latest_tag_url %} ({{ repo.latest_tag }}){% endif %}</a>
+                <a href="{{ repo.url }}/commit/{{ version.commit }}" title="View the commit" target="_blank">{{ version.version }}{% if version.commit in repo.latest_tag_commit_url %} ({{ repo.latest_tag }}){% endif %}</a>
                 {% else %}
                 {{ version.version }}
                 {% endif %}

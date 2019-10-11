@@ -96,7 +96,9 @@ def get_cnx_dashboard_repos():
                 'name': r['name'],
                 'url': r['url'],
                 'latest_tag': r['release']['version'],
-                'latest_tag_url': r['release']['url'],
+                'latest_tag_commit_url': r['release']['url'],
+                'latest_tag_url': '{}/releases/tag/{}'.format(
+                    r['url'], r['release']['version']),
                 'head_commit': r['head_ref']['commit'][:7],
                 'head_full_commit': r['head_ref']['commit'],
                 'head_url': r['head_ref']['url'],
