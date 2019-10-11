@@ -10,11 +10,6 @@ def test_get_old_cnx_repos_view(test_client):
 
 
 def test_get_cnx_repos_view(test_client):
-    p1 = mock.patch('qualitas.dashboards.logic.get_pypi_release')
-    get_pypi_release = p1.start()
-    get_pypi_release.side_effect = lambda package: \
-        data_loader('integration/pypi-releases.json').get(package)
-
     p2 = mock.patch('qualitas.dashboards.logic.parse_history_txt')
     parse_history_txt = p2.start()
     parse_history_txt.side_effect = lambda server: \
@@ -42,7 +37,7 @@ def test_get_cnx_repos_view(test_client):
     assert '"https://github.com/openstax/cnx-recipes"' in repo
     assert '8fea596 (v1.34.0)' in master
     assert 'v1.34.0' in tag
-    assert 'https://pypi.org/project/cnx-recipes/1.34.0' in pypi
+    assert pypi == '-'  # done using ajax
     assert 'github.com' in qa_version and '8fea596 (v1.34.0)' in qa_version
     assert staging_version == '1.34.0'
     assert prod_version == '1.33.0'

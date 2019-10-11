@@ -1,6 +1,6 @@
 from qualitas.core import github, githubv4
 from qualitas.exports.export import (
-    get_org_releases, get_pypi_release, parse_history_txt,
+    get_org_releases, parse_history_txt,
 )
 
 
@@ -59,15 +59,11 @@ def version_unexpected(server_versions, repo):
     commit = server_versions[0]['commit']
     tag_url = repo['latest_tag_url']
     head_commit = repo['head_full_commit']
-    pypi_version = repo['pypi'] and repo['pypi']['version'].replace('v', '')
     tag = repo['latest_tag'].replace('v', '')
 
     if commit and (commit in tag_url or commit == head_commit):
         # if commit is present and is the same as the latest tag or master,
         # it's ok
-        return False
-    if version in (pypi_version, tag):
-        # if version is the same as the pypi version or latest tag, it's ok
         return False
     if tag in version:
         # if version is "kitschy.kolache v0.76.0" and tag is "v0.76.0", it's ok
@@ -102,13 +98,9 @@ def get_cnx_dashboard_repos():
                 'head_commit': r['head_ref']['commit'][:7],
                 'head_full_commit': r['head_ref']['commit'],
                 'head_url': r['head_ref']['url'],
-                'pypi': get_pypi_release(r['name']),
                 'unexpected': [],
                 'release_dates': {},
             }
-            if repo['pypi'] and not repo['latest_tag'].endswith(
-                    repo['pypi']['version']):
-                repo['unexpected'].append('pypi')
             for server_name, versions in history_txt.items():
                 server_version = versions.get(r['name'], [])
                 server_alias = server_name.split('.', 1)[0]

@@ -37,13 +37,7 @@
               <td><a href="{{ repo.url }}" title="View the github repo" target="_blank">{{ repo.name }}</a></td>
               <td><a href="{{ repo.head_url }}" title="View the commit" target="_blank">{{ repo.head_commit }}{% if repo.head_full_commit in repo.latest_tag_commit_url %} ({{ repo.latest_tag }}){% endif %}</a></td>
               <td><a href="{{ repo.latest_tag_url }}" title="View the tag" target="_blank">{{ repo.latest_tag }}</a></td>
-              <td{% if 'pypi' in repo.unexpected %} class="red lighten-5"{% endif %}>
-                {% if repo.pypi %}
-                <a href="{{ repo.pypi.url }}" title="View the pypi release page" target="_blank">{{ repo.pypi.version }}</a>
-                {% else %}
-                -
-                {% endif %}
-              </td>
+              <td> - </td>
               <td{% if 'qa' in repo.unexpected %} class="red lighten-5"{% endif %}>
                 {% for version in repo.qa %}
                 {% if version.commit %}
@@ -84,3 +78,30 @@
   </div>
 
 {% endblock content %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+        function notOnPypi(packageName) {
+            return packageName.startsWith('Products.') || [
+                'oer.exports', 'webview', 'rhaptos.swordservice.plone',
+                'rhaptos.mathjax', 'rhaptos.atompub.plone', 'cnx-deploy'
+            ].indexOf(packageName) > -1;
+        }
+
+        $('tbody tr').each((i, tr) => {
+            const tds = tr.children;
+            const packageName = $(tds[0]).text();
+            const githubTag = $(tds[2]).text();
+            if (!notOnPypi(packageName)) {
+                $.getJSON(`https://pypi.org/pypi/${packageName}/json`, (data) => {
+                    jQuery(tds[3]).text('');
+                    jQuery('<a title="View the pypi release page" target="_blank">').attr('href', data.info.project_url).text(data.info.version).appendTo(tds[3]);
+                    if (githubTag.replace('v', '') !== data.info.version) {
+                        jQuery(tds[3]).addClass('red lighten-5');
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock scripts %}

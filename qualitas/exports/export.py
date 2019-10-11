@@ -1,9 +1,6 @@
-from datetime import datetime, timedelta
-import functools
 import json
 import logging
 import re
-import urllib.error
 from urllib.request import urlopen
 
 import github3
@@ -169,45 +166,3 @@ def parse_history_txt(server):
             }
 
     return release_date, release
-
-
-def pypi_cache(cache_for, none_result_cache_for):
-    def decorator(f):
-        # package_name -> (valid_until, result)
-        cache = {}
-
-        @functools.wraps(f)
-        def inner(package_name, refresh_cache=False):
-            if refresh_cache or package_name not in cache or \
-                    cache[package_name][0] < datetime.now():
-                result = f(package_name)
-                if result is None:
-                    valid_until = datetime.now() + none_result_cache_for
-                else:
-                    valid_until = datetime.now() + cache_for
-                cache[package_name] = (valid_until, result)
-            return cache[package_name][1]
-
-        return inner
-
-    return decorator
-
-
-@pypi_cache(cache_for=timedelta(days=1),
-            none_result_cache_for=timedelta(days=7))
-def get_pypi_release(package_name):
-    known_wrong_matches = ('webview',)
-    if package_name in known_wrong_matches:
-        return None
-    url = 'https://pypi.org/pypi/{}/json'.format(package_name)
-    try:
-        content = json.loads(urlopen(url).read().decode('utf-8'))
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return None
-        LOGS.exception('pypi.org returns unexpected error')
-        return None
-    return {
-        'version': content['info']['version'],
-        'url': content['info']['release_url'],
-    }
