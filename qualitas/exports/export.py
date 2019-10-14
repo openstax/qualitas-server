@@ -1,10 +1,9 @@
-from datetime import datetime, timedelta
-import functools
+import io
 import json
 import logging
 import re
-import urllib.error
 from urllib.request import urlopen
+import zipfile
 
 import github3
 
@@ -171,43 +170,31 @@ def parse_history_txt(server):
     return release_date, release
 
 
-def pypi_cache(cache_for, none_result_cache_for):
-    def decorator(f):
-        # package_name -> (valid_until, result)
-        cache = {}
+def get_cnx_deploy_versions():
+    zip_url = 'https://github.com/openstax/cnx-deploy/archive/master.zip'
 
-        @functools.wraps(f)
-        def inner(package_name, refresh_cache=False):
-            if refresh_cache or package_name not in cache or \
-                    cache[package_name][0] < datetime.now():
-                result = f(package_name)
-                if result is None:
-                    valid_until = datetime.now() + none_result_cache_for
-                else:
-                    valid_until = datetime.now() + cache_for
-                cache[package_name] = (valid_until, result)
-            return cache[package_name][1]
+    def open_prod_files(z):
+        for name in z.namelist():
+            if '/environments/__prod_envs/' in name and \
+                    not name.endswith('/'):
+                with z.open(name) as f:
+                    yield f
 
-        return inner
+    versions = {}
+    with zipfile.ZipFile(io.BytesIO(urlopen(zip_url).read())) as z:
+        for f in open_prod_files(z):
+            for line in f:
+                if b'=' in line:
+                    m = re.search(r'^([^ =]+)\s*=+\s*(\S+)$',
+                                  line.decode('utf-8').strip())
+                    if m:
+                        package_name, version = m.groups()
+                        versions.setdefault(package_name, set()).add(version)
+                elif b':' in line:
+                    m = re.search(r'^([^ :]+)_version:\s*(\S+)$',
+                                  line.decode('utf-8').strip())
+                    if m:
+                        package_name, version = m.groups()
+                        versions.setdefault(package_name, set()).add(version)
 
-    return decorator
-
-
-@pypi_cache(cache_for=timedelta(days=1),
-            none_result_cache_for=timedelta(days=7))
-def get_pypi_release(package_name):
-    known_wrong_matches = ('webview',)
-    if package_name in known_wrong_matches:
-        return None
-    url = 'https://pypi.org/pypi/{}/json'.format(package_name)
-    try:
-        content = json.loads(urlopen(url).read().decode('utf-8'))
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return None
-        LOGS.exception('pypi.org returns unexpected error')
-        return None
-    return {
-        'version': content['info']['version'],
-        'url': content['info']['release_url'],
-    }
+    return versions

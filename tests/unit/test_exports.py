@@ -4,7 +4,7 @@ from unittest import mock
 from urllib.error import HTTPError
 
 from qualitas.exports.export import (
-    get_org_releases, parse_history_txt, get_pypi_release
+    get_org_releases, parse_history_txt, get_cnx_deploy_versions
 )
 
 from ..helpers import data_loader
@@ -56,34 +56,12 @@ def test_parse_history_txt():
         'version': '1.49', 'commit': ''}]
 
 
-@mock.patch('qualitas.exports.export.LOGS')
-def test_get_pypi_release(LOGS):
-    def raise_http_error(code, message):
-        def f(url, *args, **kwargs):
-            raise HTTPError(url, code, message, None, None)
-        return f
-
+def test_get_cnx_deploy_versions():
     with mock.patch('qualitas.exports.export.urlopen') as urlopen:
-        urlopen.side_effect = raise_http_error(404, 'Not Found')
-        assert get_pypi_release('cnx-webview') is None
-        assert not LOGS.exception.called
+        urlopen.return_value = io.BytesIO(data_loader(
+            'unit/cnx-deploy-master.zip', 'rb'))
+        versions = get_cnx_deploy_versions()
 
-    with mock.patch('qualitas.exports.export.urlopen') as urlopen:
-        urlopen.side_effect = raise_http_error(500, 'Internal Server Error')
-
-        # should be returning cached value
-        assert get_pypi_release('cnx-webview') is None
-        assert not urlopen.called
-        assert not LOGS.exception.called
-
-        # explicitly refresh cache
-        assert get_pypi_release('cnx-webview', refresh_cache=True) is None
-        assert LOGS.exception.called
-
-    with mock.patch('qualitas.exports.export.urlopen') as urlopen:
-        urlopen.return_value = io.BytesIO(json.dumps(data_loader(
-            'unit/pypi-cnx-archive.json')).encode('utf-8'))
-        assert get_pypi_release('cnx-archive') == {
-            'version': '4.13.0',
-            'url': 'https://pypi.org/project/cnx-archive/4.13.0/'
-        }
+    assert versions['Products.CMFSquidTool'] == {'1.5.1'}
+    assert versions['lxml'] == {'3.3.6', '4.4.0'}
+    assert versions['webview'] == {'v0.54.0'}

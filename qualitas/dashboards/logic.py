@@ -1,6 +1,6 @@
 from qualitas.core import github, githubv4
 from qualitas.exports.export import (
-    get_org_releases, get_pypi_release, parse_history_txt,
+    get_org_releases, parse_history_txt, get_cnx_deploy_versions,
 )
 
 
@@ -59,15 +59,11 @@ def version_unexpected(server_versions, repo):
     commit = server_versions[0]['commit']
     tag_url = repo['latest_tag_url']
     head_commit = repo['head_full_commit']
-    pypi_version = repo['pypi'] and repo['pypi']['version'].replace('v', '')
     tag = repo['latest_tag'].replace('v', '')
 
     if commit and (commit in tag_url or commit == head_commit):
         # if commit is present and is the same as the latest tag or master,
         # it's ok
-        return False
-    if version in (pypi_version, tag):
-        # if version is the same as the pypi version or latest tag, it's ok
         return False
     if tag in version:
         # if version is "kitschy.kolache v0.76.0" and tag is "v0.76.0", it's ok
@@ -89,6 +85,7 @@ def get_cnx_dashboard_repos():
     for server in ('qa.cnx.org', 'staging.cnx.org', 'cnx.org'):
         release_dates[server], history_txt[server] = parse_history_txt(server)
         server_repos = server_repos.union(history_txt[server].keys())
+    cnx_deploy_versions = get_cnx_deploy_versions()
     repos = []
     for r in org_repos:
         if r['name'] in server_repos:
@@ -96,17 +93,17 @@ def get_cnx_dashboard_repos():
                 'name': r['name'],
                 'url': r['url'],
                 'latest_tag': r['release']['version'],
-                'latest_tag_url': r['release']['url'],
+                'latest_tag_commit_url': r['release']['url'],
+                'latest_tag_url': '{}/releases/tag/{}'.format(
+                    r['url'], r['release']['version']),
                 'head_commit': r['head_ref']['commit'][:7],
                 'head_full_commit': r['head_ref']['commit'],
                 'head_url': r['head_ref']['url'],
-                'pypi': get_pypi_release(r['name']),
                 'unexpected': [],
                 'release_dates': {},
+                'cnx_deploy_version': ', '.join(
+                    cnx_deploy_versions.get(r['name'], [])),
             }
-            if repo['pypi'] and not repo['latest_tag'].endswith(
-                    repo['pypi']['version']):
-                repo['unexpected'].append('pypi')
             for server_name, versions in history_txt.items():
                 server_version = versions.get(r['name'], [])
                 server_alias = server_name.split('.', 1)[0]
