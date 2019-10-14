@@ -4,7 +4,7 @@ from unittest import mock
 from urllib.error import HTTPError
 
 from qualitas.exports.export import (
-    get_org_releases, parse_history_txt
+    get_org_releases, parse_history_txt, get_cnx_deploy_versions
 )
 
 from ..helpers import data_loader
@@ -54,3 +54,14 @@ def test_parse_history_txt():
     # legacy
     assert versions['Products.RhaptosSite'] == [{
         'version': '1.49', 'commit': ''}]
+
+
+def test_get_cnx_deploy_versions():
+    with mock.patch('qualitas.exports.export.urlopen') as urlopen:
+        urlopen.return_value = io.BytesIO(data_loader(
+            'unit/cnx-deploy-master.zip', 'rb'))
+        versions = get_cnx_deploy_versions()
+
+    assert versions['Products.CMFSquidTool'] == {'1.5.1'}
+    assert versions['lxml'] == {'3.3.6', '4.4.0'}
+    assert versions['webview'] == {'v0.54.0'}

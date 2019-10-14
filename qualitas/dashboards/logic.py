@@ -1,6 +1,6 @@
 from qualitas.core import github, githubv4
 from qualitas.exports.export import (
-    get_org_releases, parse_history_txt,
+    get_org_releases, parse_history_txt, get_cnx_deploy_versions,
 )
 
 
@@ -85,6 +85,7 @@ def get_cnx_dashboard_repos():
     for server in ('qa.cnx.org', 'staging.cnx.org', 'cnx.org'):
         release_dates[server], history_txt[server] = parse_history_txt(server)
         server_repos = server_repos.union(history_txt[server].keys())
+    cnx_deploy_versions = get_cnx_deploy_versions()
     repos = []
     for r in org_repos:
         if r['name'] in server_repos:
@@ -100,6 +101,8 @@ def get_cnx_dashboard_repos():
                 'head_url': r['head_ref']['url'],
                 'unexpected': [],
                 'release_dates': {},
+                'cnx_deploy_version': ', '.join(
+                    cnx_deploy_versions.get(r['name'], [])),
             }
             for server_name, versions in history_txt.items():
                 server_version = versions.get(r['name'], [])

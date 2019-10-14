@@ -1,7 +1,9 @@
+import io
 import json
 import logging
 import re
 from urllib.request import urlopen
+import zipfile
 
 import github3
 
@@ -166,3 +168,33 @@ def parse_history_txt(server):
             }
 
     return release_date, release
+
+
+def get_cnx_deploy_versions():
+    zip_url = 'https://github.com/openstax/cnx-deploy/archive/master.zip'
+
+    def open_prod_files(z):
+        for name in z.namelist():
+            if '/environments/__prod_envs/' in name and \
+                    not name.endswith('/'):
+                with z.open(name) as f:
+                    yield f
+
+    versions = {}
+    with zipfile.ZipFile(io.BytesIO(urlopen(zip_url).read())) as z:
+        for f in open_prod_files(z):
+            for line in f:
+                if b'=' in line:
+                    m = re.search(r'^([^ =]+)\s*=+\s*(\S+)$',
+                                  line.decode('utf-8').strip())
+                    if m:
+                        package_name, version = m.groups()
+                        versions.setdefault(package_name, set()).add(version)
+                elif b':' in line:
+                    m = re.search(r'^([^ :]+)_version:\s*(\S+)$',
+                                  line.decode('utf-8').strip())
+                    if m:
+                        package_name, version = m.groups()
+                        versions.setdefault(package_name, set()).add(version)
+
+    return versions

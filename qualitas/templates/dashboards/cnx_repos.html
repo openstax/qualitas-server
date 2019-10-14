@@ -26,6 +26,7 @@
               <th>GitHub master</th>
               <th>GitHub tag</th>
               <th>PyPi release</th>
+              <th>cnx-deploy version</th>
               <th><a href="https://qa.cnx.org/history.txt" title="View qa.cnx.org history.txt" target="_blank">qa.cnx.org</a> ({{ release_dates['qa.cnx.org']|truncate(10, end='') }})</th>
               <th><a href="https://staging.cnx.org/history.txt" title="View staging.cnx.org history.txt" target="_blank">staging.cnx.org</a> ({{ release_dates['staging.cnx.org']|truncate(10, end='') }})</th>
               <th><a href="https://cnx.org/history.txt" title="View cnx.org history.txt" target="_blank">cnx.org</a> ({{ release_dates['cnx.org']|truncate(10, end='') }})</th>
@@ -38,6 +39,7 @@
               <td><a href="{{ repo.head_url }}" title="View the commit" target="_blank">{{ repo.head_commit }}{% if repo.head_full_commit in repo.latest_tag_commit_url %} ({{ repo.latest_tag }}){% endif %}</a></td>
               <td><a href="{{ repo.latest_tag_url }}" title="View the tag" target="_blank">{{ repo.latest_tag }}</a></td>
               <td> - </td>
+              <td>{% if repo.cnx_deploy_version %}<a href="https://github.com/openstax/cnx-deploy/tree/master/environments/__prod_envs/files" title="View cnx-deploy files" target="_blank">{{ repo.cnx_deploy_version }}</a>{% else %} - {% endif %}</td>
               <td{% if 'qa' in repo.unexpected %} class="red lighten-5"{% endif %}>
                 {% for version in repo.qa %}
                 {% if version.commit %}

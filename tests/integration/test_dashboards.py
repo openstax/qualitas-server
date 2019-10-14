@@ -10,6 +10,10 @@ def test_get_old_cnx_repos_view(test_client):
 
 
 def test_get_cnx_repos_view(test_client):
+    p1 = mock.patch('qualitas.dashboards.logic.get_cnx_deploy_versions')
+    get_cnx_deploy_versions = p1.start()
+    get_cnx_deploy_versions.side_effect = lambda: {'cnx-recipes': {'1.34.0'}}
+
     p2 = mock.patch('qualitas.dashboards.logic.parse_history_txt')
     parse_history_txt = p2.start()
     parse_history_txt.side_effect = lambda server: \
@@ -32,12 +36,13 @@ def test_get_cnx_repos_view(test_client):
             if i % 2 == 1])
 
     # check the first row of the table
-    repo, master, tag, pypi, qa_version, staging_version, prod_version = \
-        table_content[0]
+    repo, master, tag, pypi, deploy, qa_version, staging_version, \
+        prod_version = table_content[0]
     assert '"https://github.com/openstax/cnx-recipes"' in repo
     assert '8fea596 (v1.34.0)' in master
     assert 'v1.34.0' in tag
     assert pypi == '-'  # done using ajax
+    assert '1.34.0' in deploy
     assert 'github.com' in qa_version and '8fea596 (v1.34.0)' in qa_version
     assert staging_version == '1.34.0'
     assert prod_version == '1.33.0'
