@@ -49,9 +49,9 @@ def pull_request_export():
         pr_commits = []
 
         for n in range(1, repo_num + 1):
-            repo_name = form_data[f'repo_{n}'][0]
-            base = form_data[f'base_{n}'][0]
-            head = form_data[f'head_{n}'][0]
+            repo_name = form_data[f'repo_{n}']
+            base = form_data[f'base_{n}']
+            head = form_data[f'head_{n}']
             LOGS.info(f'Currently processing {repo_name} b{base} h{head}')
             commits = export.get_pr_commit_data(github.client,
                                                 zenhub.client,
