@@ -37,7 +37,7 @@ port-for==0.4
 psutil==5.6.7
 psycopg2-binary==2.8.4
 pur==5.3.0
-py==1.8.0
+py==1.8.1
 Pygments==2.5.2
 pytest==5.3.1
 pytest-cov==2.8.1
