@@ -55,6 +55,6 @@ uritemplate==3.0.1
 urllib3==1.25.8
 waitress==1.4.2
 WebOb==1.8.6
-WebTest==2.0.33
+WebTest==2.0.34
 Werkzeug==0.16.0
 WTForms==2.2.1
