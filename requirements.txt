@@ -34,7 +34,7 @@ more-itertools==8.2.0
 passlib==1.7.2
 pluggy==0.13.1
 port-for==0.4
-psutil==5.6.7
+psutil==5.7.0
 psycopg2-binary==2.8.4
 pur==5.2.2
 py==1.8.0
