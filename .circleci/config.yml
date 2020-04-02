@@ -25,7 +25,7 @@ jobs:
 
       - run:
           name: run database migrations
-          command: alembic update head
+          command: alembic upgrade head
 
 workflows:
   version: 2
