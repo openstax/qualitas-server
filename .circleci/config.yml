@@ -12,6 +12,7 @@ jobs:
           DB_HOST: 127.0.0.1
           DB_NAME: test
           DB_PASSWORD: $DB_PASSWORD
+          DATABASE_URL: 
       - image: circleci/postgres:11-alpine
         environment:
           POSTGRES_USER: test
@@ -27,6 +28,10 @@ jobs:
       - run:
           name: run database migrations
           command: alembic upgrade head
+      
+      - run:
+          name: run tests using pytest
+          command: pytest --cov=./qualitas --cov-report=xml:./cov.xml --cov-report=term
 
 workflows:
   version: 2
