@@ -16,6 +16,7 @@ jobs:
         environment:
           POSTGRES_USER: test
           POSTGRES_DB: test
+          POSTGRES_PASSWORD: $DB_PASSWORD
     steps:
       - checkout
 
