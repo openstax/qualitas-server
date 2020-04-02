@@ -18,11 +18,11 @@ jobs:
             POSTGRES_DB: test
     steps:
       - checkout
-      
+
       - run:
           name: install dependenciies
           command: pip install -r requirements.txt
-      
+
       - run:
           name: run database migrations
           command: alembic update head
