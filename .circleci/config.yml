@@ -26,7 +26,12 @@ jobs:
       - run:
           name: run database migrations
           command: alembic update head
-      
+
+workflows:
+  version: 2
+  run-tests:
+    jobs:
+      - test-qualitas
       
       
           
