@@ -25,18 +25,22 @@ def make_database_url(**environ):
     :type environ: dict
     :return: a string representation of a database url
     """
+    mandatory_vars = ['DB_USER', 'DB_PASSWORD', 'DB_HOST', 'DB_PORT', 'DB_NAME']
     if not environ:
         environ = os.environ
     # Check for DATABASE_URL that is provided by heroku
     if 'DATABASE_URL' in environ and environ['DATABASE_URL']:
         return environ.get('DATABASE_URL')
     else:
+        for var in mandatory_vars:
+            if var not in environ:
+                raise EnvironmentError("Failed because {} is not set.".format(var))
         return 'postgresql+psycopg2://{0}:{1}@{2}:{3}/{4}'.format(
-            environ.get('DB_USER', 'postgres'),
-            environ.get('DB_PASSWORD', ''),
-            environ.get('DB_HOST', 'db'),
-            environ.get('DB_PORT', '5432'),
-            environ.get('DB_NAME', 'tests'),
+            environ['DB_USER'],
+            environ['DB_PASSWORD'],
+            environ['DB_HOST'],
+            environ['DB_PORT'],
+            environ['DB_NAME'],
         )
 
 
