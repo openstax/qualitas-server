@@ -5,8 +5,7 @@ from alembic.command import upgrade
 from alembic.config import Config as AlembicConfig
 
 from pytest_postgresql.factories import (init_postgresql_database,
-                                         drop_postgresql_database,
-                                         get_config)
+                                         drop_postgresql_database)
 from webtest import TestApp
 
 from qualitas import create_app
@@ -28,10 +27,9 @@ def set_database_name(monkeypatch):
 def config_database(request):
     connection_template = 'postgresql+psycopg2://{0}@{1}:{2}/{3}'
 
-    config = get_config(request)
-    pg_host = config.get('host', 'db')
-    pg_port = config.get('port', 5432)
-    pg_user = config.get('user', 'postgres')
+    pg_host = os.environ.get('DB_HOST', 'db')
+    pg_port = os.environ.get('DB_PORT', 5432)
+    pg_user = os.environ.get('DB_USER', 'postgres')
     pg_db = 'tests'
     connection_string = connection_template.format(pg_user,
                                                    pg_host,
