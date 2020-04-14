@@ -29,10 +29,10 @@ def config_database(request):
     connection_template = 'postgresql+psycopg2://{0}@{1}:{2}/{3}'
 
     config = get_config(request)
-    pg_host = config.get('host', 'db')
-    pg_port = config.get('port', 5432)
-    pg_user = config.get('user', 'postgres')
-    pg_db = 'tests'
+    pg_host = os.environ.get('DB_HOST', config.get('host', 'db'))
+    pg_port = os.environ.get('DB_PORT', config.get('port', 5432))
+    pg_user = os.environ.get('DB_USER', config.get('user', 'postgres'))
+    pg_db = os.environ.get('DB_NAME', 'tests')
     connection_string = connection_template.format(pg_user,
                                                    pg_host,
                                                    pg_port,
