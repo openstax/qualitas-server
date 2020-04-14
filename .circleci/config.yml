@@ -21,10 +21,6 @@ jobs:
           command: pip install -r requirements.txt
 
       - run:
-          name: run database migrations
-          command: alembic upgrade head
-      
-      - run:
           name: run tests using pytest
           command: pytest --cov=./qualitas --cov-report=xml:./cov.xml --cov-report=term
 
