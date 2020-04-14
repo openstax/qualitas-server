@@ -10,9 +10,13 @@ jobs:
           ZENHUB_TOKEN: $ZENHUB_TOKEN
           GITHUB_BEARER_TOKEN: $GITHUB_BEARER_TOKEN
           DB_HOST: 127.0.0.1
+          DB_USER: test
           DB_NAME: test
           DB_PASSWORD: $DB_PASSWORD
       - image: circleci/postgres:11-alpine
+        environment:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: $DB_PASSWORD
     steps:
       - checkout
 
