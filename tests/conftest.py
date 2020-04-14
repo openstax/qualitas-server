@@ -7,6 +7,7 @@ from alembic.config import Config as AlembicConfig
 from pytest_postgresql.factories import (init_postgresql_database,
                                          drop_postgresql_database,
                                          get_config)
+from pytest_postgresql.factories import DatabaseJanitor
 from webtest import TestApp
 
 from qualitas import create_app
@@ -33,20 +34,21 @@ def config_database(request):
     pg_port = os.environ.get('DB_PORT', config.get('port', 5432))
     pg_user = os.environ.get('DB_USER', config.get('user', 'postgres'))
     pg_db = os.environ.get('DB_NAME', 'tests')
+    pg_password = os.environ.get('DB_PASSWORD', 'tests')
     connection_string = connection_template.format(pg_user,
                                                    pg_host,
                                                    pg_port,
                                                    pg_db)
 
+    janitor = DatabaseJanitor(user, host, port, db_name, version)
+
     # Create the database
-    init_postgresql_database(pg_user, pg_host, pg_port, pg_db)
+    janitor.init(pg_user, pg_host, pg_port, pg_db, 11, pg_password)
 
     yield connection_string
 
     # Ensure the database gets deleted
-    drop_postgresql_database(
-        pg_user, pg_host, pg_port, pg_db, '11'
-    )
+    janitor.drop(pg_user, pg_host, pg_port, pg_db, '11')
 
 
 @pytest.fixture(scope='session')
