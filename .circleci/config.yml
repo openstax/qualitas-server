@@ -13,10 +13,6 @@ jobs:
           DB_NAME: test
           DB_PASSWORD: $DB_PASSWORD
       - image: circleci/postgres:11-alpine
-        environment:
-          POSTGRES_USER: test
-          POSTGRES_DB: test
-          POSTGRES_PASSWORD: $DB_PASSWORD
     steps:
       - checkout
 
