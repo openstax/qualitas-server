@@ -4,12 +4,11 @@ import pytest
 from alembic.command import upgrade
 from alembic.config import Config as AlembicConfig
 
-from pytest_postgresql.factories import (init_postgresql_database,
-                                         drop_postgresql_database)
+from pytest_postgresql.factories import DatabaseJanitor
+
 from webtest import TestApp
 
 from qualitas import create_app
-
 
 credentials = [
     os.environ.get("GITHUB_USER", "foo"),
@@ -25,26 +24,27 @@ def set_database_name(monkeypatch):
 
 @pytest.fixture(scope='session')
 def config_database(request):
-    connection_template = 'postgresql+psycopg2://{0}@{1}:{2}/{3}'
+    connection_template = 'postgresql+psycopg2://{0}:{1}@{2}:{3}/{4}'
 
     pg_host = os.environ.get('DB_HOST', 'db')
     pg_port = os.environ.get('DB_PORT', 5432)
-    pg_user = os.environ.get('DB_USER', 'postgres')
+    pg_user = os.environ.get('DB_USER', 'tests')
+    pg_passsword = os.environ.get('DB_PASSWORD', 'tests')
     pg_db = 'tests'
     connection_string = connection_template.format(pg_user,
+                                                   pg_passsword,
                                                    pg_host,
                                                    pg_port,
                                                    pg_db)
 
     # Create the database
-    init_postgresql_database(pg_user, pg_host, pg_port, pg_db)
+    janitor = DatabaseJanitor(pg_user, pg_host, pg_port, pg_db, '11', pg_passsword)
+    janitor.init()
 
     yield connection_string
 
     # Ensure the database gets deleted
-    drop_postgresql_database(
-        pg_user, pg_host, pg_port, pg_db, '11'
-    )
+    janitor.drop()
 
 
 @pytest.fixture(scope='session')
