@@ -17,11 +17,6 @@ credentials = [
 ]
 
 
-@pytest.fixture(scope='function', autouse=True)
-def set_database_name(monkeypatch):
-    monkeypatch.setenv("DB_NAME", "tests")
-
-
 @pytest.fixture(scope='session')
 def config_database(request):
     connection_template = 'postgresql+psycopg2://{0}:{1}@{2}:{3}/{4}'
@@ -30,7 +25,7 @@ def config_database(request):
     pg_port = os.environ.get('DB_PORT', 5432)
     pg_user = os.environ.get('DB_USER', 'tests')
     pg_passsword = os.environ.get('DB_PASSWORD', 'tests')
-    pg_db = 'tests'
+    pg_db = os.environ.get('DB_NAME', 'tests')
     connection_string = connection_template.format(pg_user,
                                                    pg_passsword,
                                                    pg_host,
