@@ -13,6 +13,7 @@ services:
       - GITHUB_BEARER_TOKEN=${GITHUB_BEARER_TOKEN}
       - ZENHUB_TOKEN=${ZENHUB_TOKEN}
       - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
       - DB_NAME=${DB_NAME}
       - DB_PASSWORD=${DB_PASSWORD}
     ports:
