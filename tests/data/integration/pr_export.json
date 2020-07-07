@@ -12,7 +12,7 @@
     "pr_link": "https://github.com/openstax/biglearn-api/pull/51",
     "text": "Added metadata sequence numbers to course and ecos [PR 51](https://github.com/openstax/biglearn-api/commit/cb5fc8e)[cb5fc8e](https://github.com/openstax/biglearn-api/pull/51)",
     "milestone": "Release 2018-12-04; Code Freeze 2018-11-26",
-    "is_connected": true
+    "is_connected": false
   },
   {
     "repository": "openstax/biglearn-api",
