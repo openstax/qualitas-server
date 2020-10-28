@@ -115,7 +115,7 @@ class GitHubV4(object):
         if app is None:
             self.endpoint = os.getenv(
                 'GITHUB_V4_ENDPOINT', GitHubV4.DEFAULT_ENDPOINT)
-            self.token = os.environ['GITHUB_BEARER_TOKEN']
+            self.token = os.environ['GITHUB_AUTH_TOKEN']
         else:
             self.init_app(app)
 
@@ -126,10 +126,10 @@ class GitHubV4(object):
         app.extensions['githubv4'] = self
 
         # Configure the extension
-        app.config.setdefault('GITHUB_BEARER_TOKEN', None)
+        app.config.setdefault('GITHUB_AUTH_TOKEN', None)
         app.config.setdefault('GITHUB_V4_ENDPOINT', DEFAULT_ENDPOINT)
 
-        self.token = app.config['GITHUB_BEARER_TOKEN']
+        self.token = app.config['GITHUB_AUTH_TOKEN']
         self.endpoint = app.config['GITHUB_V4_ENDPOINT']
 
     def call_api(self, query):
