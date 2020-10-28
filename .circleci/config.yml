@@ -1,0 +1,33 @@
+version: 2.1
+jobs:
+  qualitas:
+    machine:
+      image: ubuntu-1604:202004-01
+
+    environment:
+      TEST_RESULTS_DIR: /tmp/test-results
+      TEST_RESULTS: /tmp/test-results/junit.xml
+
+    steps:
+      - checkout
+      # Permissions errors occurred with 0775 due to
+      # docker user not having permissions over this folder.
+      - run: mkdir -p -m=0777 $TEST_RESULTS_DIR
+
+      - run:
+          name: Run integration and unit tests
+          command: |
+            ./scripts/tests.ci.sh
+
+      - store_artifacts:
+          path: /tmp/test-results/junit.xml
+          destination: test-reports
+
+      - store_test_results:
+          path: /tmp/test-results
+
+workflows:
+  version: 2
+  run-tests:
+    jobs:
+      - qualitas
