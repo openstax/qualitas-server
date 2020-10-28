@@ -73,7 +73,8 @@ target/
 .DS_Store
 
 # Environmental Variables
-qualitas.env
+env-qualitas.env
+env-postgres.env
 
 # Virtual environments
 .venv
