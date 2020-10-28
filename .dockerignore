@@ -10,4 +10,5 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-qualitas.env
+env-qualitas.env
+env-postgres.env
