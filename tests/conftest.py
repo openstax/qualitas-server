@@ -21,11 +21,11 @@ credentials = [
 def config_database(request):
     connection_template = 'postgresql+psycopg2://{0}:{1}@{2}:{3}/{4}'
 
-    pg_host = os.environ.get('DB_HOST', 'db')
-    pg_port = os.environ.get('DB_PORT', 5432)
-    pg_user = os.environ.get('DB_USER', 'tests')
-    pg_passsword = os.environ.get('DB_PASSWORD', 'tests')
-    pg_db = os.environ.get('DB_NAME', 'tests')
+    pg_host = os.environ.get('POSTGRES_HOST', 'db')
+    pg_port = os.environ.get('POSTGRES_PORT', 5432)
+    pg_user = os.environ.get('POSTGRES_USER', 'tests')
+    pg_passsword = os.environ.get('POSTGRES_PASSWORD', 'tests')
+    pg_db = os.environ.get('POSTGRES_DB', 'tests')
     connection_string = connection_template.format(pg_user,
                                                    pg_passsword,
                                                    pg_host,
