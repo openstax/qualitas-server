@@ -37,7 +37,21 @@ target_metadata = db.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-url = make_database_url()
+
+def get_url():
+    database_url = os.getenv("DATABASE_URL", None)
+
+    if not database_url:
+        user = os.getenv("POSTGRES_USER", "qualitas")
+        password = os.getenv("POSTGRES_PASSWORD", "qualitas")
+        host = os.getenv("POSTGRES_HOST", "db")
+        db = os.getenv("POSTGRES_DB", "qualitas_db")
+        return f"postgresql://{user}:{password}@{host}/{db}"
+    else:
+        return database_url
+
+
+url = get_url()
 
 
 def run_migrations_offline():
