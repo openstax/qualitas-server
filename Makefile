@@ -24,8 +24,8 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 
 initdb:
-	docker-compose exec db psql -h db -d postgres -U postgres -c "DROP DATABASE IF EXISTS ${DB_NAME}"
-	docker-compose exec db psql -h db -d postgres -U postgres -c "CREATE DATABASE ${DB_NAME} ENCODING 'UTF8'"
+	docker-compose exec db psql -h db -d postgres -U qualitas -c "DROP DATABASE IF EXISTS ${DB_NAME}"
+	docker-compose exec db psql -h db -d postgres -U qualitas -c "CREATE DATABASE ${DB_NAME} ENCODING 'UTF8'"
 	docker-compose exec web alembic upgrade head
 
 test:
