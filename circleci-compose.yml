@@ -17,6 +17,8 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - /tmp/test-results:/tmp/test-results
     ports:
       - "5000:5000"
     links:
