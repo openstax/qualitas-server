@@ -2,7 +2,7 @@ FROM python:3.7-alpine
 
 # Install base packages
 RUN apk add --update --no-cache --virtual .build-deps gcc g++ postgresql-dev curl \
-    libffi-dev tini yaml-dev python3-dev py3-psutil linux-headers musl-dev && \
+    libffi-dev tini yaml-dev python3-dev py3-psutil linux-headers musl-dev rust cargo && \
     apk add --no-cache --update python3 && \
     pip3 install --upgrade pip setuptools && \
     rm -rf /var/cache/apk/*
