@@ -2,16 +2,21 @@ FROM python:3.7-alpine
 
 # Install base packages
 RUN apk add --update --no-cache --virtual .build-deps gcc g++ postgresql-dev curl \
-    libffi-dev tini yaml-dev python3-dev py3-psutil linux-headers musl-dev rust cargo && \
+    libffi-dev tini yaml-dev python3-dev py3-psutil linux-headers musl-dev openssl-dev && \
     apk add --no-cache --update python3 && \
     pip3 install --upgrade pip setuptools && \
     rm -rf /var/cache/apk/*
 
+# Install rustup for installing cryptography
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
 WORKDIR /app
 
 COPY ["requirements.txt", "/app"]
-RUN pip install -U pip
-RUN pip install -r requirements.txt
+
+# Set cargo path so cryptography can install w/o errors
+RUN source $HOME/.cargo/env && \
+    pip install -r requirements.txt
 
 COPY . .
 
