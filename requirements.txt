@@ -1,4 +1,4 @@
-alembic==1.5.3
+alembic==1.5.5
 atomicwrites==1.4.0
 attrs==20.3.0
 Babel==2.9.0
