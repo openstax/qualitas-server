@@ -4,7 +4,7 @@ import pytest
 from alembic.command import upgrade
 from alembic.config import Config as AlembicConfig
 
-from pytest_postgresql.factories import DatabaseJanitor
+from pytest_postgresql.janitor import DatabaseJanitor
 
 from webtest import TestApp
 

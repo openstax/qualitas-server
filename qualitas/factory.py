@@ -55,8 +55,9 @@ def create_app(package_name, settings=None):
         Markdown
     ]
 
-    app.jinja_options = app.jinja_options.copy()
-    app.jinja_options['extensions'].extend(jinja_extensions)
+    for extension in jinja_extensions:
+        app.jinja_env.add_extension(extension)
+
     app.jinja_env.filters['markdown'] = markdown
 
     app.add_url_rule(
