@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  web-tests:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - /tmp/test-results:/tmp/test-results
+      - .:/app
+    ports:
+      - '5900'
+    command: sh -c "while true; do sleep 1; done"
+    env_file:
+      - env-qualitas.env
+    environment: &testenv
+      - POSTGRES_SERVER=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=tests
+      - PGPASSWORD=test
+
+  web:
+   environment: *testenv
+  
+  db:
+   environment: *testenv
+  
