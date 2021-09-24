@@ -82,3 +82,6 @@ env-postgres.env
 # Celery files
 /celerybeat.pid
 /celerybeat-schedule
+
+# docker stack file
+docker-stack.yml
