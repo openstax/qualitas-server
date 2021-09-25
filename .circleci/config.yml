@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  qualitas:
+  test:
     machine:
       image: ubuntu-1604:202004-01
 
@@ -25,9 +25,27 @@ jobs:
 
       - store_test_results:
           path: /tmp/test-results
+  build:
+    environment:
+      IMAGE_NAME: openstax/qualitas-server
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: |
+            revision=$(git --git-dir=.git rev-parse --short HEAD)
+            echo $revision
+            branch=$CIRCLE_BRANCH
+            docker build -t $IMAGE_NAME:$revision .
 
 workflows:
   version: 2
-  run-tests:
+  build-and-run-tests:
     jobs:
-      - qualitas
+      - test
+      - build:
+          requires:
+            - test
