@@ -38,11 +38,14 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: Set REVISION in BASH_ENV
+          command: |
+            echo "export REVISION=$(git --git-dir=.git rev-parse --short HEAD)" >> $BASH_ENV
+      - run:
           name: Build Docker image
           command: |
             revision=$(git --git-dir=.git rev-parse --short HEAD) >> $BASH_ENV
-            echo "export REVISION=$(git --git-dir=.git rev-parse --short HEAD)" >> $BASH_ENV
-            docker build -t $IMAGE_NAME:$revision .
+            docker build -t $IMAGE_NAME:$REVISION .
       - run:
           name: Archive Docker image
           command: docker save -o image.tar $IMAGE_NAME
