@@ -63,7 +63,7 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
-            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            echo "$CE_DOCKERHUB_TOKEN" | docker login -u "$CE_DOCKERHUB_USERNAME" --password-stdin
             docker push $IMAGE_NAME:$REVISION
   publish-main:
     executor: docker-publisher
@@ -78,7 +78,7 @@ jobs:
           name: Publish Docker Image to Docker Hub
           command: |
             TAG$(date '+%Y%m%d.%H%M%S')
-            echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            echo "$CE_DOCKERHUB_TOKEN" | docker login -u "$CE_DOCKERHUB_USERNAME" --password-stdin
             docker push $IMAGE_NAME:$TAG
 
 workflows:
