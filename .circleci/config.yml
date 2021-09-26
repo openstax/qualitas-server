@@ -95,5 +95,7 @@ workflows:
       - publish-main:
           requires:
             - test
+          filters:
+            branches:
+              only: master
           
-        
