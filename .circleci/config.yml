@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Build Docker image
           command: |
-            revision=$(git --git-dir=.git rev-parse --short HEAD) >> $BASH_ENV
+            revision=$(git --git-dir=.git rev-parse --short HEAD) | tee revision.txt
             docker build -t $IMAGE_NAME:$REVISION .
       - run:
           name: Archive Docker image
@@ -53,6 +53,7 @@ jobs:
           root: .
           paths:
             - ./image.tar
+            - ./revision.txt
   # Project settings are set to only build PRs, but they will also still occur of main and tags.
   publish-pr:
     executor: docker-publisher
@@ -66,6 +67,7 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
+            REVISION=$(cat /tmp/workspace/revision.txt)
             echo "$CE_DOCKERHUB_TOKEN" | docker login -u "$CE_DOCKERHUB_USERNAME" --password-stdin
             docker push $IMAGE_NAME:$REVISION
   publish-main:
