@@ -82,7 +82,7 @@ jobs:
       - run:
           name: Publish Docker Image to Docker Hub
           command: |
-            TAG$(date '+%Y%m%d.%H%M%S')
+            TAG=$(date '+%Y%m%d.%H%M%S')
             echo "$CE_DOCKERHUB_TOKEN" | docker login -u "$CE_DOCKERHUB_USERNAME" --password-stdin
             docker push $IMAGE_NAME:$TAG
 
