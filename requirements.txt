@@ -56,5 +56,5 @@ urllib3==1.26.6
 waitress==2.0.0
 WebOb==1.8.7
 WebTest==3.0.0
-Werkzeug==2.0.1
+Werkzeug==2.2.3
 WTForms==2.3.3
